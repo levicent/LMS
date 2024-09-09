@@ -27,6 +27,7 @@ const userSchema: mongoose.Schema<IUserModel> = new mongoose.Schema({
     type: String,
     required: true,
     enum: ["student", "teacher", "admin"],
+    default: "student",
   },
 });
 
