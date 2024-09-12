@@ -22,6 +22,15 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
     ref: "User",
     required: true,
   },
+  duration: {
+    type: Number,
+    required: true,
+  },
+  level: {
+    type: String,
+    required: true,
+    enum: ["beginner", "intermediate", "advanced"],
+  },
   //   modules: [
   //     {
   //       titles: String,
@@ -39,8 +48,45 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
   category: {
     type: String,
     required: true,
+    enum: [
+      "Development",
+      "Business",
+      "Finance & Acounting",
+      "IT & Software",
+      "Office Productivity",
+      "Personal Development",
+      "Design",
+      "Marketing",
+      "Lifestyle",
+      "Photography & Video",
+      "Health & Fitness",
+      "Music",
+      "Teaching & Academics",
+    ],
   },
   tags: [String],
+  studentsEnrolled: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+    },
+  ],
+  reviews: [
+    {
+      user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "User",
+      },
+      rating: {
+        type: Number,
+        min: 1,
+        max: 5,
+      },
+    },
+  ],
+  language: [{ type: String, required: true }],
   createdAt: {
     type: Date,
     default: Date.now,

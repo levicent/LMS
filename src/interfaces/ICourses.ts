@@ -17,10 +17,29 @@ export interface ICourse {
   title: string;
   description: string;
   price: number;
+  duration: number;
+  level: "beginner" | "intermediate" | "advanced";
   instructor: Types.ObjectId;
   //   modules?: IModule[];
-  category: string;
+  category:
+    | "Development"
+    | "Business"
+    | "Finance & Accounting"
+    | "IT & Software"
+    | "Office Productivity"
+    | "Personal Development"
+    | "Design"
+    | "Marketing"
+    | "Lifestyle"
+    | "Photography & Video"
+    | "Health & Fitness"
+    | "Music"
+    | "Teaching & Academics";
+  studentsEnrolled: { user: Types.ObjectId }[];
+  reviews?: { user: Types.ObjectId }[];
+  language: string[];
   tags?: string[];
+
   createdAt: Date;
   updatedAt: Date;
 }
