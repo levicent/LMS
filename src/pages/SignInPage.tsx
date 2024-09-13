@@ -8,7 +8,7 @@ const SignInPage: React.FC = () => {
       {/* Background Particles */}
       <ParticlesComponent id="tsparticles" className="absolute inset-0 z-0" />
 
-      <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-16 p-8">
+      <div className="relative z-10 max-w-7xl w-full grid grid-cols-1 md:grid-cols-2 gap-16-8">
         <div className="flex flex-col justify-center text-center md:text-left space-y-6">
           <h1 className="text-white text-4xl font-bold">LMS by GWT</h1>
           <p className="text-white text-lg">
