@@ -2,17 +2,17 @@ import React from "react";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import { Link } from "react-router-dom";
+import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
 
 const HomePage: React.FC = () => {
   return (
-    <div className="flex flex-col min-h-screen">
+    <div>
+      <ParticlesComponent id="particles" />
       <Navbar />
 
-      {/* Main Content */}
       <main className="flex-grow bg-gray-100">
         <div className="container mx-auto p-6 lg:px-8 lg:py-12">
-          {/* Welcome Section */}
-          <section className="text-center mb-12">
+          <section className="text-center mb-12 bg-transparent">
             <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900">
               Welcome to LMS
             </h1>
@@ -25,13 +25,11 @@ const HomePage: React.FC = () => {
             </button>
           </section>
 
-          {/* Courses Section */}
           <section className="mt-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
               Explore Our Courses
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Course Card 1 */}
               <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
                 <h3 className="text-xl font-bold text-gray-900">
                   Web Development
@@ -44,7 +42,6 @@ const HomePage: React.FC = () => {
                   View Course &rarr;
                 </button>
               </div>
-              {/* Course Card 2 */}
               <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
                 <h3 className="text-xl font-bold text-gray-900">
                   Data Science
@@ -56,7 +53,6 @@ const HomePage: React.FC = () => {
                   View Course &rarr;
                 </button>
               </div>
-              {/* Course Card 3 */}
               <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
                 <h3 className="text-xl font-bold text-gray-900">
                   UI/UX Design
@@ -72,27 +68,23 @@ const HomePage: React.FC = () => {
             </div>
           </section>
 
-          {/* Instructors Section */}
           <section className="mt-16">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-8 text-center">
               Meet Our Instructors
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Instructor Card 1 */}
               <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
                 <h3 className="text-xl font-bold text-gray-900">Jane Doe</h3>
                 <p className="mt-2 text-gray-600">
                   Expert in Web Development and JavaScript frameworks.
                 </p>
               </div>
-              {/* Instructor Card 2 */}
               <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
                 <h3 className="text-xl font-bold text-gray-900">John Smith</h3>
                 <p className="mt-2 text-gray-600">
                   Data Science guru with over 10 years of experience.
                 </p>
               </div>
-              {/* Instructor Card 3 */}
               <div className="bg-white p-6 rounded-lg shadow hover:shadow-md transition">
                 <h3 className="text-xl font-bold text-gray-900">Emma Lee</h3>
                 <p className="mt-2 text-gray-600">
@@ -102,7 +94,6 @@ const HomePage: React.FC = () => {
             </div>
           </section>
 
-          {/* Call to Action Section */}
           <section className="mt-16 text-center">
             <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6">
               Ready to Learn?

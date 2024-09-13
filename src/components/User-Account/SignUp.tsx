@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-
+import ParticlesComponent from "../ParticleBackground/ParticleBackground";
 const Signup: React.FC = () => {
   const [formData, setFormData] = useState({
     firstName: "",
@@ -29,8 +29,11 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
+    <div className="relative min-h-screen flex items-center justify-center overflow-hidden">
+      {/* Background Particles */}
+      <ParticlesComponent id="tsparticles" className="absolute inset-0 z-0" />
+
+      <div className="relative z-10 w-full max-w-md p-6 bg-white shadow-lg rounded-lg">
         <h1 className="text-xl font-extrabold text-gray-900 text-center mb-4">
           Create an account
         </h1>

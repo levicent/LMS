@@ -1,6 +1,6 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import HomePage from "./pages/HomePage";
+import HomePage from "./pages/Homepage";
 import SignInPage from "./pages/SignInPage";
 import Signup from "./components/User-Account/SignUp";
 import ForgotPassword from "./components/User-Account/ForgotPassword";
@@ -8,8 +8,6 @@ import ForgotPassword from "./components/User-Account/ForgotPassword";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
-      {" "}
-      {/* Light mode (default) */}
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
