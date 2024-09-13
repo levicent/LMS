@@ -1,4 +1,3 @@
-import React from "react";
 import {
   FaFacebookF,
   FaTwitter,
@@ -8,7 +7,7 @@ import {
 
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-r from-purple-500 to-blue-500 text-white">
+    <footer className="bg-white text-black">
       <div className="max-w-7xl mx-auto py-10 px-6 lg:px-8">
         {/* Top Footer Section */}
         <div className="flex flex-wrap justify-between items-start space-y-6 lg:space-y-0 lg:space-x-6">
@@ -32,7 +31,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm hover:text-blue-200 transition-colors"
+                  className="text-sm hover:text-gray-700 transition-colors"
                 >
                   Learn
                 </a>
@@ -40,7 +39,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm hover:text-blue-200 transition-colors"
+                  className="text-sm hover:text-gray-700 transition-colors"
                 >
                   Features
                 </a>
@@ -48,7 +47,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm hover:text-blue-200 transition-colors"
+                  className="text-sm hover:text-gray-700 transition-colors"
                 >
                   Contact
                 </a>
@@ -56,7 +55,7 @@ export default function Footer() {
               <li>
                 <a
                   href="#"
-                  className="text-sm hover:text-blue-200 transition-colors"
+                  className="text-sm hover:text-gray-700 transition-colors"
                 >
                   Log in
                 </a>
@@ -72,25 +71,25 @@ export default function Footer() {
             <div className="flex space-x-4 mt-2">
               <a
                 href="#"
-                className="text-white hover:text-blue-200 transition-colors"
+                className="text-black hover:text-gray-700 transition-colors"
               >
                 <FaFacebookF className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-white hover:text-blue-200 transition-colors"
+                className="text-black hover:text-gray-700 transition-colors"
               >
                 <FaTwitter className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-white hover:text-blue-200 transition-colors"
+                className="text-black hover:text-gray-700 transition-colors"
               >
                 <FaInstagram className="h-5 w-5" />
               </a>
               <a
                 href="#"
-                className="text-white hover:text-blue-200 transition-colors"
+                className="text-black hover:text-gray-700 transition-colors"
               >
                 <FaLinkedinIn className="h-5 w-5" />
               </a>
@@ -99,7 +98,7 @@ export default function Footer() {
         </div>
 
         {/* Bottom Footer Section */}
-        <div className="mt-10 border-t border-blue-400 pt-6 text-center">
+        <div className="mt-10 border-t border-gray-300 pt-6 text-center">
           <p className="text-sm">
             &copy; {new Date().getFullYear()} LMS. All Rights Reserved.
           </p>

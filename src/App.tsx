@@ -1,15 +1,9 @@
-import React from "react";
-import Navbar from "./components/Navbar";
-import Footer from "./components/footer";
+import Homepage from "./pages/Homepage";
 
 function App() {
   return (
-    <div className="App flex flex-col min-h-screen">
-      <Navbar />
-      <main className="flex-grow">
-        {/* Other components like Course List, Instructor Info, etc. */}
-      </main>
-      <Footer />
+    <div>
+      <Homepage />
     </div>
   );
 }
