@@ -1,8 +1,7 @@
 import React from "react";
 import { Link } from "react-router-dom";
 import { useForm, SubmitHandler } from "react-hook-form";
-import ParticleBackground from "../../components/ParticleBackground/ParticleBackground"; // Adjust the path based on your folder structure
-
+import ParticleBackground from "../../components/ParticleBackground/ParticleBackground";
 interface ForgotPasswordFormValues {
   email: string;
 }
