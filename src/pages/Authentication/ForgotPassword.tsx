@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import ParticleBackground from "../../components/ParticleBackground/ParticleBackground"; // Adjust the path based on your folder structure
 
 const ForgotPassword: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -15,8 +16,12 @@ const ForgotPassword: React.FC = () => {
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen bg-gray-100 px-4">
-      <div className="w-full max-w-lg p-8 bg-white shadow-lg rounded-lg my-12">
+    <div className="relative flex items-center justify-center min-h-screen bg-gray-100 px-4">
+      {/* Particle Background */}
+      <ParticleBackground />
+
+      {/* Content */}
+      <div className="absolute w-full max-w-lg p-8 bg-white shadow-lg rounded-lg my-12 z-10">
         <h1 className="text-2xl font-extrabold text-gray-900 text-center mb-6">
           Forgot Password
         </h1>
