@@ -1,91 +1,24 @@
 import React, { useState } from "react";
+import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 
+type FormValues = {
+  email: string;
+  password: string;
+};
+
 const SignInPage: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [rememberMe, setRememberMe] = useState(false);
 
-  const [errors, setErrors] = useState<{ email?: string; password?: string }>({
-    email: "",
-    password: "",
-  });
+  const {
+    handleSubmit,
+    register,
+    formState: { errors },
+  } = useForm<FormValues>();
 
-  // Helper function to validate email format
-  const validateEmail = (email: string) => {
-    return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-  };
-
-  // Function to validate the fields
-  const validateFields = () => {
-    const newErrors: { email?: string; password?: string } = {};
-
-    // Validate email field
-    if (!email) {
-      newErrors.email = "Email is required.";
-    } else if (!validateEmail(email)) {
-      newErrors.email = "Invalid email format.";
-    }
-
-    // Validate password field
-    if (!password) {
-      newErrors.password = "Password is required.";
-    } else if (password.length < 6) {
-      newErrors.password = "Password must be at least 6 characters.";
-    }
-
-    return newErrors;
-  };
-
-  // Function to handle field validation
-  const handleFieldValidation = (field: string) => {
-    const newErrors = { ...errors };
-
-    if (field === "email") {
-      if (!email) {
-        newErrors.email = "Email is required.";
-      } else if (!validateEmail(email)) {
-        newErrors.email = "Invalid email format.";
-      } else {
-        delete newErrors.email;
-      }
-    }
-
-    if (field === "password") {
-      if (!password) {
-        newErrors.password = "Password is required.";
-      } else if (password.length < 6) {
-        newErrors.password = "Password must be at least 6 characters.";
-      } else {
-        delete newErrors.password;
-      }
-    }
-
-    setErrors(newErrors);
-  };
-
-  // Handle blur event
-  const handleBlur = (field: string) => {
-    handleFieldValidation(field);
-  };
-
-  // Handle form submission
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const validationErrors = validateFields();
-
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    // Clear errors and proceed with form submission if validation passes
-    setErrors({});
-    console.log("Email:", email);
-    console.log("Password:", password);
-    console.log("Remember Me:", rememberMe);
+  const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log(data);
   };
 
   return (
@@ -110,7 +43,7 @@ const SignInPage: React.FC = () => {
             <h1 className="text-2xl font-extrabold text-gray-900 text-center">
               Sign in to your account
             </h1>
-            <form className="space-y-6" onSubmit={handleSubmit}>
+            <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
               {/* Email Input Field */}
               <div>
                 <label
@@ -120,21 +53,21 @@ const SignInPage: React.FC = () => {
                   Your email
                 </label>
                 <input
+                  {...register("email", {
+                    required: "Email is required",
+                    pattern: {
+                      value: /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/,
+                      message: "Invalid email format",
+                    },
+                  })}
                   id="email"
                   type="email"
-                  className={`mt-2 block w-full px-4 py-3 border ${
-                    errors.email ? "border-red-500" : "border-gray-300"
-                  } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-                  value={email}
-                  onChange={(e) => {
-                    setEmail(e.target.value);
-                    handleFieldValidation("email");
-                  }}
-                  onBlur={() => handleBlur("email")}
-                  required
+                  className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 />
                 {errors.email && (
-                  <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.email.message}
+                  </p>
                 )}
               </div>
 
@@ -147,21 +80,25 @@ const SignInPage: React.FC = () => {
                   Password
                 </label>
                 <input
+                  {...register("password", {
+                    required: "Password is required",
+                    minLength: {
+                      value: 6,
+                      message: "Password must have at least 6 characters",
+                    },
+                    maxLength: {
+                      value: 20,
+                      message: "Password must have at most 20 characters",
+                    },
+                  })}
                   id="password"
                   type="password"
-                  className={`mt-2 block w-full px-4 py-3 border ${
-                    errors.password ? "border-red-500" : "border-gray-300"
-                  } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-                  value={password}
-                  onChange={(e) => {
-                    setPassword(e.target.value);
-                    handleFieldValidation("password");
-                  }}
-                  onBlur={() => handleBlur("password")}
-                  required
+                  className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 />
                 {errors.password && (
-                  <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+                  <p className="text-red-500 text-sm mt-1">
+                    {errors.password.message}
+                  </p>
                 )}
               </div>
 

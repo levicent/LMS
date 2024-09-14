@@ -1,127 +1,30 @@
-import React, { useState } from "react";
+import React from "react";
+import { useForm } from "react-hook-form";
 import { Link } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 
+interface FormData {
+  firstName: string;
+  lastName: string;
+  email: string;
+  phone: string;
+  password: string;
+  confirmPassword: string;
+}
+
 const SignupPage: React.FC = () => {
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    password: "",
-    confirmPassword: "",
-  });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    watch,
+  } = useForm<FormData>();
 
-  const [errors, setErrors] = useState<{
-    firstName?: string;
-    lastName?: string;
-    email?: string;
-    phone?: string;
-    password?: string;
-    confirmPassword?: string;
-  }>({});
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
-    handleFieldValidation(name, value);
+  const onSubmit = (data: FormData) => {
+    console.log("Form data submitted:", data);
   };
 
-  const handleFieldValidation = (field: string, value: string) => {
-    const newErrors = { ...errors };
-
-    switch (field) {
-      case "firstName":
-        if (!value) {
-          newErrors.firstName = "First name is required.";
-        } else {
-          delete newErrors.firstName;
-        }
-        break;
-      case "lastName":
-        if (!value) {
-          newErrors.lastName = "Last name is required.";
-        } else {
-          delete newErrors.lastName;
-        }
-        break;
-      case "email":
-        if (!value) {
-          newErrors.email = "Email is required.";
-        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)) {
-          newErrors.email = "Invalid email format.";
-        } else {
-          delete newErrors.email;
-        }
-        break;
-      case "phone":
-        if (!value) {
-          newErrors.phone = "Phone number is required.";
-        } else if (!/^\d{10}$/.test(value)) {
-          newErrors.phone = "Invalid phone number.";
-        } else {
-          delete newErrors.phone;
-        }
-        break;
-      case "password":
-        if (!value) {
-          newErrors.password = "Password is required.";
-        } else if (value.length < 6) {
-          newErrors.password = "Password must be at least 6 characters.";
-        } else {
-          delete newErrors.password;
-        }
-        break;
-      case "confirmPassword":
-        if (!value) {
-          newErrors.confirmPassword = "Confirm password is required.";
-        } else if (value !== formData.password) {
-          newErrors.confirmPassword = "Passwords do not match.";
-        } else {
-          delete newErrors.confirmPassword;
-        }
-        break;
-      default:
-        break;
-    }
-
-    setErrors(newErrors);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-
-    const validationErrors = validateFields();
-    if (Object.keys(validationErrors).length > 0) {
-      setErrors(validationErrors);
-      return;
-    }
-
-    console.log("Form data submitted:", formData);
-  };
-
-  const validateFields = () => {
-    const newErrors: { [key: string]: string } = {};
-
-    if (!formData.firstName) newErrors.firstName = "First name is required.";
-    if (!formData.lastName) newErrors.lastName = "Last name is required.";
-    if (!formData.email) newErrors.email = "Email is required.";
-    else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email))
-      newErrors.email = "Invalid email format.";
-    if (!formData.phone) newErrors.phone = "Phone number is required.";
-    else if (!/^\d{10}$/.test(formData.phone))
-      newErrors.phone = "Invalid phone number.";
-    if (!formData.password) newErrors.password = "Password is required.";
-    else if (formData.password.length < 6)
-      newErrors.password = "Password must be at least 6 characters.";
-    if (formData.password !== formData.confirmPassword)
-      newErrors.confirmPassword = "Passwords do not match.";
-
-    return newErrors;
-  };
+  const password = watch("password", "");
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-100">
@@ -132,7 +35,7 @@ const SignupPage: React.FC = () => {
         <h1 className="text-2xl font-extrabold text-gray-900 text-center mb-6">
           Create an Account
         </h1>
-        <form className="space-y-4" onSubmit={handleSubmit}>
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
           <div className="grid grid-cols-2 gap-4">
             <div>
               <label
@@ -144,19 +47,17 @@ const SignupPage: React.FC = () => {
               <input
                 id="firstName"
                 type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                onBlur={() =>
-                  handleFieldValidation("firstName", formData.firstName)
-                }
+                {...register("firstName", {
+                  required: "First name is required.",
+                })}
                 className={`mt-1 block w-full px-4 py-2 border ${
                   errors.firstName ? "border-red-500" : "border-gray-300"
                 } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-                required
               />
               {errors.firstName && (
-                <p className="text-red-500 text-sm mt-1">{errors.firstName}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.firstName.message}
+                </p>
               )}
             </div>
 
@@ -170,19 +71,17 @@ const SignupPage: React.FC = () => {
               <input
                 id="lastName"
                 type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                onBlur={() =>
-                  handleFieldValidation("lastName", formData.lastName)
-                }
+                {...register("lastName", {
+                  required: "Last name is required.",
+                })}
                 className={`mt-1 block w-full px-4 py-2 border ${
                   errors.lastName ? "border-red-500" : "border-gray-300"
                 } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-                required
               />
               {errors.lastName && (
-                <p className="text-red-500 text-sm mt-1">{errors.lastName}</p>
+                <p className="text-red-500 text-sm mt-1">
+                  {errors.lastName.message}
+                </p>
               )}
             </div>
           </div>
@@ -197,17 +96,21 @@ const SignupPage: React.FC = () => {
             <input
               id="email"
               type="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              onBlur={() => handleFieldValidation("email", formData.email)}
+              {...register("email", {
+                required: "Email is required.",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email format.",
+                },
+              })}
               className={`mt-1 block w-full px-4 py-2 border ${
                 errors.email ? "border-red-500" : "border-gray-300"
               } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              required
             />
             {errors.email && (
-              <p className="text-red-500 text-sm mt-1">{errors.email}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
             )}
           </div>
 
@@ -221,17 +124,21 @@ const SignupPage: React.FC = () => {
             <input
               id="phone"
               type="tel"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              onBlur={() => handleFieldValidation("phone", formData.phone)}
+              {...register("phone", {
+                required: "Phone number is required.",
+                pattern: {
+                  value: /^\d{10}$/,
+                  message: "Invalid phone number.",
+                },
+              })}
               className={`mt-1 block w-full px-4 py-2 border ${
                 errors.phone ? "border-red-500" : "border-gray-300"
               } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              required
             />
             {errors.phone && (
-              <p className="text-red-500 text-sm mt-1">{errors.phone}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.phone.message}
+              </p>
             )}
           </div>
 
@@ -245,19 +152,21 @@ const SignupPage: React.FC = () => {
             <input
               id="password"
               type="password"
-              name="password"
-              value={formData.password}
-              onChange={handleChange}
-              onBlur={() =>
-                handleFieldValidation("password", formData.password)
-              }
+              {...register("password", {
+                required: "Password is required.",
+                minLength: {
+                  value: 6,
+                  message: "Password must be at least 6 characters.",
+                },
+              })}
               className={`mt-1 block w-full px-4 py-2 border ${
                 errors.password ? "border-red-500" : "border-gray-300"
               } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              required
             />
             {errors.password && (
-              <p className="text-red-500 text-sm mt-1">{errors.password}</p>
+              <p className="text-red-500 text-sm mt-1">
+                {errors.password.message}
+              </p>
             )}
           </div>
 
@@ -271,23 +180,18 @@ const SignupPage: React.FC = () => {
             <input
               id="confirmPassword"
               type="password"
-              name="confirmPassword"
-              value={formData.confirmPassword}
-              onChange={handleChange}
-              onBlur={() =>
-                handleFieldValidation(
-                  "confirmPassword",
-                  formData.confirmPassword
-                )
-              }
+              {...register("confirmPassword", {
+                required: "Confirm password is required.",
+                validate: (value) =>
+                  value === password || "Passwords do not match.",
+              })}
               className={`mt-1 block w-full px-4 py-2 border ${
                 errors.confirmPassword ? "border-red-500" : "border-gray-300"
               } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
-              required
             />
             {errors.confirmPassword && (
               <p className="text-red-500 text-sm mt-1">
-                {errors.confirmPassword}
+                {errors.confirmPassword.message}
               </p>
             )}
           </div>

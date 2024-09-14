@@ -1,18 +1,23 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
+import { useForm, SubmitHandler } from "react-hook-form";
 import ParticleBackground from "../../components/ParticleBackground/ParticleBackground"; // Adjust the path based on your folder structure
 
+interface ForgotPasswordFormValues {
+  email: string;
+}
+
 const ForgotPassword: React.FC = () => {
-  const [email, setEmail] = useState("");
+  // Initialize react-hook-form
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<ForgotPasswordFormValues>();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    // Simulate password reset functionality
-    console.log("Password reset email sent to:", email);
+  // Form submit handler
+  const onSubmit: SubmitHandler<ForgotPasswordFormValues> = (data) => {
+    console.log("Password reset email sent to:", data.email);
   };
 
   return (
@@ -28,8 +33,10 @@ const ForgotPassword: React.FC = () => {
         <p className="text-gray-600 text-center mb-6">
           Enter your email and we'll send you a link to reset your password.
         </p>
-        <form className="space-y-4" onSubmit={handleSubmit}>
-          {/* Email */}
+
+        {/* Form */}
+        <form className="space-y-4" onSubmit={handleSubmit(onSubmit)}>
+          {/* Email Field */}
           <div>
             <label
               htmlFor="email"
@@ -40,12 +47,22 @@ const ForgotPassword: React.FC = () => {
             <input
               id="email"
               type="email"
-              name="email"
-              value={email}
-              onChange={handleChange}
-              className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
-              required
+              className={`mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500 ${
+                errors.email ? "border-red-500" : ""
+              }`}
+              {...register("email", {
+                required: "Email is required",
+                pattern: {
+                  value: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
+                  message: "Invalid email format",
+                },
+              })}
             />
+            {errors.email && (
+              <p className="text-red-500 text-sm mt-1">
+                {errors.email.message}
+              </p>
+            )}
           </div>
 
           {/* Submit Button */}
