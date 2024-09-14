@@ -1,5 +1,6 @@
 import React, { createContext, useEffect, useState } from "react";
 import { useLoginMutation } from "../hooks/useLoginMutation";
+import { toast } from "react-toastify";
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (data: { email: string; password: string }) => void;
@@ -25,24 +26,31 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, []);
 
-  const { mutate: loginMutation, isLoading: loginLoading } = useLoginMutation({
-    onSuccess: (data) => {
-      localStorage.setItem("token", data.token);
-      setIsAuthenticated(true);
-      setError(null);
-    },
-    onError: (err) => {
-      setIsAuthenticated(false);
-      setError(err.response.data.message);
-    },
-  });
+  const { mutateAsync: loginMutation, isLoading: loginLoading } =
+    useLoginMutation({
+      onSuccess: (data) => {
+        localStorage.setItem("token", data.token);
+        setIsAuthenticated(true);
+        setError(null);
+      },
+      onError: (err) => {
+        setIsAuthenticated(false);
+        setError(err.response.data.message);
+      },
+    });
 
-  const login = (data: { email: string; password: string }) => {
-    loginMutation(data);
+  const login = async (data: { email: string; password: string }) => {
+    await toast.promise(loginMutation(data), {
+      pending: "Logging in",
+      success: "Logged in successfully",
+      error: "Invalid credentials",
+    });
   };
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    toast.info("You have been logged out");
   };
   return (
     <AuthContext.Provider
