@@ -1,7 +1,8 @@
 import React from "react";
 import { useForm } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
+import { useSignupMutation } from "../../hooks/useSignupMutation";
 
 interface FormData {
   firstName: string;
@@ -9,10 +10,12 @@ interface FormData {
   email: string;
   phone: string;
   password: string;
-  confirmPassword: string;
+  confirmPassword?: string;
 }
 
 const SignupPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const {
     register,
     handleSubmit,
@@ -20,8 +23,19 @@ const SignupPage: React.FC = () => {
     watch,
   } = useForm<FormData>();
 
+  const { mutate } = useSignupMutation({
+    onSuccess: (data) => {
+      localStorage.setItem("token", data.token);
+      navigate("/");
+    },
+    onError: (error) => {
+      console.error("Error signing up:", error);
+    },
+  });
+
   const onSubmit = (data: FormData) => {
-    console.log("Form data submitted:", data);
+    const { confirmPassword, ...rest } = data;
+    mutate(rest);
   };
 
   const password = watch("password", "");
