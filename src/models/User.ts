@@ -20,12 +20,11 @@ const userSchema: mongoose.Schema<IUserModel> = new mongoose.Schema({
     required: true,
   },
   phone: {
-    type: Number,
+    type: String,
     required: true,
   },
   role: {
     type: String,
-    required: true,
     enum: ["student", "teacher", "admin"],
     default: "student",
   },

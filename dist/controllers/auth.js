@@ -19,7 +19,8 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userSchema_1 = require("../schemas/userSchema");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const { firstName, lastName, email, password, phone, role } = req.body;
+        console.log("Received data", req.body);
+        const { firstName, lastName, email, password, phone } = req.body;
         const parsed = userSchema_1.userRegisterSchema.safeParse(req.body);
         if (!parsed.success) {
             return res
@@ -32,12 +33,11 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const user = new User_1.default({
+            email,
             firstName,
             lastName,
-            email,
             password: hashedPassword,
             phone,
-            role,
         });
         yield user.save();
         const token = jsonwebtoken_1.default.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });

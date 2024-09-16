@@ -6,7 +6,7 @@ import { userRegisterSchema, userLoginSchema } from "../schemas/userSchema";
 
 export const register = async (req: Request, res: Response) => {
   try {
-    const { firstName, lastName, email, password, phone, role } = req.body;
+    const { firstName, lastName, email, password, phone } = req.body;
     const parsed = userRegisterSchema.safeParse(req.body);
 
     if (!parsed.success) {
@@ -22,12 +22,11 @@ export const register = async (req: Request, res: Response) => {
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
+      email,
       firstName,
       lastName,
-      email,
       password: hashedPassword,
       phone,
-      role,
     });
     await user.save();
 
