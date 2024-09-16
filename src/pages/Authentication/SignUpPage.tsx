@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 import { useSignupMutation } from "../../hooks/useSignupMutation";
+import { toast, useToast } from "react-toastify";
 
 interface FormData {
   firstName: string;
@@ -33,9 +34,28 @@ const SignupPage: React.FC = () => {
     },
   });
 
-  const onSubmit = (data: FormData) => {
-    const { confirmPassword, ...rest } = data;
-    mutate(rest);
+  const onSubmit = async (data: FormData) => {
+    const { confirmPassword, password, ...rest } = data;
+
+    if (password !== confirmPassword) {
+      toast.error("Passwords do not match.");
+    }
+
+    await toast.promise(
+      new Promise<void>((resolve, reject) => {
+        try {
+          mutate({ ...rest, password });
+          resolve(); // resolve the promise after mutate
+        } catch (error) {
+          reject(error); // reject if there is an error
+        }
+      }),
+      {
+        pending: "Signing up",
+        success: "Signed up successfully",
+        error: "Invalid credentials",
+      }
+    );
   };
 
   const password = watch("password", "");

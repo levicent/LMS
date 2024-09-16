@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom"; // Import Link
 import {
   Dialog,
   DialogPanel,
@@ -12,23 +12,26 @@ import {
   XMarkIcon,
   ChevronDownIcon,
 } from "@heroicons/react/20/solid";
+import { useTheme } from "../../context/themeContext";
 
 const products = [
   {
     name: "Courses",
     description: "Explore available courses",
-    href: "#",
+    href: "/courses", // Update href with a route
     icon: ChevronDownIcon,
   },
   {
     name: "Instructors",
     description: "Learn about our instructors",
-    href: "#",
+    href: "/instructors", // Update href with a route
     icon: ChevronDownIcon,
   },
 ];
 
 export default function Navbar() {
+  const themeContext = useTheme();
+  const { theme, toggleTheme } = themeContext;
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -42,7 +45,7 @@ export default function Navbar() {
       <nav className="container mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
         {/* Logo */}
         <div className="flex items-center space-x-2">
-          <a href="#" className="flex items-center space-x-2">
+          <Link to="/" className="flex items-center space-x-2">
             <img
               src="https://tailwindui.com/img/logos/mark.svg?color=blue"
               alt="LMS"
@@ -51,7 +54,7 @@ export default function Navbar() {
             <span className="text-3xl font-bold text-blue-600 tracking-tight">
               LMS
             </span>
-          </a>
+          </Link>
         </div>
 
         {/* Desktop Navigation */}
@@ -64,36 +67,39 @@ export default function Navbar() {
             <PopoverPanel className="absolute z-10 mt-2 w-56 bg-white rounded-lg shadow-lg ring-1 ring-black ring-opacity-5">
               <div className="p-4">
                 {products.map((item) => (
-                  <a
+                  <Link
                     key={item.name}
-                    href={item.href}
+                    to={item.href} // Use 'to' for routing
                     className="block p-2 hover:bg-gray-100 rounded-md transition"
                   >
                     <p className="font-semibold text-gray-900">{item.name}</p>
                     <p className="text-sm text-gray-500">{item.description}</p>
-                  </a>
+                  </Link>
                 ))}
               </div>
             </PopoverPanel>
           </Popover>
 
-          <a
-            href="#"
+          <Link
+            to="/features"
             className="text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
           >
             Features
-          </a>
-          <a
-            href="#"
+          </Link>
+          <Link
+            to="/contact"
             className="text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
           >
             Contact
-          </a>
+          </Link>
           <button
             onClick={handleLoginClick}
             className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition"
           >
             Sign in &rarr;
+          </button>
+          <button onClick={toggleTheme} className="theme-toggle">
+            {theme === "light" ? "🌙" : "🌞"}
           </button>
         </div>
 
@@ -112,7 +118,7 @@ export default function Navbar() {
       <Dialog open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
         <DialogPanel className="fixed inset-0 z-10 bg-white p-6">
           <div className="flex items-center justify-between">
-            <a href="#" className="flex items-center space-x-2">
+            <Link to="/" className="flex items-center space-x-2">
               <img
                 src="https://tailwindui.com/img/logos/mark.svg?color=blue"
                 alt="LMS"
@@ -121,7 +127,7 @@ export default function Navbar() {
               <span className="text-3xl font-bold text-blue-600 tracking-tight">
                 LMS
               </span>
-            </a>
+            </Link>
             <button
               onClick={() => setMobileMenuOpen(false)}
               className="p-2 text-gray-900"
@@ -131,24 +137,24 @@ export default function Navbar() {
           </div>
 
           <div className="mt-6 space-y-6">
-            <a
-              href="#"
+            <Link
+              to="/learn"
               className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
             >
               Learn
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/features"
               className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
             >
               Features
-            </a>
-            <a
-              href="#"
+            </Link>
+            <Link
+              to="/contact"
               className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
             >
               Contact
-            </a>
+            </Link>
             <button
               onClick={handleLoginClick}
               className="block w-full text-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-full mt-4 hover:bg-blue-700 transition"
