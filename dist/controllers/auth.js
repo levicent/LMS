@@ -19,7 +19,6 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userSchema_1 = require("../schemas/userSchema");
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        console.log("Received data", req.body);
         const { firstName, lastName, email, password, phone } = req.body;
         const parsed = userSchema_1.userRegisterSchema.safeParse(req.body);
         if (!parsed.success) {
@@ -40,7 +39,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             phone,
         });
         yield user.save();
-        const token = jsonwebtoken_1.default.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+        const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
         res.status(201).json({ message: "User registered successfully", token });
     }
     catch (error) {
@@ -66,7 +65,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!comparePassword) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        const token = jsonwebtoken_1.default.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
+        const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
         res.status(200).json({ message: "User logged in successfully", token });
     }
     catch (error) {

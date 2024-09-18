@@ -93,3 +93,28 @@ export const deleteUserById = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const getUserProfile = async (req: Request, res: Response) => {
+  try {
+    const userId = req.user?.id;
+    if (!userId) {
+      return res.status(400).json({ message: "User ID not provided" });
+    }
+
+    const user = await User.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
+    }
+    res.json({
+      id: user.id,
+      email: user.email,
+      phone: user.phone,
+      firstName: user.firstName,
+      lastName: user.lastName,
+      role: user.role,
+    });
+  } catch (error) {
+    console.error("Error getting user profile:", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

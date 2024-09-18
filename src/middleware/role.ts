@@ -2,9 +2,13 @@ import { Request, Response, NextFunction } from "express";
 
 const checkRole = (roles: string[]) => {
   return (req: Request, res: Response, next: NextFunction) => {
-    const userRole = req.user?.normalize;
+    const userRole = req.user?.role.toLowerCase(); // Convert to lowercase if needed
+    console.log(req.user);
 
-    if (!userRole || !roles.includes(userRole)) {
+    if (
+      !userRole ||
+      !roles.map((role) => role.toLowerCase()).includes(userRole)
+    ) {
       return res
         .status(403)
         .json({ message: "You are not authorized to access this resource" });
@@ -12,4 +16,5 @@ const checkRole = (roles: string[]) => {
     next();
   };
 };
+
 export default checkRole;

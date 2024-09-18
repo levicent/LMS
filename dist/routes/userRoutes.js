@@ -13,4 +13,5 @@ router.get("/users", auth_1.default, (0, role_1.default)(["admin", "teacher"]), 
 router.get("/users/:id", auth_1.default, (0, role_1.default)(["admin", "teacher"]), userController_1.getUserById);
 router.put("/users/:id", auth_1.default, (0, role_1.default)(["admin"]), userController_1.updateUserById);
 router.delete("/users/:id", auth_1.default, (0, role_1.default)(["admin"]), userController_1.deleteUserById);
+router.get("/profile", auth_1.default, userController_1.getUserProfile);
 exports.default = router;

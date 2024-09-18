@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
+exports.getUserProfile = exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const userSchema_1 = require("../schemas/userSchema");
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -118,3 +118,29 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.deleteUserById = deleteUserById;
+const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _b;
+    try {
+        const userId = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
+        if (!userId) {
+            return res.status(400).json({ message: "User ID not provided" });
+        }
+        const user = yield User_1.default.findById(userId);
+        if (!user) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.json({
+            id: user.id,
+            email: user.email,
+            phone: user.phone,
+            firstName: user.firstName,
+            lastName: user.lastName,
+            role: user.role,
+        });
+    }
+    catch (error) {
+        console.error("Error getting user profile:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.getUserProfile = getUserProfile;

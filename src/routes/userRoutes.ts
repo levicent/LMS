@@ -6,6 +6,7 @@ import {
   getUserById,
   updateUserById,
   deleteUserById,
+  getUserProfile,
 } from "../controllers/userController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -30,5 +31,7 @@ router.delete(
   checkRole(["admin"]),
   deleteUserById
 );
+
+router.get("/profile", authMiddleware, getUserProfile);
 
 export default router;
