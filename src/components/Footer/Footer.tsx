@@ -4,16 +4,29 @@ import {
   FaInstagram,
   FaLinkedinIn,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useTheme } from "../../context/themeContext";
+import { useContext } from "react";
+import AuthContext from "../../context/authContext";
 
 export default function Footer() {
   const { theme } = useTheme();
+  const authContext = useContext(AuthContext);
+  if (!authContext) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+  const { isAuthenticated, logout } = authContext;
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    logout();
+    navigate("/");
+  };
 
   return (
     <footer
       className={`shadow-inner ${
-        theme === "dark" ? "bg-gray-900" : "bg-white"
+        theme === "dark" ? "dark:bg-gray-800" : "bg-white"
       }`}
     >
       <div className="container mx-auto py-12 px-6 lg:px-8">
@@ -84,18 +97,49 @@ export default function Footer() {
                   Contact
                 </Link>
               </li>
-              <li>
-                <Link
-                  to="/signin"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-400 hover:text-gray-100"
-                      : "text-gray-600 hover:text-gray-900"
-                  } transition-colors`}
-                >
-                  Sign in
-                </Link>
-              </li>
+              {isAuthenticated ? (
+                <>
+                  {/* Links for Authenticated Users */}
+                  <li>
+                    <Link
+                      to="/profile"
+                      className={`text-sm ${
+                        theme === "dark"
+                          ? "text-gray-400 hover:text-gray-100"
+                          : "text-gray-600 hover:text-gray-900"
+                      } transition-colors`}
+                    >
+                      My Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <button
+                      onClick={handleLogout}
+                      className={`text-sm ${
+                        theme === "dark"
+                          ? "text-red-400 hover:text-gray-100"
+                          : "text-red-500 hover:text-gray-900"
+                      } transition-colors`}
+                    >
+                      Logout
+                    </button>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  {/* Links for Unauthenticated Users */}
+                  <Link
+                    to="/signin"
+                    className={`text-sm ${
+                      theme === "dark"
+                        ? "text-gray-400 hover:text-gray-100"
+                        : "text-gray-600 hover:text-gray-900"
+                    } transition-colors`}
+                  >
+                    Sign in
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
 

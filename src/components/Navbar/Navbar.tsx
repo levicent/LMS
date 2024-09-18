@@ -1,5 +1,5 @@
 import { useState, useContext } from "react";
-import { useNavigate, Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import {
   Dialog,
   DialogPanel,
@@ -11,28 +11,27 @@ import {
   Bars3Icon,
   XMarkIcon,
   ChevronDownIcon,
-  BellIcon,
   EnvelopeIcon,
   HeartIcon,
   UserCircleIcon,
+  BellIcon,
 } from "@heroicons/react/20/solid";
-import { FaSignOutAlt } from "react-icons/fa"; // For Logout
-import { AiOutlineQuestionCircle } from "react-icons/ai"; // For Support
+import { FaSignOutAlt } from "react-icons/fa";
+import { HiSun, HiMoon } from "react-icons/hi"; // Sun and Moon icons for theme toggle
 import { useTheme } from "../../context/themeContext";
 import AuthContext from "../../context/authContext";
-import { useFetchUserProfile } from "../../hooks/useFetchUserProfile";
 
 const products = [
   {
     name: "Courses",
     description: "Explore available courses",
-    href: "/courses", // Update href with a route
+    href: "/courses",
     icon: ChevronDownIcon,
   },
   {
     name: "Instructors",
     description: "Learn about our instructors",
-    href: "/instructors", // Update href with a route
+    href: "/instructors",
     icon: ChevronDownIcon,
   },
 ];
@@ -59,17 +58,13 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const { data: user } = useFetchUserProfile();
-
   return (
     <header
       className={`z-50 sticky top-0 shadow-lg ${
         theme === "dark" ? "dark:bg-gray-800" : "bg-white"
       }`}
     >
-      {/* Navbar */}
       <nav className="container mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-        {/* Logo */}
         <div className="flex items-center space-x-2">
           <Link to="/" className="flex items-center space-x-2">
             <img
@@ -87,8 +82,8 @@ export default function Navbar() {
           </Link>
         </div>
 
-        {/* Desktop Navigation */}
         <div className="hidden lg:flex lg:items-center lg:space-x-10">
+          {/* Desktop Navigation */}
           <Popover className="relative">
             <PopoverButton
               className={`text-lg font-semibold transition-colors flex items-center ${
@@ -154,8 +149,10 @@ export default function Navbar() {
           >
             Contact
           </Link>
+
           {isAuthenticated ? (
             <div className="relative">
+              {/* Authenticated User Dropdown */}
               <Popover className="relative">
                 <PopoverButton className="flex items-center space-x-2">
                   <img
@@ -168,7 +165,7 @@ export default function Navbar() {
                       theme === "dark" ? "text-gray-100" : "text-gray-900"
                     }`}
                   >
-                    {user?.firstName} {user?.lastName}
+                    John Doe
                   </span>
                 </PopoverButton>
                 <PopoverPanel
@@ -190,14 +187,14 @@ export default function Navbar() {
                             theme === "dark" ? "text-gray-100" : "text-gray-900"
                           }`}
                         >
-                          {user?.firstName} {user?.lastName}
+                          John Doe
                         </p>
                         <p
                           className={`text-sm ${
                             theme === "dark" ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
-                          {user?.email}
+                          johndoe@example.com
                         </p>
                       </div>
                     </div>
@@ -207,7 +204,7 @@ export default function Navbar() {
                       }`}
                     />
 
-                    {/* Dropdown Links with Icons */}
+                    {/* Dropdown Links */}
                     <Link
                       to="/profile"
                       className={`flex items-center space-x-2 py-2 text-sm hover:bg-gray-100 rounded-md transition ${
@@ -252,17 +249,6 @@ export default function Navbar() {
                       <BellIcon className="h-5 w-5" />
                       <span>Notifications</span>
                     </Link>
-                    <Link
-                      to="/help"
-                      className={`flex items-center space-x-2 py-2 text-sm hover:bg-gray-100 rounded-md transition ${
-                        theme === "dark"
-                          ? "text-gray-400 hover:bg-gray-700"
-                          : "text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      <AiOutlineQuestionCircle className="h-5 w-5" />
-                      <span>Help & Support</span>
-                    </Link>
                     <button
                       onClick={handleLogout}
                       className={`flex items-center space-x-2 w-full py-2 text-sm hover:bg-gray-100 rounded-md transition ${
@@ -288,8 +274,13 @@ export default function Navbar() {
               </button>
             </div>
           )}
+          {/* Theme Toggle Button */}
           <button onClick={toggleTheme} className="ml-4 text-lg">
-            {theme === "light" ? "🌙" : "🌞"}
+            {theme === "light" ? (
+              <HiMoon className="h-6 w-6 text-gray-900" />
+            ) : (
+              <HiSun className="h-6 w-6 text-yellow-300" />
+            )}
           </button>
         </div>
 
@@ -337,172 +328,97 @@ export default function Navbar() {
           </div>
 
           <div className="mt-6 space-y-6">
-            <Link
-              to="/learn"
-              className={`block text-lg font-semibold transition ${
-                theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-              } hover:text-gray-700`}
-            >
-              Learn
-            </Link>
-            <Link
-              to="/features"
-              className={`block text-lg font-semibold transition ${
-                theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-              } hover:text-gray-700`}
-            >
-              Features
-            </Link>
-            <Link
-              to="/contact"
-              className={`block text-lg font-semibold transition ${
-                theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-              } hover:text-gray-700`}
-            >
-              Contact
-            </Link>
             {isAuthenticated ? (
-              <DialogPanel className="fixed inset-0 z-10 bg-white p-6">
-                <div className="flex items-center justify-between">
-                  <a href="#" className="flex items-center space-x-2">
-                    <img
-                      src="https://tailwindui.com/img/logos/mark.svg?color=blue"
-                      alt="LMS"
-                      className="h-10 w-auto"
-                    />
-                    <span className="text-3xl font-bold text-blue-600 tracking-tight">
-                      LMS
-                    </span>
-                  </a>
-                  <button
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="p-2 text-gray-900"
-                  >
-                    <XMarkIcon className="h-8 w-8" />
-                  </button>
-                </div>
-
-                <div className="mt-6 space-y-6">
-                  <a
-                    href="#"
-                    className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-                  >
-                    Learn
-                  </a>
-                  <div className="space-y-4">
-                    <a
-                      href="#"
-                      className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-                    >
-                      My Learning
-                    </a>
-                    <a
-                      href="#"
-                      className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-                    >
-                      Wishlist
-                    </a>
-                    <a
-                      href="#"
-                      className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-                    >
-                      Notifications
-                    </a>
-                    <button
-                      onClick={handleLogout}
-                      className="block w-full text-center px-4 py-2 bg-red-600 text-white font-semibold rounded-full mt-4 hover:bg-red-700 transition"
-                    >
-                      Logout
-                    </button>
-                  </div>
-                </div>
-              </DialogPanel>
+              <>
+                {/* Mobile Authenticated User Links */}
+                <Link
+                  to="/profile"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  My Profile
+                </Link>
+                <Link
+                  to="/wishlist"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  Wishlist
+                </Link>
+                <Link
+                  to="/messages"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  Messages
+                </Link>
+                <Link
+                  to="/notifications"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  Notifications
+                </Link>
+                <button
+                  onClick={handleLogout}
+                  className="block w-full text-center px-4 py-2 bg-red-600 text-white font-semibold rounded-full mt-4 hover:bg-red-700 transition"
+                >
+                  Logout
+                </button>
+              </>
             ) : (
-              <div>
+              <>
+                {/* Mobile Unauthenticated User Links */}
+                <Link
+                  to="/learn"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  Learn
+                </Link>
+                <Link
+                  to="/features"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  Features
+                </Link>
+                <Link
+                  to="/contact"
+                  className={`block text-lg font-semibold transition ${
+                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                  } hover:text-gray-700`}
+                >
+                  Contact
+                </Link>
                 <button
                   onClick={handleLoginClick}
                   className="block w-full text-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-full mt-4 hover:bg-blue-700 transition"
                 >
                   Sign in &rarr;
                 </button>
-              </div>
+              </>
             )}
+
+            {/* Mobile Theme Toggle */}
+            <div className="flex justify-center">
+              <button onClick={toggleTheme} className="mt-4 text-lg">
+                {theme === "light" ? (
+                  <HiMoon className="h-6 w-6 text-gray-900" />
+                ) : (
+                  <HiSun className="h-6 w-6 text-yellow-300" />
+                )}
+              </button>
+            </div>
           </div>
         </DialogPanel>
       </Dialog>
     </header>
   );
 }
-
-//   {/* Mobile Menu Button */}
-//   <div className="lg:hidden">
-//     <button
-//       onClick={() => setMobileMenuOpen(true)}
-//       className="p-2 text-gray-900"
-//     >
-//       <Bars3Icon className="h-8 w-8" />
-//     </button>
-//   </div>
-// </nav>
-
-//   {/* Mobile Menu */}
-//   <Dialog open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
-//     <DialogPanel className="fixed inset-0 z-10 bg-white p-6">
-//       <div className="flex items-center justify-between">
-//         <a href="#" className="flex items-center space-x-2">
-//           <img
-//             src="https://tailwindui.com/img/logos/mark.svg?color=blue"
-//             alt="LMS"
-//             className="h-10 w-auto"
-//           />
-//           <span className="text-3xl font-bold text-blue-600 tracking-tight">
-//             LMS
-//           </span>
-//         </a>
-//         <button
-//           onClick={() => setMobileMenuOpen(false)}
-//           className="p-2 text-gray-900"
-//         >
-//           <XMarkIcon className="h-8 w-8" />
-//         </button>
-//       </div>
-
-//       <div className="mt-6 space-y-6">
-//         <a
-//           href="#"
-//           className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-//         >
-//           Learn
-//         </a>
-//         <div className="space-y-4">
-//           <a
-//             href="#"
-//             className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-//           >
-//             My Learning
-//           </a>
-//           <a
-//             href="#"
-//             className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-//           >
-//             Wishlist
-//           </a>
-//           <a
-//             href="#"
-//             className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
-//           >
-//             Notifications
-//           </a>
-//           <button
-//             onClick={handleLogout}
-//             className="block w-full text-center px-4 py-2 bg-red-600 text-white font-semibold rounded-full mt-4 hover:bg-red-700 transition"
-//           >
-//             Logout
-//           </button>
-//         </div>
-//       </div>
-//     </DialogPanel>
-//   </Dialog>
-// </header>
-//   );
-// }
