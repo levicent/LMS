@@ -20,6 +20,7 @@ import { FaSignOutAlt } from "react-icons/fa"; // For Logout
 import { AiOutlineQuestionCircle } from "react-icons/ai"; // For Support
 import { useTheme } from "../../context/themeContext";
 import AuthContext from "../../context/authContext";
+import { useFetchUserProfile } from "../../hooks/useFetchUserProfile";
 
 const products = [
   {
@@ -57,6 +58,8 @@ export default function Navbar() {
     logout();
     navigate("/");
   };
+
+  const { data: user } = useFetchUserProfile();
 
   return (
     <header
@@ -165,7 +168,7 @@ export default function Navbar() {
                       theme === "dark" ? "text-gray-100" : "text-gray-900"
                     }`}
                   >
-                    John Doe
+                    {user?.firstName} {user?.lastName}
                   </span>
                 </PopoverButton>
                 <PopoverPanel
@@ -187,14 +190,14 @@ export default function Navbar() {
                             theme === "dark" ? "text-gray-100" : "text-gray-900"
                           }`}
                         >
-                          John Doe
+                          {user?.firstName} {user?.lastName}
                         </p>
                         <p
                           className={`text-sm ${
                             theme === "dark" ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
-                          johndoe@example.com
+                          {user?.email}
                         </p>
                       </div>
                     </div>
@@ -358,12 +361,72 @@ export default function Navbar() {
             >
               Contact
             </Link>
-            <button
-              onClick={handleLoginClick}
-              className="block w-full text-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-full mt-4 hover:bg-blue-700 transition"
-            >
-              Sign in &rarr;
-            </button>
+            {isAuthenticated ? (
+              <DialogPanel className="fixed inset-0 z-10 bg-white p-6">
+                <div className="flex items-center justify-between">
+                  <a href="#" className="flex items-center space-x-2">
+                    <img
+                      src="https://tailwindui.com/img/logos/mark.svg?color=blue"
+                      alt="LMS"
+                      className="h-10 w-auto"
+                    />
+                    <span className="text-3xl font-bold text-blue-600 tracking-tight">
+                      LMS
+                    </span>
+                  </a>
+                  <button
+                    onClick={() => setMobileMenuOpen(false)}
+                    className="p-2 text-gray-900"
+                  >
+                    <XMarkIcon className="h-8 w-8" />
+                  </button>
+                </div>
+
+                <div className="mt-6 space-y-6">
+                  <a
+                    href="#"
+                    className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
+                  >
+                    Learn
+                  </a>
+                  <div className="space-y-4">
+                    <a
+                      href="#"
+                      className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
+                    >
+                      My Learning
+                    </a>
+                    <a
+                      href="#"
+                      className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
+                    >
+                      Wishlist
+                    </a>
+                    <a
+                      href="#"
+                      className="block text-lg font-semibold text-gray-900 hover:text-gray-700 transition"
+                    >
+                      Notifications
+                    </a>
+                    <button
+                      onClick={handleLogout}
+                      className="block w-full text-center px-4 py-2 bg-red-600 text-white font-semibold rounded-full mt-4 hover:bg-red-700 transition"
+                    >
+                      Logout
+                    </button>
+                  </div>
+                </div>
+              </DialogPanel>
+            ) : (
+              <div>
+                <button
+                  onClick={handleLoginClick}
+                  className="block w-full text-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-full mt-4 hover:bg-blue-700 transition"
+                >
+                  Sign in &rarr;
+                </button>
+              </div>
+            )}
           </div>
         </DialogPanel>
       </Dialog>
@@ -371,16 +434,16 @@ export default function Navbar() {
   );
 }
 
-//     {/* Mobile Menu Button */}
-//     <div className="lg:hidden">
-//       <button
-//         onClick={() => setMobileMenuOpen(true)}
-//         className="p-2 text-gray-900"
-//       >
-//         <Bars3Icon className="h-8 w-8" />
-//       </button>
-//     </div>
-//   </nav>
+//   {/* Mobile Menu Button */}
+//   <div className="lg:hidden">
+//     <button
+//       onClick={() => setMobileMenuOpen(true)}
+//       className="p-2 text-gray-900"
+//     >
+//       <Bars3Icon className="h-8 w-8" />
+//     </button>
+//   </div>
+// </nav>
 
 //   {/* Mobile Menu */}
 //   <Dialog open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
