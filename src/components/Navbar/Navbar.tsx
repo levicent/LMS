@@ -20,6 +20,7 @@ import { FaSignOutAlt } from "react-icons/fa";
 import { HiSun, HiMoon } from "react-icons/hi"; // Sun and Moon icons for theme toggle
 import { useTheme } from "../../context/themeContext";
 import AuthContext from "../../context/authContext";
+import { useFetchUserProfile } from "../../hooks/useFetchUserProfile";
 
 const products = [
   {
@@ -45,6 +46,8 @@ export default function Navbar() {
     throw new Error("useAuth must be used within an AuthProvider");
   }
   const { isAuthenticated, logout } = authContext;
+
+  const { data: user } = useFetchUserProfile();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
@@ -156,7 +159,7 @@ export default function Navbar() {
               <Popover className="relative">
                 <PopoverButton className="flex items-center space-x-2">
                   <img
-                    src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg"
+                    src="image/blank-profile-picture-973460_1280.png"
                     className="h-10 w-10 rounded-full"
                     alt="User Avatar"
                   />
@@ -165,7 +168,7 @@ export default function Navbar() {
                       theme === "dark" ? "text-gray-100" : "text-gray-900"
                     }`}
                   >
-                    John Doe
+                    {user?.firstName} {user?.lastName}
                   </span>
                 </PopoverButton>
                 <PopoverPanel
@@ -177,7 +180,7 @@ export default function Navbar() {
                     {/* User Info */}
                     <div className="flex items-center space-x-3">
                       <img
-                        src="https://tecdn.b-cdn.net/img/new/avatars/2.jpg"
+                        src="image/blank-profile-picture-973460_1280.png"
                         className="h-10 w-10 rounded-full"
                         alt="User Avatar"
                       />
@@ -187,14 +190,14 @@ export default function Navbar() {
                             theme === "dark" ? "text-gray-100" : "text-gray-900"
                           }`}
                         >
-                          John Doe
+                          {user?.firstName} {user?.lastName}
                         </p>
                         <p
                           className={`text-sm ${
                             theme === "dark" ? "text-gray-400" : "text-gray-500"
                           }`}
                         >
-                          johndoe@example.com
+                          {user?.email}
                         </p>
                       </div>
                     </div>
