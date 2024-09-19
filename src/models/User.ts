@@ -23,6 +23,9 @@ const userSchema: mongoose.Schema<IUserModel> = new mongoose.Schema({
     type: String,
     required: true,
   },
+  image: {
+    type: String,
+  },
   role: {
     type: String,
     enum: ["student", "teacher", "admin"],

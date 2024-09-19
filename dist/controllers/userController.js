@@ -26,6 +26,31 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.getUserProfile = exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const userSchema_1 = require("../schemas/userSchema");
+const multer_1 = __importDefault(require("multer"));
+const path_1 = __importDefault(require("path"));
+const storage = multer_1.default.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, "uploads/");
+    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + "-" + Date.now() + path_1.default.extname(file.originalname));
+    },
+});
+const upload = (0, multer_1.default)({
+    storage: storage,
+    limits: { fileSize: 1024 * 1024 * 2 },
+    fileFilter: (req, file, cb) => {
+        const filetypes = /jpeg|jpg|png/;
+        const extname = filetypes.test(path_1.default.extname(file.originalname).toLowerCase());
+        const mimetype = filetypes.test(file.mimetype);
+        if (mimetype && extname) {
+            return cb(null, true);
+        }
+        else {
+            cb(new Error("Only JPEG, JPG, PNG files are allowed"));
+        }
+    },
+});
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const _a = req.body, { email, phone } = _a, rest = __rest(_a, ["email", "phone"]);
@@ -80,29 +105,34 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getUserById = getUserById;
-const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const { id } = req.params;
-        const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
-        if (!parsed.success) {
-            return res
-                .status(400)
-                .json({ message: "Validation failed", errors: parsed.error.errors });
+exports.updateUserById = [
+    upload.single("profilePicture"),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const { id } = req.params;
+            const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
+            if (!parsed.success) {
+                return res
+                    .status(400)
+                    .json({ message: "Validation failed", errors: parsed.error.errors });
+            }
+            if (req.file) {
+                parsed.data.image = req.file.path;
+            }
+            const updatedUser = yield User_1.default.findByIdAndUpdate(id, parsed.data, {
+                new: true,
+            });
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res.status(200).json({ message: "User updated successfully" });
         }
-        const updatedUser = yield User_1.default.findByIdAndUpdate(id, parsed.data, {
-            new: true,
-        });
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
+        catch (error) {
+            console.error("Error updating user by id: ", error);
+            res.status(500).json({ message: "Internal server error" });
         }
-        res.status(200).json({ message: "User updated successfully" });
-    }
-    catch (error) {
-        console.error("Error updating user by id: ", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
-exports.updateUserById = updateUserById;
+    }),
+];
 const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;

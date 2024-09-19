@@ -4,5 +4,6 @@ export interface IUser {
   email: String;
   password: String;
   phone: Number;
+  image: String;
   role: "student" | "teacher" | "admin";
 }

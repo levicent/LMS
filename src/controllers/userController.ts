@@ -1,6 +1,39 @@
 import User from "../models/User";
 import { Request, Response } from "express";
 import { updateUserSchema, userRegisterSchema } from "../schemas/userSchema";
+import multer from "multer";
+import path from "path";
+
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, "uploads/");
+  },
+  filename: (req, file, cb) => {
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
+});
+
+const upload = multer({
+  storage: storage,
+  limits: { fileSize: 1024 * 1024 * 2 },
+  fileFilter: (req, file, cb) => {
+    const filetypes = /jpeg|jpg|png/;
+    const extname = filetypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
+    const mimetype = filetypes.test(file.mimetype);
+
+    if (mimetype && extname) {
+      return cb(null, true);
+    } else {
+      cb(new Error("Only JPEG, JPG, PNG files are allowed"));
+    }
+  },
+});
+
 export const createUser = async (req: Request, res: Response) => {
   try {
     const { email, phone, ...rest } = req.body;
@@ -57,29 +90,35 @@ export const getUserById = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUserById = async (req: Request, res: Response) => {
-  try {
-    const { id } = req.params;
-    const parsed = updateUserSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res
-        .status(400)
-        .json({ message: "Validation failed", errors: parsed.error.errors });
-    }
+export const updateUserById = [
+  upload.single("profilePicture"),
+  async (req: Request, res: Response) => {
+    try {
+      const { id } = req.params;
+      const parsed = updateUserSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res
+          .status(400)
+          .json({ message: "Validation failed", errors: parsed.error.errors });
+      }
 
-    const updatedUser = await User.findByIdAndUpdate(id, parsed.data, {
-      new: true,
-    });
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-    res.status(200).json({ message: "User updated successfully" });
-  } catch (error) {
-    console.error("Error updating user by id: ", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+      if (req.file) {
+        parsed.data.image = req.file.path;
+      }
 
+      const updatedUser = await User.findByIdAndUpdate(id, parsed.data, {
+        new: true,
+      });
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+      res.status(200).json({ message: "User updated successfully" });
+    } catch (error) {
+      console.error("Error updating user by id: ", error);
+      res.status(500).json({ message: "Internal server error" });
+    }
+  },
+];
 export const deleteUserById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
