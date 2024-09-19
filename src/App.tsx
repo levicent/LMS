@@ -8,6 +8,8 @@ import SignupPage from "./pages/Authentication/SignUpPage";
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+// import ProfilePage from "./pages/ProfilePage";
+import AccountSettings from "./pages/AccountSettings";
 
 const App: React.FC = () => {
   return (
@@ -22,6 +24,8 @@ const App: React.FC = () => {
               <Route path="/signin" element={<SignInPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgotpassword" element={<ForgotPassword />} />
+              {/* <Route path="/profile" element={<ProfilePage />} /> */}
+              <Route path="/profile" element={<AccountSettings />} />
             </Routes>
           </Router>
         </ThemeProvider>
