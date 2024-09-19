@@ -27,13 +27,16 @@ const products = [
     name: "Courses",
     description: "Explore available courses",
     href: "/courses",
-    icon: ChevronDownIcon,
   },
   {
     name: "Instructors",
     description: "Learn about our instructors",
     href: "/instructors",
-    icon: ChevronDownIcon,
+  },
+  {
+    name: "Donors",
+    description: "Meet the people who support us",
+    href: "/donors",
   },
 ];
 
@@ -93,7 +96,7 @@ export default function Navbar() {
                 theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
               }`}
             >
-              Learn
+              Explore
               <ChevronDownIcon
                 className={`h-5 w-5 ml-2 ${
                   theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
@@ -136,22 +139,47 @@ export default function Navbar() {
             </PopoverPanel>
           </Popover>
 
-          <Link
-            to="/features"
-            className={`text-lg font-semibold transition ${
-              theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-            } hover:text-gray-700`}
-          >
-            Features
-          </Link>
-          <Link
-            to="/contact"
-            className={`text-lg font-semibold transition ${
-              theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-            } hover:text-gray-700`}
-          >
-            Contact
-          </Link>
+          {/* Links for Unauthenticated Users */}
+          {!isAuthenticated ? (
+            <>
+              <Link
+                to="/features"
+                className={`text-lg font-semibold transition ${
+                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                } hover:text-gray-700`}
+              >
+                Features
+              </Link>
+              <Link
+                to="/contact"
+                className={`text-lg font-semibold transition ${
+                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                } hover:text-gray-700`}
+              >
+                Contact
+              </Link>
+            </>
+          ) : (
+            <>
+              {/* Links for Authenticated Users */}
+              <Link
+                to="/dashboard"
+                className={`text-lg font-semibold transition ${
+                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                } hover:text-gray-700`}
+              >
+                Dashboard
+              </Link>
+              <Link
+                to="/my-courses"
+                className={`text-lg font-semibold transition ${
+                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
+                } hover:text-gray-700`}
+              >
+                My Courses
+              </Link>
+            </>
+          )}
 
           {isAuthenticated ? (
             <div className="relative">
@@ -382,7 +410,7 @@ export default function Navbar() {
                     theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
                   } hover:text-gray-700`}
                 >
-                  Learn
+                  Explore
                 </Link>
                 <Link
                   to="/features"
