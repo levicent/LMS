@@ -1,6 +1,6 @@
 import React, { useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 import AuthContext from "../../context/authContext";
 
@@ -10,8 +10,8 @@ type FormValues = {
 };
 
 const SignInPage: React.FC = () => {
-  // const navigate = useNavigate();
   const [rememberMe, setRememberMe] = useState(false);
+  const navigate = useNavigate(); // ✅ Un-commented the useNavigate hook
 
   const authContext = useContext(AuthContext);
 
@@ -28,8 +28,13 @@ const SignInPage: React.FC = () => {
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
-    console.log(data);
-    login(data);
+    try {
+      // Perform login and navigate on success
+      await login(data);
+      navigate("/"); // ✅ Redirect to home page after successful login
+    } catch (error) {
+      console.error("Login failed", error);
+    }
   };
 
   return (
