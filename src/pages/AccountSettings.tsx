@@ -60,9 +60,10 @@ const Settings = () => {
           theme === "dark" ? "dark" : ""
         }`}
       >
-        <div className="bg-white dark:bg-gray-900 max-w-screen-lg p-8 shadow-md rounded-lg">
-          <div className="grid grid-cols-1 xl:grid-cols-3 gap-8">
-            <div className="col-span-1 xl:col-span-2">
+        <div className="bg-white dark:bg-gray-900 max-w-screen-lg p-4 md:p-8 shadow-md rounded-lg w-full">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+            {/* Form Section */}
+            <div className="col-span-1 lg:col-span-2">
               <div className="bg-white dark:bg-gray-800 rounded-lg p-6 shadow-lg">
                 <h3 className="font-medium text-2xl text-black dark:text-white mb-6">
                   Personal Information
@@ -195,7 +196,7 @@ const Settings = () => {
 
                 <form>
                   <div className="flex items-center mb-6">
-                    <div className="w-20 h-20 rounded-full overflow-hidden">
+                    <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
                         src="image/blank-profile-picture-973460_1280.png"
