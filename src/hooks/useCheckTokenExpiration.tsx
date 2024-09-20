@@ -2,6 +2,7 @@ import { useContext, useEffect } from "react";
 import { jwtDecode, JwtPayload } from "jwt-decode";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "@/context/authContext";
+import { toast } from "react-toastify";
 
 interface JwtPayloadWithExp extends JwtPayload {
   exp: number;
@@ -25,6 +26,7 @@ function useCheckTokenExpiration() {
         const decoded = jwtDecode<JwtPayloadWithExp>(token);
         if (decoded.exp * 1000 < Date.now()) {
           handleLogout();
+          toast.error("Session expired. Please login again.");
         }
       } catch (error) {
         console.error("Error decoding token", error);
@@ -35,7 +37,7 @@ function useCheckTokenExpiration() {
     function handleLogout() {
       logout();
       localStorage.removeItem("token");
-      navigate("/login");
+      navigate("/signin");
     }
   }, [logout, navigate]);
 }

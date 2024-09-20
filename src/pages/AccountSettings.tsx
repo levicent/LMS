@@ -1,11 +1,14 @@
+import { useEffect } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../context/themeContext";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { useFetchUserProfile } from "../hooks/useFetchUserProfile";
-import { useEffect } from "react";
+import useCheckTokenExpiration from "@/hooks/useCheckTokenExpiration";
 
 const Settings = () => {
+  useCheckTokenExpiration();
+
   interface FormData {
     firstName?: string;
     lastName?: string;
