@@ -7,6 +7,7 @@ import {
   updateUserById,
   deleteUserById,
   getUserProfile,
+  updateUserProfile,
 } from "../controllers/userController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -24,7 +25,12 @@ router.get(
   checkRole(["admin", "teacher"]),
   getUserById
 );
-router.put("/users/:id", authMiddleware, checkRole(["admin"]), updateUserById);
+router.put(
+  "/users/:id",
+  authMiddleware,
+  checkRole(["admin", "student"]),
+  updateUserById
+);
 router.delete(
   "/users/:id",
   authMiddleware,
@@ -33,5 +39,6 @@ router.delete(
 );
 
 router.get("/profile", authMiddleware, getUserProfile);
+router.put("/profile", authMiddleware, updateUserProfile);
 
 export default router;

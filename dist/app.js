@@ -5,6 +5,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const cors_1 = __importDefault(require("cors"));
+const path_1 = __importDefault(require("path"));
 const authRoutes_1 = __importDefault(require("./routes/authRoutes"));
 const userRoutes_1 = __importDefault(require("./routes/userRoutes"));
 const courseRoutes_1 = __importDefault(require("./routes/courseRoutes"));
@@ -18,4 +19,5 @@ app.use((0, cors_1.default)({
 app.use("/api", authRoutes_1.default);
 app.use("/api", userRoutes_1.default);
 app.use("/api", courseRoutes_1.default);
+app.use("/uploads", express_1.default.static(path_1.default.join(__dirname, "/uploads")));
 exports.default = app;

@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getUserProfile = exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
+exports.updateUserProfile = exports.getUserProfile = exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const userSchema_1 = require("../schemas/userSchema");
 const multer_1 = __importDefault(require("multer"));
@@ -166,6 +166,7 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
+            password: user.password,
         });
     }
     catch (error) {
@@ -174,3 +175,30 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getUserProfile = getUserProfile;
+const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    var _c;
+    try {
+        const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
+        if (!userId) {
+            return res.status(400).json({ message: "User ID not provided" });
+        }
+        const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
+        if (!parsed.success) {
+            return res
+                .status(400)
+                .json({ message: "Validation failed", errors: parsed.error.errors });
+        }
+        const updatedUser = yield User_1.default.findByIdAndUpdate(userId, parsed.data, {
+            new: true,
+        });
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
+        }
+        res.status(200).json({ message: "User profile updated successfully" });
+    }
+    catch (error) {
+        console.error("Error updating user profile:", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.updateUserProfile = updateUserProfile;
