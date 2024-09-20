@@ -6,6 +6,7 @@ interface User {
   lastName: string;
   email: string;
   phone: string;
+  password: string;
 }
 const fetchUserProfile = async (): Promise<User> => {
   const { data } = await axios.get(

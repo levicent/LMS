@@ -149,3 +149,6 @@ const ProfilePage: React.FC = () => {
 };
 
 export default ProfilePage;
+{
+  /* User Photo Section */
+}
