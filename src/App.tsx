@@ -10,6 +10,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import ProfilePage from "./pages/ProfilePage";
 import AccountSettings from "./pages/AccountSettings";
+import CourseInfo from "./pages/CourseInfo";
 
 const App: React.FC = () => {
   return (
@@ -26,6 +27,7 @@ const App: React.FC = () => {
               <Route path="/forgotpassword" element={<ForgotPassword />} />
               {/* <Route path="/profile" element={<ProfilePage />} /> */}
               <Route path="/profile" element={<AccountSettings />} />
+              <Route path="/course" element={<CourseInfo />} />
             </Routes>
           </Router>
         </ThemeProvider>
