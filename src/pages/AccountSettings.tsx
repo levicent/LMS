@@ -1,10 +1,11 @@
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../context/themeContext";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { useFetchUserProfile } from "../hooks/useFetchUserProfile";
 import useCheckTokenExpiration from "@/hooks/useCheckTokenExpiration";
+import { toast } from "react-toastify";
 
 const Settings = () => {
   useCheckTokenExpiration();
@@ -32,6 +33,17 @@ const Settings = () => {
     },
   });
 
+  const [selectedFile, setSelectedFile] = useState(null);
+  const [previewUrl, setPreviewUrl] = useState("");
+
+  const handleFileChange = (e: any) => {
+    const file = e.target.files[0];
+    if (file) {
+      setSelectedFile(file);
+      setPreviewUrl(URL.createObjectURL(file));
+    }
+  };
+
   useEffect(() => {
     if (user) {
       setValue("firstName", user.firstName);
@@ -44,16 +56,27 @@ const Settings = () => {
   const { mutate } = useUpdateUser({
     onSuccess: (data) => {
       console.log(data);
+      toast.success("User updated successfully");
     },
     onError: (error) => {
       console.error("Error updating user:", error);
+      toast.error("Error updating user");
     },
   });
 
   const onSubmit = (data: FormData) => {
-    mutate(data);
-  };
+    const formData = new FormData();
+    formData.append("firstName", data.firstName || "");
+    formData.append("lastName", data.lastName || "");
+    formData.append("email", data.email || "");
+    formData.append("phone", data.phone || "");
 
+    if (selectedFile) {
+      formData.append("profilePicture", selectedFile);
+    }
+
+    mutate(formData as FormData);
+  };
   const { theme } = useTheme();
 
   return (
@@ -202,7 +225,10 @@ const Settings = () => {
                     <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full overflow-hidden">
                       <img
                         className="w-full h-full object-cover"
-                        src="image/blank-profile-picture-973460_1280.png"
+                        src={
+                          previewUrl ||
+                          "image/blank-profile-picture-973460_1280.png"
+                        }
                         alt="User"
                       />
                     </div>
@@ -230,6 +256,7 @@ const Settings = () => {
                       type="file"
                       accept="image/*"
                       className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                      onChange={handleFileChange}
                     />
                     <p className="text-gray-500 dark:text-gray-300">
                       <span className="text-blue-600">Click to upload</span> or
@@ -247,12 +274,12 @@ const Settings = () => {
                     >
                       Cancel
                     </button>
-                    <button
+                    {/* <button
                       type="submit"
                       className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
                     >
                       Save
-                    </button>
+                    </button> */}
                   </div>
                 </form>
               </div>

@@ -1,4 +1,4 @@
-import { useState, useContext } from "react";
+import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import {
   Dialog,
@@ -44,6 +44,8 @@ export default function Navbar() {
   const themeContext = useTheme();
   const { theme, toggleTheme } = themeContext;
 
+  const [userImage, setUserImage] = useState("");
+
   const authContext = useContext(AuthContext);
   if (!authContext) {
     throw new Error("useAuth must be used within an AuthProvider");
@@ -63,6 +65,14 @@ export default function Navbar() {
     logout();
     navigate("/");
   };
+
+  useEffect(() => {
+    if (user?.image) {
+      setUserImage(user.image);
+    } else {
+      setUserImage("image/blank-profile-picture-973460_1280.png"); // Default image
+    }
+  }, [user]);
 
   return (
     <header
@@ -187,7 +197,7 @@ export default function Navbar() {
               <Popover className="relative">
                 <PopoverButton className="flex items-center space-x-2">
                   <img
-                    src="image/blank-profile-picture-973460_1280.png"
+                    src={userImage}
                     className="h-10 w-10 rounded-full"
                     alt="User Avatar"
                   />
@@ -208,7 +218,7 @@ export default function Navbar() {
                     {/* User Info */}
                     <div className="flex items-center space-x-3">
                       <img
-                        src="image/blank-profile-picture-973460_1280.png"
+                        src={userImage}
                         className="h-10 w-10 rounded-full"
                         alt="User Avatar"
                       />
