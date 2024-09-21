@@ -159,6 +159,9 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
+        const imageUrl = user.image
+            ? `${req.protocol}://${req.get("host")}/${user.image}`
+            : null;
         res.json({
             id: user.id,
             email: user.email,
@@ -166,6 +169,7 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
+            image: imageUrl,
             password: user.password,
         });
     }
@@ -175,30 +179,38 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
     }
 });
 exports.getUserProfile = getUserProfile;
-const updateUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _c;
-    try {
-        const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
-        if (!userId) {
-            return res.status(400).json({ message: "User ID not provided" });
+exports.updateUserProfile = [
+    upload.single("profilePicture"),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        var _c;
+        try {
+            console.log("Uploaded file details", req.file);
+            const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
+            if (!userId) {
+                return res.status(400).json({ message: "User ID not provided" });
+            }
+            const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
+            if (!parsed.success) {
+                return res
+                    .status(400)
+                    .json({ message: "Validation failed", errors: parsed.error.errors });
+            }
+            if (req.file) {
+                parsed.data.image = req.file.path;
+            }
+            const updatedUser = yield User_1.default.findByIdAndUpdate(userId, parsed.data, {
+                new: true,
+            });
+            if (!updatedUser) {
+                return res.status(404).json({ message: "User not found" });
+            }
+            res
+                .status(200)
+                .json({ message: "User profile updated successfully", updatedUser });
         }
-        const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
-        if (!parsed.success) {
-            return res
-                .status(400)
-                .json({ message: "Validation failed", errors: parsed.error.errors });
+        catch (error) {
+            console.error("Error updating user profile:", error);
+            res.status(500).json({ message: "Internal server error" });
         }
-        const updatedUser = yield User_1.default.findByIdAndUpdate(userId, parsed.data, {
-            new: true,
-        });
-        if (!updatedUser) {
-            return res.status(404).json({ message: "User not found" });
-        }
-        res.status(200).json({ message: "User profile updated successfully" });
-    }
-    catch (error) {
-        console.error("Error updating user profile:", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
-});
-exports.updateUserProfile = updateUserProfile;
+    }),
+];

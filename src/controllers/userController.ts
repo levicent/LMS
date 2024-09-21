@@ -144,6 +144,11 @@ export const getUserProfile = async (req: Request, res: Response) => {
     if (!user) {
       return res.status(404).json({ message: "User not found" });
     }
+
+    const imageUrl = user.image
+      ? `${req.protocol}://${req.get("host")}/${user.image}`
+      : null;
+
     res.json({
       id: user.id,
       email: user.email,
@@ -151,6 +156,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
+      image: imageUrl,
       password: user.password,
     });
   } catch (error) {
@@ -159,31 +165,41 @@ export const getUserProfile = async (req: Request, res: Response) => {
   }
 };
 
-export const updateUserProfile = async (req: Request, res: Response) => {
-  try {
-    const userId = req.user?.id;
-    if (!userId) {
-      return res.status(400).json({ message: "User ID not provided" });
+export const updateUserProfile = [
+  upload.single("profilePicture"),
+  async (req: Request, res: Response) => {
+    try {
+      console.log("Uploaded file details", req.file);
+      const userId = req.user?.id;
+      if (!userId) {
+        return res.status(400).json({ message: "User ID not provided" });
+      }
+
+      const parsed = updateUserSchema.safeParse(req.body);
+      if (!parsed.success) {
+        return res
+          .status(400)
+          .json({ message: "Validation failed", errors: parsed.error.errors });
+      }
+
+      if (req.file) {
+        parsed.data.image = req.file.path;
+      }
+
+      const updatedUser = await User.findByIdAndUpdate(userId, parsed.data, {
+        new: true,
+      });
+
+      if (!updatedUser) {
+        return res.status(404).json({ message: "User not found" });
+      }
+
+      res
+        .status(200)
+        .json({ message: "User profile updated successfully", updatedUser });
+    } catch (error) {
+      console.error("Error updating user profile:", error);
+      res.status(500).json({ message: "Internal server error" });
     }
-
-    const parsed = updateUserSchema.safeParse(req.body);
-    if (!parsed.success) {
-      return res
-        .status(400)
-        .json({ message: "Validation failed", errors: parsed.error.errors });
-    }
-
-    const updatedUser = await User.findByIdAndUpdate(userId, parsed.data, {
-      new: true,
-    });
-
-    if (!updatedUser) {
-      return res.status(404).json({ message: "User not found" });
-    }
-
-    res.status(200).json({ message: "User profile updated successfully" });
-  } catch (error) {
-    console.error("Error updating user profile:", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
+  },
+];

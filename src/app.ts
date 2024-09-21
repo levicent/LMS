@@ -18,5 +18,5 @@ app.use(
 app.use("/api", authRoutes);
 app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
-app.use("/uploads", express.static(path.join(__dirname, "/uploads")));
+app.use("/uploads", express.static("uploads"));
 export default app;
