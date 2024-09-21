@@ -11,25 +11,30 @@ import "react-toastify/dist/ReactToastify.css";
 // import ProfilePage from "./pages/ProfilePage";
 import AccountSettings from "./pages/AccountSettings";
 import CourseInfo from "./pages/CourseInfo";
+import { CartProvider } from "./context/cartContext";
+import BillingInfo from "./pages/BillingInfo";
 
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
       <AuthProvider>
         <ThemeProvider>
-          <ToastContainer />
-          <Router>
-            <Routes>
-              <Route path="/" element={<HomePage />} />
+          <CartProvider>
+            <ToastContainer />
+            <Router>
+              <Routes>
+                <Route path="/" element={<HomePage />} />
 
-              <Route path="/signin" element={<SignInPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-              <Route path="/forgotpassword" element={<ForgotPassword />} />
-              {/* <Route path="/profile" element={<ProfilePage />} /> */}
-              <Route path="/profile" element={<AccountSettings />} />
-              <Route path="/course" element={<CourseInfo />} />
-            </Routes>
-          </Router>
+                <Route path="/signin" element={<SignInPage />} />
+                <Route path="/signup" element={<SignupPage />} />
+                <Route path="/forgotpassword" element={<ForgotPassword />} />
+                {/* <Route path="/profile" element={<ProfilePage />} /> */}
+                <Route path="/profile" element={<AccountSettings />} />
+                <Route path="/course" element={<CourseInfo />} />
+                <Route path="/billing" element={<BillingInfo />} />
+              </Routes>
+            </Router>
+          </CartProvider>
         </ThemeProvider>
       </AuthProvider>
     </div>

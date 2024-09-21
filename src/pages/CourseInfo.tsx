@@ -11,8 +11,16 @@ import { Badge } from "@/components/ui/badge";
 import { ShoppingCart } from "lucide-react";
 import DefaultLayout from "@/layout/DefaultLayout";
 import Ratings from "@/components/Ratings/Ratings";
-
+import { useCart } from "@/context/cartContext";
 export default function CourseInfo() {
+  const { addToCart } = useCart();
+
+  const course = {
+    id: "1",
+    name: "Introduction to Machine Learning",
+    price: 199.99,
+  };
+
   return (
     <DefaultLayout>
       <div className="dark:bg-gray-900">
@@ -74,7 +82,7 @@ export default function CourseInfo() {
                   <div className="text-2xl font-bold mb-4 dark:text-gray-100">
                     $199.99
                   </div>
-                  <Button className="w-full">
+                  <Button onClick={() => addToCart(course)} className="w-full">
                     <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
                   </Button>
                 </CardFooter>
