@@ -11,8 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import Navbar from "@/components/Navbar/Navbar";
-import Footer from "@/components/Footer/Footer";
+import DefaultLayout from "@/layout/DefaultLayout";
 
 const allCourses = [
   {
@@ -131,7 +130,6 @@ const TabOptions = ["All courses", "My Lists", "Wishlist", "Archived"];
 export default function Component() {
   const [activeTab, setActiveTab] = useState("All courses");
   const [searchTerm, setSearchTerm] = useState("");
-  const [theme] = useState("light");
 
   const renderContent = () => {
     const cardBgColor = "bg-white dark:bg-gray-800";
@@ -357,9 +355,7 @@ export default function Component() {
   };
 
   return (
-    <div className={theme === "dark" ? "dark" : ""}>
-      <Navbar />
-
+    <DefaultLayout>
       <main className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
         <header className="bg-gray-900 text-white py-4">
           <div className="container mx-auto px-4">
@@ -511,8 +507,6 @@ export default function Component() {
           </div>
         </div>
       </main>
-
-      <Footer />
-    </div>
+    </DefaultLayout>
   );
 }
