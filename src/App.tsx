@@ -13,6 +13,7 @@ import AccountSettings from "./pages/AccountSettings";
 import CourseInfo from "./pages/CourseInfo";
 import { CartProvider } from "./context/cartContext";
 import BillingInfo from "./pages/BillingInfo";
+import LearningDashboard from "./pages/LearningDashboard";
 
 const App: React.FC = () => {
   return (
@@ -32,6 +33,7 @@ const App: React.FC = () => {
                 <Route path="/profile" element={<AccountSettings />} />
                 <Route path="/course" element={<CourseInfo />} />
                 <Route path="/billing" element={<BillingInfo />} />
+                <Route path="/my-courses" element={<LearningDashboard />} />
               </Routes>
             </Router>
           </CartProvider>
