@@ -1,4 +1,4 @@
-import AdminLayout from "@/layout/AdminLayout";
+import AdminLayout from "../../layout/AdminLayout";
 import UsersTable from "@/components/Tables/UsersTable/UsersTable";
 const AdminDashboard = () => {
   return (
