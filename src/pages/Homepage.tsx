@@ -1,17 +1,18 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
 import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
 import { useTheme } from "../context/themeContext";
 import AuthContext from "../context/authContext";
+import { Star, Users, Clock, Award, BookOpen, Globe, Zap } from "lucide-react";
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
+  const [currentCategory, setCurrentCategory] = useState("All");
 
-  // Handle when authContext is missing
   if (!authContext) {
     navigate("/login");
     return null;
@@ -19,10 +20,92 @@ const HomePage: React.FC = () => {
 
   const { isAuthenticated } = authContext;
 
-  // Dashboard Redirect Handler
   const handleDashboardRedirect = () => {
     navigate("/dashboard");
   };
+
+  const categories = [
+    "All",
+    "Development",
+    "Business",
+    "IT & Software",
+    "Design",
+    "Marketing",
+  ];
+  const courses = [
+    {
+      id: 1,
+      title: "Complete Web Development Bootcamp",
+      instructor: "Dr. Angela Yu",
+      rating: 4.7,
+      students: 125000,
+      hours: 65,
+      level: "Beginner to Advanced",
+      category: "Development",
+      image:
+        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80",
+    },
+    {
+      id: 2,
+      title: "Machine Learning A-Z™: Hands-On Python & R In Data Science",
+      instructor: "Kirill Eremenko, Hadelin de Ponteves",
+      rating: 4.5,
+      students: 692000,
+      hours: 44,
+      level: "Intermediate",
+      category: "IT & Software",
+      image:
+        "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
+    },
+    {
+      id: 3,
+      title: "The Complete Digital Marketing Course - 12 Courses in 1",
+      instructor: "Rob Percival, Daragh Walsh",
+      rating: 4.4,
+      students: 435000,
+      hours: 52,
+      level: "All Levels",
+      category: "Marketing",
+      image:
+        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80",
+    },
+    {
+      id: 4,
+      title: "UX & Web Design Master Course: Strategy, Design, Development",
+      instructor: "Joe Natoli",
+      rating: 4.6,
+      students: 78000,
+      hours: 23,
+      level: "All Levels",
+      category: "Design",
+      image:
+        "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
+    },
+    {
+      id: 5,
+      title: "An Entire MBA in 1 Course:Award Winning Business School Prof",
+      instructor: "Chris Haroun",
+      rating: 4.5,
+      students: 430000,
+      hours: 49,
+      level: "Beginner",
+      category: "Business",
+      image:
+        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
+    },
+    {
+      id: 6,
+      title: "iOS 13 & Swift 5 - The Complete iOS App Development Bootcamp",
+      instructor: "Dr. Angela Yu",
+      rating: 4.8,
+      students: 95000,
+      hours: 59,
+      level: "Beginner to Advanced",
+      category: "Development",
+      image:
+        "https://images.unsplash.com/photo-1621839673705-6617adf9e890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2032&q=80",
+    },
+  ];
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
@@ -32,138 +115,263 @@ const HomePage: React.FC = () => {
 
       <main className="flex-grow bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto p-6 lg:px-8 lg:py-12">
-          {/* Welcome Section */}
-          <section className="text-center mb-12 bg-transparent">
-            <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-gray-100">
-              Welcome to LMS
+          {/* Hero Section */}
+          <section className="text-center mb-16 bg-transparent">
+            <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">
+              Unlock Your Potential with LMS
             </h1>
-            <p className="mt-4 text-lg lg:text-xl text-gray-600 dark:text-gray-400">
-              Explore our courses and meet world-class instructors to start
-              learning today!
+            <p className="mt-4 text-lg lg:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
+              Discover a world of knowledge with our expert-led courses. From
+              coding to business, we've got you covered. Start learning today
+              and shape your future!
             </p>
             {!isAuthenticated ? (
               <Link to="/signup">
-                <button className="mt-6 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-full shadow hover:bg-blue-700 transition">
-                  Join Now and Start Learning &rarr;
+                <button className="mt-8 px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-blue-700 transition duration-300">
+                  Get Started For Free
                 </button>
               </Link>
             ) : (
               <button
                 onClick={handleDashboardRedirect}
-                className="mt-6 px-6 py-3 bg-blue-600 text-white text-lg font-semibold rounded-full shadow hover:bg-blue-700 transition"
+                className="mt-8 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-green-700 transition duration-300"
               >
-                Continue Your Learning Journey &rarr;
+                Continue Learning
               </button>
             )}
           </section>
 
-          {/* Courses Section */}
-          <section className="mt-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">
-              Explore Our Courses
+          {/* Course Categories */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
+              Explore Our Course Categories
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Web Development
-                </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Learn HTML, CSS, JavaScript, and frameworks like React to
-                  build modern web applications.
-                </p>
+            <div className="flex flex-wrap justify-center gap-4">
+              {categories.map((category) => (
                 <button
-                  aria-label="View Web Development Course"
-                  className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
+                  key={category}
+                  onClick={() => setCurrentCategory(category)}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
+                    currentCategory === category
+                      ? "bg-blue-600 text-white"
+                      : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                  }`}
                 >
-                  View Course &rarr;
+                  {category}
                 </button>
+              ))}
+            </div>
+          </section>
+
+          {/* Featured Courses */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
+              Featured Courses
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {courses
+                .filter(
+                  (course) =>
+                    currentCategory === "All" ||
+                    course.category === currentCategory
+                )
+                .map((course) => (
+                  <div
+                    key={course.id}
+                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+                  >
+                    <img
+                      src={course.image}
+                      alt={course.title}
+                      className="w-full h-48 object-cover"
+                    />
+                    <div className="p-6">
+                      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                        {course.title}
+                      </h3>
+                      <p className="text-gray-600 dark:text-gray-400 mb-4">
+                        {course.instructor}
+                      </p>
+                      <div className="flex items-center mb-4">
+                        <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                        <span className="text-gray-700 dark:text-gray-300">
+                          {course.rating}
+                        </span>
+                        <span className="text-gray-500 dark:text-gray-400 ml-2">
+                          ({course.students.toLocaleString()} students)
+                        </span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                        <span className="flex items-center">
+                          <Clock className="w-4 h-4 mr-1" />
+                          {course.hours} hours
+                        </span>
+                        <span className="flex items-center">
+                          <Users className="w-4 h-4 mr-1" />
+                          {course.level}
+                        </span>
+                      </div>
+                      <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
+                        Enroll Now
+                      </button>
+                    </div>
+                  </div>
+                ))}
+            </div>
+          </section>
+
+          {/* Our Impact */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
+              Our Impact
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
+                <BookOpen className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  1M+
+                </h3>
+                <p className="text-gray-600 dark:text-gray-400">
+                  Students Enrolled
+                </p>
               </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Data Science
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
+                <Globe className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  150+
                 </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Dive deep into data analytics, Python, and machine learning
-                  techniques.
+                <p className="text-gray-600 dark:text-gray-400">
+                  Countries Reached
                 </p>
-                <button
-                  aria-label="View Data Science Course"
-                  className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  View Course &rarr;
-                </button>
               </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  UI/UX Design
+              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
+                <Zap className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                  5000+
                 </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Master design principles, tools like Figma, and build
-                  user-friendly interfaces.
+                <p className="text-gray-600 dark:text-gray-400">
+                  Career Transitions
                 </p>
-                <button
-                  aria-label="View UI/UX Design Course"
-                  className="mt-4 inline-block px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition"
-                >
-                  View Course &rarr;
-                </button>
               </div>
             </div>
           </section>
 
-          {/* Instructors Section */}
-          <section className="mt-16">
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-8 text-center">
-              Meet Our Instructors
+          {/* Why Choose Us */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
+              Why Choose LMS?
             </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Jane Doe
-                </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Full-stack web developer with 15 years of experience in modern
-                  JavaScript frameworks.
-                </p>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  John Smith
-                </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  Data Scientist with over 10 years of experience in machine
-                  learning and AI.
-                </p>
-              </div>
-              <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow hover:shadow-md transition">
-                <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100">
-                  Emma Lee
-                </h3>
-                <p className="mt-2 text-gray-600 dark:text-gray-400">
-                  UI/UX designer with expertise in minimalistic design and
-                  user-centered experiences.
-                </p>
-              </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+              {[
+                {
+                  icon: Users,
+                  title: "Expert Instructors",
+                  description: "Learn from industry professionals",
+                },
+                {
+                  icon: Clock,
+                  title: "Flexible Learning",
+                  description: "Study at your own pace, anytime",
+                },
+                {
+                  icon: Award,
+                  title: "Certificates",
+                  description: "Earn recognized certifications",
+                },
+                {
+                  icon: Star,
+                  title: "High-Quality Content",
+                  description: "Engaging and up-to-date courses",
+                },
+              ].map((feature, index) => (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center"
+                >
+                  <feature.icon className="w-12 h-12 text-blue-600 mx-auto mb-4" />
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                    {feature.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {feature.description}
+                  </p>
+                </div>
+              ))}
             </div>
           </section>
 
-          {/* Conditional Section for Unauthenticated Users */}
-          {!isAuthenticated && (
-            <section className="mt-16 text-center">
-              <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 dark:text-gray-100 mb-6">
-                Ready to Learn?
-              </h2>
-              <p className="text-lg text-gray-600 dark:text-gray-400">
-                Join thousands of students today and start your learning
-                journey!
-              </p>
-              <Link to="/signup">
-                <button className="mt-6 px-6 py-3 bg-green-600 text-white text-lg font-semibold rounded-full shadow hover:bg-green-700 transition">
-                  Sign Up Now &rarr;
-                </button>
-              </Link>
-            </section>
-          )}
+          {/* What Our Community Says */}
+          <section className="mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
+              What Our Community Says
+            </h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+              {[
+                {
+                  name: "Sarah Johnson",
+                  role: "Web Developer",
+                  testimonial:
+                    "The courses on LMS have been instrumental in my career transition. The quality of instruction and hands-on projects gave me the confidence to land my dream job.",
+                  image:
+                    "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
+                },
+                {
+                  name: "Michael Chen",
+                  role: "Data Scientist",
+                  testimonial:
+                    "I've taken courses on multiple platforms, but LMS stands out for its comprehensive curriculum and supportive community. It's been a game-changer for my skills.",
+                  image:
+                    "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1287&q=80",
+                },
+                {
+                  name: "Emily Rodriguez",
+                  role: "UX Designer",
+                  testimonial:
+                    "The design courses on LMS are top-notch. They've helped me stay current with industry trends and significantly improved my portfolio. Highly recommended!",
+                  image:
+                    "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1288&q=80",
+                },
+              ].map((testimonial, index) => (
+                <div
+                  key={index}
+                  className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md flex flex-col items-center"
+                >
+                  <img
+                    src={testimonial.image}
+                    alt={testimonial.name}
+                    className="w-24 h-24 rounded-full mb-4 object-cover"
+                  />
+                  <p className="text-gray-600 dark:text-gray-400 italic mb-4 text-center">
+                    "{testimonial.testimonial}"
+                  </p>
+                  <h4 className="font-bold text-gray-900 dark:text-gray-100">
+                    {testimonial.name}
+                  </h4>
+                  <p className="text-gray-600 dark:text-gray-400">
+                    {testimonial.role}
+                  </p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          {/* Call to Action */}
+          <section className="text-center bg-blue-600 text-white p-12 rounded-lg shadow-xl">
+            <h2 className="text-3xl font-bold mb-4">
+              Ready to Start Your Learning Journey?
+            </h2>
+            <p className="text-xl mb-8">
+              Join millions of learners and start acquiring the skills you need
+              for your future today.
+            </p>
+            <Link to={isAuthenticated ? "/dashboard" : "/signup"}>
+              <button className="px-8 py-4 bg-white text-blue-600 text-lg font-semibold rounded-lg shadow hover:bg-gray-100 transition duration-300">
+                {isAuthenticated
+                  ? "Go to My Courses"
+                  : "Start Learning for Free"}
+              </button>
+            </Link>
+          </section>
         </div>
       </main>
 

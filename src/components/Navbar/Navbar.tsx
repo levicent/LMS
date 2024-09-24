@@ -1,12 +1,6 @@
 import { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import {
-  Dialog,
-  DialogPanel,
-  Popover,
-  PopoverButton,
-  PopoverPanel,
-} from "@headlessui/react";
+import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
   Bars3Icon,
   XMarkIcon,
@@ -15,12 +9,31 @@ import {
   HeartIcon,
   UserCircleIcon,
   BellIcon,
+  MagnifyingGlassIcon,
+  ShoppingCartIcon,
+  ChevronRightIcon,
 } from "@heroicons/react/20/solid";
 import { FaSignOutAlt } from "react-icons/fa";
-import { HiSun, HiMoon } from "react-icons/hi"; // Sun and Moon icons for theme toggle
+import { HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../../context/themeContext";
 import AuthContext from "../../context/authContext";
 import { useFetchUserProfile } from "../../hooks/useFetchUserProfile";
+
+const categories = [
+  { name: "Development", href: "/category/development" },
+  { name: "Business", href: "/category/business" },
+  { name: "Finance & Accounting", href: "/category/finance-accounting" },
+  { name: "IT & Software", href: "/category/it-software" },
+  { name: "Office Productivity", href: "/category/office-productivity" },
+  { name: "Personal Development", href: "/category/personal-development" },
+  { name: "Design", href: "/category/design" },
+  { name: "Marketing", href: "/category/marketing" },
+  { name: "Lifestyle", href: "/category/lifestyle" },
+  { name: "Photography & Video", href: "/category/photography-video" },
+  { name: "Health & Fitness", href: "/category/health-fitness" },
+  { name: "Music", href: "/category/music" },
+  { name: "Teaching & Academics", href: "/category/teaching-academics" },
+];
 
 const products = [
   {
@@ -45,6 +58,8 @@ export default function Navbar() {
   const { theme, toggleTheme } = themeContext;
 
   const [userImage, setUserImage] = useState("");
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [searchOpen, setSearchOpen] = useState(false);
 
   const authContext = useContext(AuthContext);
   if (!authContext) {
@@ -54,7 +69,6 @@ export default function Navbar() {
 
   const { data: user } = useFetchUserProfile();
 
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const navigate = useNavigate();
 
   const handleLoginClick = () => {
@@ -70,396 +84,602 @@ export default function Navbar() {
     if (user?.image) {
       setUserImage(user.image);
     } else {
-      setUserImage("image/blank-profile-picture-973460_1280.png"); // Default image
+      setUserImage("/image/blank-profile-picture-973460_1280.png");
     }
   }, [user]);
+
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+    document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
+  };
 
   return (
     <header
       className={`z-50 sticky top-0 shadow-lg ${
-        theme === "dark" ? "dark:bg-gray-800" : "bg-white"
+        theme === "dark" ? "bg-gray-800" : "bg-white"
       }`}
     >
-      <nav className="container mx-auto px-6 lg:px-8 py-4 flex items-center justify-between">
-        <div className="flex items-center space-x-2">
-          <Link to="/" className="flex items-center space-x-2">
-            <img
-              src="https://tailwindui.com/img/logos/mark.svg?color=blue"
-              alt="LMS"
-              className="h-10 w-auto"
-            />
-            <span
-              className={`text-3xl font-bold tracking-tight ${
-                theme === "dark" ? "text-white" : "text-blue-600"
+      <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
+        <div className="flex items-center justify-between">
+          {/* Mobile menu button */}
+          <div className="flex items-center lg:hidden">
+            <button
+              onClick={toggleMobileMenu}
+              className={`p-2 rounded-md ${
+                theme === "dark"
+                  ? "text-gray-400 hover:text-white hover:bg-gray-700"
+                  : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
               }`}
             >
-              LMS
-            </span>
-          </Link>
-        </div>
+              {mobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" />
+              )}
+            </button>
+          </div>
 
-        <div className="hidden lg:flex lg:items-center lg:space-x-10">
-          {/* Desktop Navigation */}
-          <Popover className="relative">
-            <PopoverButton
-              className={`text-lg font-semibold transition-colors flex items-center ${
-                theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-              }`}
-            >
-              Explore
-              <ChevronDownIcon
-                className={`h-5 w-5 ml-2 ${
-                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                }`}
-              />
-            </PopoverButton>
-            <PopoverPanel
-              className={`absolute z-10 mt-2 w-56 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 ${
-                theme === "dark" ? "bg-gray-800" : "bg-white"
-              }`}
-            >
-              <div className="p-4">
-                {products.map((item) => (
-                  <Link
-                    key={item.name}
-                    to={item.href}
-                    className={`block p-2 rounded-md transition ${
-                      theme === "dark"
-                        ? "hover:bg-gray-700 text-gray-100"
-                        : "hover:bg-gray-100 text-gray-900"
-                    }`}
-                  >
-                    <p
-                      className={`font-semibold ${
-                        theme === "dark" ? "text-gray-100" : "text-gray-900"
-                      }`}
-                    >
-                      {item.name}
-                    </p>
-                    <p
-                      className={`text-sm ${
-                        theme === "dark" ? "text-gray-400" : "text-gray-500"
-                      }`}
-                    >
-                      {item.description}
-                    </p>
-                  </Link>
-                ))}
-              </div>
-            </PopoverPanel>
-          </Popover>
-
-          {/* Links for Unauthenticated Users */}
-          {!isAuthenticated ? (
-            <>
-              <Link
-                to="/features"
-                className={`text-lg font-semibold transition ${
-                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                } hover:text-gray-700`}
-              >
-                Features
-              </Link>
-              <Link
-                to="/contact"
-                className={`text-lg font-semibold transition ${
-                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                } hover:text-gray-700`}
-              >
-                Contact
-              </Link>
-            </>
-          ) : (
-            <>
-              {/* Links for Authenticated Users */}
-              <Link
-                to="/dashboard"
-                className={`text-lg font-semibold transition ${
-                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                } hover:text-gray-700`}
-              >
-                Dashboard
-              </Link>
-              <Link
-                to="/my-courses"
-                className={`text-lg font-semibold transition ${
-                  theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                } hover:text-gray-700`}
-              >
-                My Courses
-              </Link>
-            </>
-          )}
-
-          {isAuthenticated ? (
-            <div className="relative">
-              {/* Authenticated User Dropdown */}
-              <Popover className="relative">
-                <PopoverButton className="flex items-center space-x-2">
-                  <img
-                    src={userImage}
-                    className="h-10 w-10 rounded-full"
-                    alt="User Avatar"
-                  />
-                  <span
-                    className={`text-lg font-semibold ${
-                      theme === "dark" ? "text-gray-100" : "text-gray-900"
-                    }`}
-                  >
-                    {user?.firstName} {user?.lastName}
-                  </span>
-                </PopoverButton>
-                <PopoverPanel
-                  className={`absolute right-0 z-10 mt-2 w-64 rounded-lg shadow-lg ring-1 ring-black ring-opacity-5 ${
-                    theme === "dark" ? "bg-gray-800 text-gray-100" : "bg-white"
-                  }`}
-                >
-                  <div className="p-4 space-y-2">
-                    {/* User Info */}
-                    <div className="flex items-center space-x-3">
-                      <img
-                        src={userImage}
-                        className="h-10 w-10 rounded-full"
-                        alt="User Avatar"
-                      />
-                      <div>
-                        <p
-                          className={`font-semibold ${
-                            theme === "dark" ? "text-gray-100" : "text-gray-900"
-                          }`}
-                        >
-                          {user?.firstName} {user?.lastName}
-                        </p>
-                        <p
-                          className={`text-sm ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-500"
-                          }`}
-                        >
-                          {user?.email}
-                        </p>
-                      </div>
-                    </div>
-                    <hr
-                      className={`my-2 ${
-                        theme === "dark" ? "border-gray-600" : "border-gray-200"
-                      }`}
-                    />
-
-                    {/* Dropdown Links */}
-                    <Link
-                      to="/profile"
-                      className={`flex items-center space-x-2 py-2 text-sm hover:bg-gray-100 rounded-md transition ${
-                        theme === "dark"
-                          ? "text-gray-400 hover:bg-gray-700"
-                          : "text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      <UserCircleIcon className="h-5 w-5" />
-                      <span>My Profile</span>
-                    </Link>
-                    <Link
-                      to="/wishlist"
-                      className={`flex items-center space-x-2 py-2 text-sm hover:bg-gray-100 rounded-md transition ${
-                        theme === "dark"
-                          ? "text-gray-400 hover:bg-gray-700"
-                          : "text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      <HeartIcon className="h-5 w-5" />
-                      <span>Wishlist</span>
-                    </Link>
-                    <Link
-                      to="/messages"
-                      className={`flex items-center space-x-2 py-2 text-sm hover:bg-gray-100 rounded-md transition ${
-                        theme === "dark"
-                          ? "text-gray-400 hover:bg-gray-700"
-                          : "text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      <EnvelopeIcon className="h-5 w-5" />
-                      <span>Messages</span>
-                    </Link>
-                    <Link
-                      to="/notifications"
-                      className={`flex items-center space-x-2 py-2 text-sm hover:bg-gray-100 rounded-md transition ${
-                        theme === "dark"
-                          ? "text-gray-400 hover:bg-gray-700"
-                          : "text-gray-700 hover:bg-gray-100"
-                      }`}
-                    >
-                      <BellIcon className="h-5 w-5" />
-                      <span>Notifications</span>
-                    </Link>
-                    <button
-                      onClick={handleLogout}
-                      className={`flex items-center space-x-2 w-full py-2 text-sm hover:bg-gray-100 rounded-md transition ${
-                        theme === "dark"
-                          ? "text-red-400 hover:bg-gray-700"
-                          : "text-red-500 hover:bg-gray-100"
-                      }`}
-                    >
-                      <FaSignOutAlt className="h-5 w-5" />
-                      <span>Logout</span>
-                    </button>
-                  </div>
-                </PopoverPanel>
-              </Popover>
-            </div>
-          ) : (
-            <div>
-              <button
-                onClick={handleLoginClick}
-                className="px-5 py-2 bg-blue-600 text-white font-semibold rounded-full shadow hover:bg-blue-700 transition"
-              >
-                Sign in &rarr;
-              </button>
-            </div>
-          )}
-          {/* Theme Toggle Button */}
-          <button onClick={toggleTheme} className="ml-4 text-lg">
-            {theme === "light" ? (
-              <HiMoon className="h-6 w-6 text-gray-900" />
-            ) : (
-              <HiSun className="h-6 w-6 text-yellow-300" />
-            )}
-          </button>
-        </div>
-
-        {/* Mobile Menu Button */}
-        <div className="lg:hidden">
-          <button onClick={() => setMobileMenuOpen(true)} className="p-2">
-            <Bars3Icon
-              className={`h-8 w-8 ${
-                theme === "dark" ? "dark:text-white" : "text-gray-900"
-              }`}
-            />
-          </button>
-        </div>
-      </nav>
-
-      {/* Mobile Menu */}
-      <Dialog open={mobileMenuOpen} onClose={() => setMobileMenuOpen(false)}>
-        <DialogPanel
-          className={`fixed inset-0 z-10 p-6 ${
-            theme === "dark" ? "bg-gray-800" : "bg-white"
-          }`}
-        >
-          <div className="flex items-center justify-between">
+          {/* Logo */}
+          <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
               <img
                 src="https://tailwindui.com/img/logos/mark.svg?color=blue"
                 alt="LMS"
-                className="h-10 w-auto"
+                className="h-8 w-auto"
               />
               <span
-                className={`text-3xl font-bold tracking-tight ${
+                className={`text-xl font-bold ${
                   theme === "dark" ? "text-white" : "text-blue-600"
                 }`}
               >
                 LMS
               </span>
             </Link>
-            <button onClick={() => setMobileMenuOpen(false)} className="p-2">
-              <XMarkIcon
-                className={`h-8 w-8 ${
-                  theme === "dark" ? "dark:text-white" : "text-gray-900"
-                }`}
-              />
-            </button>
           </div>
 
-          <div className="mt-6 space-y-6">
-            {isAuthenticated ? (
-              <>
-                {/* Mobile Authenticated User Links */}
-                <Link
-                  to="/profile"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
+          {/* Desktop menu */}
+          <div className="hidden lg:flex lg:items-center lg:justify-between lg:flex-1 ml-8">
+            <div className="flex items-center space-x-8">
+              {/* Categories dropdown */}
+              <Popover className="relative">
+                <PopoverButton
+                  className={`flex items-center text-sm font-medium ${
+                    theme === "dark"
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-700 hover:text-gray-800"
+                  }`}
                 >
-                  My Profile
-                </Link>
-                <Link
-                  to="/wishlist"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
+                  Categories
+                  <ChevronDownIcon className="ml-1 h-5 w-5" />
+                </PopoverButton>
+                <PopoverPanel
+                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${
+                    theme === "dark" ? "bg-gray-700" : "bg-white"
+                  } ring-1 ring-black ring-opacity-5`}
                 >
-                  Wishlist
-                </Link>
-                <Link
-                  to="/messages"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
-                >
-                  Messages
-                </Link>
-                <Link
-                  to="/notifications"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
-                >
-                  Notifications
-                </Link>
-                <button
-                  onClick={handleLogout}
-                  className="block w-full text-center px-4 py-2 bg-red-600 text-white font-semibold rounded-full mt-4 hover:bg-red-700 transition"
-                >
-                  Logout
-                </button>
-              </>
-            ) : (
-              <>
-                {/* Mobile Unauthenticated User Links */}
-                <Link
-                  to="/learn"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
+                  <div className="py-1">
+                    {categories.map((category) => (
+                      <Link
+                        key={category.name}
+                        to={category.href}
+                        className={`block px-4 py-2 text-sm ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:bg-gray-600"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        {category.name}
+                      </Link>
+                    ))}
+                  </div>
+                </PopoverPanel>
+              </Popover>
+
+              {/* Explore dropdown */}
+              <Popover className="relative">
+                <PopoverButton
+                  className={`flex items-center text-sm font-medium ${
+                    theme === "dark"
+                      ? "text-gray-300 hover:text-white"
+                      : "text-gray-700 hover:text-gray-800"
+                  }`}
                 >
                   Explore
-                </Link>
-                <Link
-                  to="/features"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
+                  <ChevronDownIcon className="ml-1 h-5 w-5" />
+                </PopoverButton>
+                <PopoverPanel
+                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${
+                    theme === "dark" ? "bg-gray-700" : "bg-white"
+                  } ring-1 ring-black ring-opacity-5`}
                 >
-                  Features
-                </Link>
-                <Link
-                  to="/contact"
-                  className={`block text-lg font-semibold transition ${
-                    theme === "dark" ? "dark:text-gray-100" : "text-gray-900"
-                  } hover:text-gray-700`}
-                >
-                  Contact
-                </Link>
+                  <div className="py-1">
+                    {products.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={`block px-4 py-2 text-sm ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:bg-gray-600"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        <p className="font-semibold">{item.name}</p>
+                        <p
+                          className={`text-xs ${
+                            theme === "dark" ? "text-gray-400" : "text-gray-500"
+                          }`}
+                        >
+                          {item.description}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                </PopoverPanel>
+              </Popover>
+
+              {/* Other navigation links */}
+              <Link
+                to="/features"
+                className={`text-sm font-medium ${
+                  theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
+                }`}
+              >
+                Features
+              </Link>
+              <Link
+                to="/contact"
+                className={`text-sm font-medium ${
+                  theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
+                }`}
+              >
+                Contact
+              </Link>
+            </div>
+
+            <div className="flex items-center space-x-4">
+              {/* Search bar */}
+              <div className="relative">
+                <input
+                  type="text"
+                  placeholder="Search for anything"
+                  className={`w-64 pl-10 pr-4 py-2 rounded-md text-sm ${
+                    theme === "dark"
+                      ? "bg-gray-700 text-white placeholder-gray-400"
+                      : "bg-gray-100 text-gray-900 placeholder-gray-500"
+                  }`}
+                />
+                <MagnifyingGlassIcon
+                  className={`absolute left-3 top-2.5 h-5 w-5 ${
+                    theme === "dark" ? "text-gray-400" : "text-gray-500"
+                  }`}
+                />
+              </div>
+
+              {/* Wishlist icon */}
+              <button
+                className={`p-1 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-500 hover:text-gray-600"
+                }`}
+              >
+                <HeartIcon className="h-6 w-6" />
+              </button>
+
+              {/* Cart icon */}
+              <button
+                className={`p-1 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-500 hover:text-gray-600"
+                }`}
+              >
+                <ShoppingCartIcon className="h-6 w-6" />
+              </button>
+
+              {/* User avatar or login button */}
+              {isAuthenticated ? (
+                <Popover className="relative">
+                  <PopoverButton className="flex items-center space-x-2">
+                    <img
+                      src={userImage}
+                      className="h-8 w-8 rounded-full"
+                      alt="User Avatar"
+                    />
+                  </PopoverButton>
+                  <PopoverPanel
+                    className={`absolute right-0 z-10 mt-2 w-64 rounded-md shadow-lg ${
+                      theme === "dark" ? "bg-gray-800" : "bg-white"
+                    } ring-1 ring-black ring-opacity-5`}
+                  >
+                    <div className="p-4 space-y-2">
+                      <Link
+                        to="/profile"
+                        className="flex items-center space-x-3"
+                      >
+                        <img
+                          src={userImage}
+                          className="h-10 w-10 rounded-full"
+                          alt="User Avatar"
+                        />
+                        <div>
+                          <p
+                            className={`font-semibold ${
+                              theme === "dark"
+                                ? "text-gray-100"
+                                : "text-gray-900"
+                            }`}
+                          >
+                            {user?.firstName} {user?.lastName}
+                          </p>
+                          <p
+                            className={`text-sm ${
+                              theme === "dark"
+                                ? "text-gray-300"
+                                : "text-gray-500"
+                            }`}
+                          >
+                            {user?.email}
+                          </p>
+                        </div>
+                      </Link>
+                      <hr
+                        className={`my-2 ${
+                          theme === "dark"
+                            ? "border-gray-700"
+                            : "border-gray-200"
+                        }`}
+                      />
+                      <Link
+                        to="/profile"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:bg-gray-700"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        <UserCircleIcon className="h-5 w-5" />
+                        <span>My Profile</span>
+                      </Link>
+                      <Link
+                        to="/wishlist"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:bg-gray-700"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        <HeartIcon className="h-5 w-5" />
+                        <span>Wishlist</span>
+                      </Link>
+                      <Link
+                        to="/messages"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:bg-gray-700"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        <EnvelopeIcon className="h-5 w-5" />
+                        <span>Messages</span>
+                      </Link>
+                      <Link
+                        to="/notifications"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
+                          theme === "dark"
+                            ? "text-gray-300 hover:bg-gray-700"
+                            : "text-gray-700 hover:bg-gray-100"
+                        }`}
+                      >
+                        <BellIcon className="h-5 w-5" />
+                        <span>Notifications</span>
+                      </Link>
+                      <button
+                        onClick={handleLogout}
+                        className={`flex items-center space-x-2 w-full py-2 text-sm rounded-m transition ${
+                          theme === "dark"
+                            ? "text-red-400 hover:bg-gray-700"
+                            : "text-red-500 hover:bg-gray-100"
+                        }`}
+                      >
+                        <FaSignOutAlt className="h-5 w-5" />
+                        <span>Logout</span>
+                      </button>
+                    </div>
+                  </PopoverPanel>
+                </Popover>
+              ) : (
                 <button
                   onClick={handleLoginClick}
-                  className="block w-full text-center px-4 py-2 bg-blue-600 text-white font-semibold rounded-full mt-4 hover:bg-blue-700 transition"
+                  className={`px-4 py-2 rounded-md text-sm font-medium ${
+                    theme === "dark"
+                      ? "bg-blue-600 text-white hover:bg-blue-700"
+                      : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                  }`}
                 >
-                  Sign in &rarr;
+                  Sign in
                 </button>
-              </>
-            )}
+              )}
 
-            {/* Mobile Theme Toggle */}
-            <div className="flex justify-center">
-              <button onClick={toggleTheme} className="mt-4 text-lg">
+              {/* Theme toggle */}
+              <button
+                onClick={toggleTheme}
+                className={`p-1 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-500 hover:text-gray-600"
+                }`}
+              >
                 {theme === "light" ? (
-                  <HiMoon className="h-6 w-6 text-gray-900" />
+                  <HiMoon className="h-6 w-6" />
                 ) : (
-                  <HiSun className="h-6 w-6 text-yellow-300" />
+                  <HiSun className="h-6 w-6" />
                 )}
               </button>
             </div>
           </div>
-        </DialogPanel>
-      </Dialog>
+
+          {/* Mobile right section */}
+          <div className="flex items-center lg:hidden">
+            <button
+              onClick={() => setSearchOpen(!searchOpen)}
+              className={`p-1 rounded-full ${
+                theme === "dark"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-gray-600"
+              }`}
+            >
+              <MagnifyingGlassIcon className="h-6 w-6" />
+            </button>
+            <button
+              className={`p-1 rounded-full ${
+                theme === "dark"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-gray-600"
+              }`}
+            >
+              <ShoppingCartIcon className="h-6 w-6" />
+            </button>
+          </div>
+        </div>
+
+        {/* Mobile search bar */}
+        {searchOpen && (
+          <div className="mt-4 lg:hidden">
+            <input
+              type="text"
+              placeholder="Search for anything"
+              className={`w-full pl-10 pr-4 py-2 rounded-md text-sm ${
+                theme === "dark"
+                  ? "bg-gray-700 text-white placeholder-gray-400"
+                  : "bg-gray-100 text-gray-900 placeholder-gray-500"
+              }`}
+            />
+          </div>
+        )}
+      </nav>
+
+      {/* Mobile menu */}
+      {mobileMenuOpen && (
+        <div
+          className={`fixed inset-0 z-50 ${
+            theme === "dark" ? "bg-gray-800" : "bg-white"
+          } overflow-y-auto`}
+        >
+          <div className="p-4">
+            <div className="flex items-center justify-between mb-6">
+              <Link to="/" className="flex items-center space-x-2">
+                <img
+                  src="https://tailwindui.com/img/logos/mark.svg?color=blue"
+                  alt="LMS"
+                  className="h-8 w-auto"
+                />
+                <span
+                  className={`text-xl font-bold ${
+                    theme === "dark" ? "text-white" : "text-blue-600"
+                  }`}
+                >
+                  LMS
+                </span>
+              </Link>
+              <button
+                onClick={toggleMobileMenu}
+                className={`p-2 rounded-md ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white hover:bg-gray-700"
+                    : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+                }`}
+              >
+                <XMarkIcon className="h-6 w-6" />
+              </button>
+            </div>
+
+            {isAuthenticated && (
+              <div className="mb-6">
+                <Link to="/profile" className="flex items-center space-x-3">
+                  <img
+                    src={userImage}
+                    className="h-12 w-12 rounded-full"
+                    alt="User Avatar"
+                  />
+                  <div>
+                    <p
+                      className={`font-semibold ${
+                        theme === "dark" ? "text-gray-100" : "text-gray-900"
+                      }`}
+                    >
+                      Hi, {user?.firstName}
+                    </p>
+                    <p
+                      className={`text-sm ${
+                        theme === "dark" ? "text-gray-300" : "text-gray-500"
+                      }`}
+                    >
+                      Welcome back
+                    </p>
+                  </div>
+                </Link>
+              </div>
+            )}
+
+            <div className="space-y-4">
+              <Popover className="relative">
+                {({ open }) => (
+                  <>
+                    <PopoverButton
+                      className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                        theme === "dark"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-900 hover:bg-gray-50"
+                      }`}
+                    >
+                      Categories
+                      <ChevronRightIcon
+                        className={`h-5 w-5 flex-none ${
+                          open ? "rotate-90" : ""
+                        } transition`}
+                        aria-hidden="true"
+                      />
+                    </PopoverButton>
+                    <PopoverPanel className="mt-2 space-y-2">
+                      {categories.map((category) => (
+                        <Link
+                          key={category.name}
+                          to={category.href}
+                          className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${
+                            theme === "dark"
+                              ? "text-gray-300 hover:bg-gray-700"
+                              : "text-gray-900 hover:bg-gray-50"
+                          }`}
+                        >
+                          {category.name}
+                        </Link>
+                      ))}
+                    </PopoverPanel>
+                  </>
+                )}
+              </Popover>
+              <Popover className="relative">
+                {({ open }) => (
+                  <>
+                    <PopoverButton
+                      className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                        theme === "dark"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-900 hover:bg-gray-50"
+                      }`}
+                    >
+                      Explore
+                      <ChevronRightIcon
+                        className={`h-5 w-5 flex-none ${
+                          open ? "rotate-90" : ""
+                        } transition`}
+                        aria-hidden="true"
+                      />
+                    </PopoverButton>
+                    <PopoverPanel className="mt-2 space-y-2">
+                      {products.map((item) => (
+                        <Link
+                          key={item.name}
+                          to={item.href}
+                          className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${
+                            theme === "dark"
+                              ? "text-gray-300 hover:bg-gray-700"
+                              : "text-gray-900 hover:bg-gray-50"
+                          }`}
+                        >
+                          {item.name}
+                        </Link>
+                      ))}
+                    </PopoverPanel>
+                  </>
+                )}
+              </Popover>
+              <Link
+                to="/features"
+                className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                  theme === "dark"
+                    ? "text-gray-300 hover:bg-gray-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                Features
+              </Link>
+              <Link
+                to="/contact"
+                className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                  theme === "dark"
+                    ? "text-gray-300 hover:bg-gray-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                Contact
+              </Link>
+            </div>
+            <div className="mt-6 pt-6 border-t border-gray-200 dark:border-gray-700">
+              {isAuthenticated ? (
+                <>
+                  <Link
+                    to="/profile"
+                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                      theme === "dark"
+                        ? "text-gray-300 hover:bg-gray-700"
+                        : "text-gray-900 hover:bg-gray-50"
+                    }`}
+                  >
+                    Profile
+                  </Link>
+                  <button
+                    onClick={handleLogout}
+                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                      theme === "dark"
+                        ? "text-gray-300 hover:bg-gray-700"
+                        : "text-gray-900 hover:bg-gray-50"
+                    }`}
+                  >
+                    Logout
+                  </button>
+                </>
+              ) : (
+                <button
+                  onClick={handleLoginClick}
+                  className={`block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 ${
+                    theme === "dark"
+                      ? "bg-gray-700 text-white hover:bg-gray-600"
+                      : "bg-gray-50 text-gray-900 hover:bg-gray-100"
+                  }`}
+                >
+                  Sign in
+                </button>
+              )}
+              <button
+                onClick={toggleTheme}
+                className={`mt-2 flex items-center rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
+                  theme === "dark"
+                    ? "text-gray-300 hover:bg-gray-700"
+                    : "text-gray-900 hover:bg-gray-50"
+                }`}
+              >
+                {theme === "light" ? (
+                  <>
+                    <HiMoon className="h-6 w-6 mr-2" />
+                    Dark Mode
+                  </>
+                ) : (
+                  <>
+                    <HiSun className="h-6 w-6 mr-2" />
+                    Light Mode
+                  </>
+                )}
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
     </header>
   );
 }
