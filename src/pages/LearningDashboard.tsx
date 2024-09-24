@@ -11,8 +11,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import DefaultLayout from "@/layout/DefaultLayout";
-
+import DefaultLayout from "../layout/DefaultLayout";
 const allCourses = [
   {
     id: 1,
@@ -127,7 +126,7 @@ const archived = [
 
 const TabOptions = ["All courses", "My Lists", "Wishlist", "Archived"];
 
-export default function Component() {
+export default function LearningDashboard() {
   const [activeTab, setActiveTab] = useState("All courses");
   const [searchTerm, setSearchTerm] = useState("");
 

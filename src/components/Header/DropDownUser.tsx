@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router-dom"; // assuming react-router-dom is used for navigation
-import UserOne from "../../../public/image/users/user-01.png";
+import UserOne from "/image/users/user-01.png";
 const DropdownUser: React.FC = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
 

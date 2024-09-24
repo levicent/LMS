@@ -10,7 +10,9 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@headlessui/react": "^2.1.8",
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@headlessui/react": "^2.1.7",
     "@heroicons/react": "^2.1.5",
     "@mui/icons-material": "^6.1.1",
     "@mui/material": "^6.1.1",
@@ -19,7 +21,9 @@
     "@radix-ui/react-select": "^2.1.1",
     "@radix-ui/react-slot": "^1.1.0",
     "@tsparticles/all": "^3.5.0",
+    "@tsparticles/engine": "^3.5.0",
     "@tsparticles/react": "^3.0.0",
+    "@tsparticles/slim": "^3.5.0",
     "axios": "^1.7.7",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
@@ -32,13 +36,14 @@
     "react-query": "^3.39.3",
     "react-router-dom": "^6.26.2",
     "react-toastify": "^10.0.5",
+    "react-tsparticles": "^2.12.2",
     "tailwind-merge": "^2.5.2",
     "tailwindcss-animate": "^1.0.7"
   },
   "devDependencies": {
     "@eslint/js": "^9.9.0",
     "@types/node": "^22.5.5",
-    "@types/react": "^18.3.8",
+    "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "autoprefixer": "^10.4.20",
