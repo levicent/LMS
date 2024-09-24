@@ -14,6 +14,7 @@ import CourseInfo from "./pages/CourseInfo";
 import { CartProvider } from "./context/cartContext";
 import BillingInfo from "./pages/BillingInfo";
 import LearningDashboard from "./pages/LearningDashboard";
+import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 
 const App: React.FC = () => {
   return (
@@ -34,6 +35,9 @@ const App: React.FC = () => {
                 <Route path="/course" element={<CourseInfo />} />
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
+
+                {/* Amdin routes */}
+                <Route path="/admin/dashboard" element={<AdminDashboard />} />
               </Routes>
             </Router>
           </CartProvider>
