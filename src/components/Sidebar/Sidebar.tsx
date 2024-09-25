@@ -1,6 +1,9 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
 import SidebarLinkGroup from "./SidebarLinkGroup";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faUserGraduate, faChalkboardTeacher, faUserShield } from "@fortawesome/free-solid-svg-icons";
+
 
 interface SidebarProps {
   sidebarOpen: boolean;
@@ -62,12 +65,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
       }`}
     >
       {/* <!-- SIDEBAR HEADER --> */}
-      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5">
-        <NavLink to="/">
-          <h1 className="text-white text-xl text-center mx-2 font-bold px-2 py-1">
-            LMS Admin Dashboard
-          </h1>
-        </NavLink>
+      <div className="flex items-center justify-between gap-2 px-6 py-5.5 lg:py-6.5 mt-6">
+  <NavLink to="/">
+    <h1 className="text-white text-xl text-center mx-2 font-bold px-2 py-1">
+      LMS Admin Dashboard
+    </h1>
+  </NavLink>
+
 
         <button
           ref={trigger}
@@ -117,40 +121,41 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
               {/* <!-- Menu Items --> */}
               <li>
-                <NavLink
-                  to="/therapists"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
-                    pathname.includes("therapists") &&
-                    "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  Students Table
-                </NavLink>
-              </li>
+  <NavLink
+    to="/students"
+    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
+      pathname.includes("students") && "bg-graydark dark:bg-meta-4"
+    }`}
+  >
+    <FontAwesomeIcon icon={faUserGraduate} className="text-white" />
+    Students Table
+  </NavLink>
+</li>
 
-              <li>
-                <NavLink
-                  to="/patients"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
-                    pathname.includes("patients") &&
-                    "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  Teachers Table
-                </NavLink>
-              </li>
+<li>
+  <NavLink
+    to="/teachers"
+    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
+      pathname.includes("teachers") && "bg-graydark dark:bg-meta-4"
+    }`}
+  >
+    <FontAwesomeIcon icon={faChalkboardTeacher} className="text-white" />
+    Teachers Table
+  </NavLink>
+</li>
 
-              <li>
-                <NavLink
-                  to="/treatments"
-                  className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
-                    pathname.includes("treatments") &&
-                    "bg-graydark dark:bg-meta-4"
-                  }`}
-                >
-                  Admin Table
-                </NavLink>
-              </li>
+<li>
+  <NavLink
+    to="/admin"
+    className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
+      pathname.includes("admin") && "bg-graydark dark:bg-meta-4"
+    }`}
+  >
+    <FontAwesomeIcon icon={faUserShield} className="text-white" />
+    Admin Table
+  </NavLink>
+</li>
+
               {/* <!-- End Menu Items --> */}
             </ul>
           </div>
