@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
-import AuthContext from "../../context/authContext";
+import AuthContext from "@/context/authContext";
 
 type FormValues = {
   email: string;
@@ -19,7 +19,7 @@ const SignInPage: React.FC = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
 
-  const { login } = authContext;
+  const { login, role } = authContext;
 
   const {
     handleSubmit,
@@ -30,7 +30,11 @@ const SignInPage: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       await login(data);
-      navigate("/");
+      if (role === "admin") {
+        navigate("/admin/dashboard");
+      } else if (role === "student") {
+        navigate("/");
+      }
     } catch (error) {
       console.error("Login failed", error);
     }

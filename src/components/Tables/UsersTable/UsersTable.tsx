@@ -1,4 +1,3 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -9,21 +8,35 @@ import {
   TableRow,
   Paper,
   Button,
+  IconButton,
   Box,
 } from "@mui/material";
-import { Add } from "@mui/icons-material";
+import { Add, Edit, Delete } from "@mui/icons-material";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 
 const UsersTable = () => {
   const navigate = useNavigate();
-  const { data: users, isLoading, error } = useFetchUserDetails(); // Fetch users
+  const { data: users, isLoading, error } = useFetchUserDetails();
 
-  useEffect(() => {
-    console.log("Fetched Users: ", users);
-  }, [users]);
+  const handleEdit = (user: any) => {
+    navigate(`/admin/dashboard/user/edit/${user._id}`, { state: { user } });
+  };
+
+  const handleDelete = async (user: any) => {
+    // try {
+    //   const patientId = patient._id
+    //   await axios.delete(
+    //     `${import.meta.env.VITE_API_URL}/api/patients/${patientId}`
+    //   )
+    //   console.log('Patient deleted:', patient)
+    //   fetchPatients()
+    // } catch (error) {
+    //   console.error('Error deleting patient: ', error)
+    // }
+  };
 
   const handleCreate = () => {
-    navigate("/patients/create");
+    navigate("/admin/dashboard/user/create");
   };
 
   if (isLoading) return <p>Loading users...</p>;
@@ -70,15 +83,18 @@ const UsersTable = () => {
                   <TableCell>{user.phone}</TableCell>
                   <TableCell>{user.role}</TableCell>
                   <TableCell>
-                    {/* Uncomment these lines if you want to add edit and delete functionality */}
-                    {/* 
-                    <IconButton aria-label="edit" onClick={() => handleEdit(user)}>
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => handleEdit(user)}
+                    >
                       <Edit />
                     </IconButton>
-                    <IconButton aria-label="delete" onClick={() => handleDelete(user)}>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDelete(user)}
+                    >
                       <Delete />
-                    </IconButton> 
-                    */}
+                    </IconButton>
                   </TableCell>
                 </TableRow>
               ))

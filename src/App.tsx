@@ -16,7 +16,8 @@ import BillingInfo from "./pages/BillingInfo";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import LearningDashboard from "./pages/LearningDashboard";
 import ContactPage from "./pages/ContactPage";
-
+import PrivateRoutes from "./routes/PrivateRoutes";
+import CreateUsersTablePage from "./pages/Dashboard/Tables/CreateUsersTablePage";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -36,9 +37,17 @@ const App: React.FC = () => {
                 <Route path="/course" element={<CourseInfo />} />
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
-                {/* Admin Routes */}
-                <Route path="/admin/dashboard" element={<AdminDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
+                {/* Admin Routes */}
+
+                <Route
+                  path="/admin/dashboard"
+                  element={<PrivateRoutes element={<AdminDashboard />} />}
+                />
+                <Route
+                  path="/admin/dashboard/user/create"
+                  element={<PrivateRoutes element={<CreateUsersTablePage />} />}
+                />
               </Routes>
             </Router>
           </CartProvider>
