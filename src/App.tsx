@@ -15,6 +15,7 @@ import { CartProvider } from "./context/cartContext";
 import BillingInfo from "./pages/BillingInfo";
 import AdminDashboard from "./pages/Dashboard/AdminDashboard";
 import LearningDashboard from "./pages/LearningDashboard";
+import ContactPage from "./pages/ContactPage";
 
 const App: React.FC = () => {
   return (
@@ -37,6 +38,7 @@ const App: React.FC = () => {
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 {/* Admin Routes */}
                 <Route path="/admin/dashboard" element={<AdminDashboard />} />
+                <Route path="/contact" element={<ContactPage />} />
               </Routes>
             </Router>
           </CartProvider>
