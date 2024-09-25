@@ -23,6 +23,7 @@ const Settings = () => {
     register,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors },
   } = useForm<FormData>({
     defaultValues: {
@@ -52,6 +53,19 @@ const Settings = () => {
       setValue("phone", user.phone);
     }
   }, [user, setValue]);
+  const handleCancel = () => {
+    // Reset form to initial values
+    reset({
+      firstName: user?.firstName,
+      lastName: user?.lastName,
+      email: user?.email,
+      phone: user?.phone,
+    });
+    // Reset file selection and preview
+    setSelectedFile(null);
+    setPreviewUrl("");
+    toast.info("Changes reverted");
+  };
 
   const { mutate } = useUpdateUser({
     onSuccess: (data) => {
@@ -63,6 +77,12 @@ const Settings = () => {
       toast.error("Error updating user");
     },
   });
+  const handleDeleteClick = () => {
+    // Reset the selected file and preview
+    setSelectedFile(null);
+    setPreviewUrl("");
+    toast.info("Profile picture deleted");
+  };
 
   const onSubmit = (data: FormData) => {
     const formData = new FormData();
@@ -203,12 +223,22 @@ const Settings = () => {
                     </div>
                   </div>
 
-                  <button
-                    className="mt-6 w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
-                    type="submit"
-                  >
-                    Save Changes
-                  </button>
+                  <div className="flex justify-between mt-6">
+  <button
+    type="button"
+    onClick={handleCancel}
+    className="w-1/2 mr-2 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
+  >
+    Cancel
+  </button>
+  <button
+    type="submit"
+    className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
+  >
+    Save Changes
+  </button>
+</div>
+                  
                 </form>
               </div>
             </div>
@@ -233,15 +263,16 @@ const Settings = () => {
                       />
                     </div>
                     <div className="ml-4">
-                      <button
+                      {/* <button
                         type="button"
                         className="text-sm text-blue-600 hover:text-blue-700 focus:outline-none"
                       >
                         Update
-                      </button>
-                      <button
+                      </button> */}
+                       <button
                         type="button"
                         className="text-sm text-red-600 hover:text-red-700 focus:outline-none ml-4"
+                        onClick={handleDeleteClick}
                       >
                         Delete
                       </button>
@@ -268,12 +299,7 @@ const Settings = () => {
                   </div>
 
                   <div className="flex justify-between">
-                    <button
-                      type="button"
-                      className="w-1/2 mr-2 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
-                    >
-                      Cancel
-                    </button>
+                    
                     {/* <button
                       type="submit"
                       className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
