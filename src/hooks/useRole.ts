@@ -8,15 +8,24 @@ interface DecodedToken {
 
 const useRole = () => {
   const [role, setRole] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
-      const decoded = jwtDecode<DecodedToken>(token);
-      setRole(decoded.role);
+      try {
+        const decoded = jwtDecode<DecodedToken>(token);
+        setRole(decoded.role);
+      } catch (error) {
+        console.log("Error decoding token: ", error);
+        setRole(null);
+      }
+    } else {
+      setRole(null);
     }
+    setIsLoading(false);
   }, []);
-  return role;
+  return { role, isLoading };
 };
 
 export default useRole;

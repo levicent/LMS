@@ -81,7 +81,7 @@ const CreateUsersTable: React.FC = () => {
         );
         toast.success("User updated successfully");
       } else {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, data, {
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

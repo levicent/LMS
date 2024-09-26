@@ -6,7 +6,7 @@ interface PrivateRoutesProps {
 }
 
 function PrivateRoutes({ element }: PrivateRoutesProps) {
-  const role = useRole();
+  const { role } = useRole();
 
   if (!role) {
     return <div>Loading...</div>;
