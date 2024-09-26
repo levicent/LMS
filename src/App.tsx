@@ -7,6 +7,7 @@ import SignInPage from "./pages/Authentication/SignInPage";
 import SignupPage from "./pages/Authentication/SignUpPage";
 import ForgotPassword from "./pages/Authentication/ForgotPassword";
 import { ToastContainer } from "react-toastify";
+import InstructorDashboard from "./pages/Dashboard/InstructorDashboard";
 import "react-toastify/dist/ReactToastify.css";
 // import ProfilePage from "./pages/ProfilePage";
 import AccountSettings from "./pages/AccountSettings";
@@ -38,16 +39,23 @@ const App: React.FC = () => {
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/instructorDashboard" element={<InstructorDashboard />} />
+                
                 {/* Admin Routes */}
 
                 <Route
                   path="/admin/dashboard"
-                  element={<PrivateRoutes element={<AdminDashboard />} />}
+                  element={<PrivateRoutes element={<AdminDashboard />}requiredRole="admin" />}
                 />
                 <Route
                   path="/admin/dashboard/user/create"
-                  element={<PrivateRoutes element={<CreateUsersTablePage />} />}
+                  element={<PrivateRoutes element={<CreateUsersTablePage />}requiredRole="admin" />}
                 />
+                {/* Teacher Routes */}
+                {/* <Route
+                  path="/instructor/dashboard"
+                  element={<PrivateRoutes element={<InstructorDashboard />}requiredRole="teacher" />}
+                /> */}
               </Routes>
             </Router>
           </CartProvider>
