@@ -19,12 +19,7 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
         {/* <!-- ===== Content Area Start ===== --> */}
         <div className="relative flex flex-1 flex-col">
           {/* <!-- ===== Header Start ===== --> */}
-          <Header
-            className="sticky top-0 z-10"
-            sidebarOpen={sidebarOpen}
-            setSidebarOpen={setSidebarOpen}
-            
-          />
+          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
           {/* <!-- ===== Header End ===== --> */}
 
           {/* <!-- ===== Main Content Start ===== --> */}
