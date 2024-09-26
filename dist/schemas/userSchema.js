@@ -30,4 +30,5 @@ exports.updateUserSchema = zod_1.z.object({
         .min(6, "Password must be at least 6 characters")
         .optional(),
     image: zod_1.z.string().optional(),
+    role: zod_1.z.enum(["admin", "student", "teacher"]).optional(),
 });

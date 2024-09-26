@@ -1,4 +1,4 @@
-import mongoose, { mongo } from "mongoose";
+import mongoose from "mongoose";
 import { IUser } from "../interfaces/IUser";
 
 interface IUserModel extends IUser, mongoose.Document {}

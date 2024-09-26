@@ -105,34 +105,29 @@ const getUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
     }
 });
 exports.getUserById = getUserById;
-exports.updateUserById = [
-    upload.single("profilePicture"),
-    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const { id } = req.params;
-            const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
-            if (!parsed.success) {
-                return res
-                    .status(400)
-                    .json({ message: "Validation failed", errors: parsed.error.errors });
-            }
-            if (req.file) {
-                parsed.data.image = req.file.path;
-            }
-            const updatedUser = yield User_1.default.findByIdAndUpdate(id, parsed.data, {
-                new: true,
-            });
-            if (!updatedUser) {
-                return res.status(404).json({ message: "User not found" });
-            }
-            res.status(200).json({ message: "User updated successfully" });
+const updateUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { id } = req.params;
+        const parsed = userSchema_1.updateUserSchema.safeParse(req.body);
+        if (!parsed.success) {
+            return res
+                .status(400)
+                .json({ message: "Validation failed", errors: parsed.error.errors });
         }
-        catch (error) {
-            console.error("Error updating user by id: ", error);
-            res.status(500).json({ message: "Internal server error" });
+        const updatedUser = yield User_1.default.findByIdAndUpdate(id, parsed.data, {
+            new: true,
+        });
+        if (!updatedUser) {
+            return res.status(404).json({ message: "User not found" });
         }
-    }),
-];
+        res.status(200).json({ message: "User updated successfully" });
+    }
+    catch (error) {
+        console.error("Error updating user by id: ", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.updateUserById = updateUserById;
 const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
