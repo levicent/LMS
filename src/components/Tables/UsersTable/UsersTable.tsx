@@ -13,26 +13,20 @@ import {
 } from "@mui/material";
 import { Add, Edit, Delete } from "@mui/icons-material";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
+import { useDeleteUser } from "@/hooks/useDeleteUser";
 
 const UsersTable = () => {
   const navigate = useNavigate();
   const { data: users, isLoading, error } = useFetchUserDetails();
+  const { mutate: deleteUser } = useDeleteUser();
 
   const handleEdit = (user: any) => {
     navigate(`/admin/dashboard/user/edit/${user._id}`, { state: { user } });
   };
 
   const handleDelete = async (user: any) => {
-    // try {
-    //   const patientId = patient._id
-    //   await axios.delete(
-    //     `${import.meta.env.VITE_API_URL}/api/patients/${patientId}`
-    //   )
-    //   console.log('Patient deleted:', patient)
-    //   fetchPatients()
-    // } catch (error) {
-    //   console.error('Error deleting patient: ', error)
-    // }
+    const userId = user._id;
+    deleteUser(userId);
   };
 
   const handleCreate = () => {

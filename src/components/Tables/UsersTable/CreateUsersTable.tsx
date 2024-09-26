@@ -20,11 +20,12 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 interface FormValues {
-  firstName: string;
-  lastName: string;
-  email: string;
-  phone: string;
-  role: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  phone?: string;
+  role?: string;
+  password?: string;
 }
 
 interface UserData {
@@ -33,6 +34,7 @@ interface UserData {
   email?: string;
   phone?: string;
   role?: string;
+  password?: string;
 }
 
 const CreateUsersTable: React.FC = () => {
@@ -47,6 +49,7 @@ const CreateUsersTable: React.FC = () => {
     email: userData.email || "",
     phone: userData.phone || "",
     role: userData.role || "",
+    password: userData.password || "",
   });
 
   const {
@@ -64,21 +67,31 @@ const CreateUsersTable: React.FC = () => {
   };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
+    console.log("Submitted data", data);
     try {
       if (id) {
         await axios.put(
           `${import.meta.env.VITE_API_URL}/api/users/${id}`,
-          data
+          data,
+          {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
         );
         toast.success("User updated successfully");
       } else {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, data);
+        await axios.post(`${import.meta.env.VITE_API_URL}/api/users`, data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         toast.success("User created successfully");
       }
-      navigate("/users");
+      navigate("/admin/dashboard");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
-        toast.error("User with this email already exists");
+        toast.error(`Error: ${error.response.data.message}`);
       } else {
         toast.error("Error saving user");
       }
@@ -197,6 +210,31 @@ const CreateUsersTable: React.FC = () => {
                     Role is required
                   </Typography>
                 )}
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  {...register("password", {
+                    required: !id, // Require password only when creating a new user
+                    minLength: {
+                      value: 6,
+                      message: "Password must be at least 6 characters",
+                    },
+                  })}
+                  label="Password"
+                  type="password"
+                  variant="outlined"
+                  fullWidth
+                  error={!!errors.password}
+                  helperText={
+                    errors.password
+                      ? errors.password.message || "Password is required"
+                      : ""
+                  }
+                  value={formData.password}
+                  disabled={Boolean(id)}
+                  onChange={handleChange}
+                  name="password"
+                />
               </Grid>
             </Grid>
             <Button

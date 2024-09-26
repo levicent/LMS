@@ -48,6 +48,10 @@ const App: React.FC = () => {
                   path="/admin/dashboard/user/create"
                   element={<PrivateRoutes element={<CreateUsersTablePage />} />}
                 />
+                <Route
+                  path="/admin/dashboard/user/edit/:id"
+                  element={<PrivateRoutes element={<CreateUsersTablePage />} />}
+                />
               </Routes>
             </Router>
           </CartProvider>
