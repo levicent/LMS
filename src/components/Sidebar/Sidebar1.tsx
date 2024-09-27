@@ -134,7 +134,7 @@ const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                     icon={faUserGraduate}
                     className="text-white"
                   />
-                  Students Table
+                  My Courses
                 </NavLink>
               </li>
 
@@ -150,7 +150,7 @@ const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                     icon={faChalkboardTeacher}
                     className="text-white"
                   />
-                  Teachers Table
+                  Draft
                 </NavLink>
               </li>
 
@@ -162,7 +162,7 @@ const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                   }`}
                 >
                   <FontAwesomeIcon icon={faUserShield} className="text-white" />
-                  Admin Table
+                  Update Courses
                 </NavLink>
               </li>
 

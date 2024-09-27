@@ -5,7 +5,7 @@ import Sidebar1 from "../components/Sidebar/Sidebar1";
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
-const AdminLayout = ({ children }: AdminLayoutProps) => {
+const TeacherLayout = ({ children }: AdminLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
@@ -37,4 +37,4 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
   );
 };
 
-export default AdminLayout;
+export default TeacherLayout;
