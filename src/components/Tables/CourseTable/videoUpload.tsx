@@ -22,21 +22,30 @@ interface FormValues {
 
 export default function UploadVideosPage() {
   const navigate = useNavigate();
-  const { register, handleSubmit, formState: { errors }, setValue } = useForm<FormValues>();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    setValue,
+  } = useForm<FormValues>();
   const [videoSections, setVideoSections] = useState<VideoDetails[]>([
-    { title: "", description: "", video: null }
+    { title: "", description: "", video: null },
   ]);
 
-  const handleVideoChange = (index: number, field: string, value: string | File) => {
+  const handleVideoChange = (
+    index: number,
+    field: string,
+    value: string | File
+  ) => {
     const updatedVideos = [...videoSections];
     updatedVideos[index] = {
       ...updatedVideos[index],
-      [field]: value
+      [field]: value,
     };
     setVideoSections(updatedVideos);
 
     // Set the value in the react-hook-form state for validation if needed
-    if (field === 'title' || field === 'description') {
+    if (field === "title" || field === "description") {
       setValue(`videos[${index}].${field}`, value as string);
     }
   };
@@ -44,7 +53,7 @@ export default function UploadVideosPage() {
   const addVideoSection = () => {
     setVideoSections([
       ...videoSections,
-      { title: "", description: "", video: null }
+      { title: "", description: "", video: null },
     ]);
   };
 
@@ -66,7 +75,7 @@ export default function UploadVideosPage() {
       // Replace with the actual course ID and API endpoint
       const courseId = "someCourseId";
       await axios.post(`/api/courses/${courseId}/videos`, formData, {
-        headers: { "Content-Type": "multipart/form-data" }
+        headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Videos uploaded successfully");
       navigate(`/courses/${courseId}`);
@@ -89,7 +98,10 @@ export default function UploadVideosPage() {
                 <div className="flex justify-between items-center">
                   <h2 className="text-lg font-medium">Video {index + 1}</h2>
                   {index > 0 && (
-                    <Button variant="ghost" onClick={() => removeVideoSection(index)}>
+                    <Button
+                      variant="ghost"
+                      onClick={() => removeVideoSection(index)}
+                    >
                       Remove
                     </Button>
                   )}
@@ -100,7 +112,9 @@ export default function UploadVideosPage() {
                   <Input
                     id={`videoTitle${index}`}
                     value={video.title}
-                    onChange={(e) => handleVideoChange(index, "title", e.target.value)}
+                    onChange={(e) =>
+                      handleVideoChange(index, "title", e.target.value)
+                    }
                   />
                   {errors.videos?.[index]?.title && (
                     <p className="text-red-500 text-sm">
@@ -110,11 +124,15 @@ export default function UploadVideosPage() {
                 </div>
 
                 <div className="space-y-2">
-                  <Label htmlFor={`videoDescription${index}`}>Video Description</Label>
+                  <Label htmlFor={`videoDescription${index}`}>
+                    Video Description
+                  </Label>
                   <Textarea
                     id={`videoDescription${index}`}
                     value={video.description}
-                    onChange={(e) => handleVideoChange(index, "description", e.target.value)}
+                    onChange={(e) =>
+                      handleVideoChange(index, "description", e.target.value)
+                    }
                   />
                   {errors.videos?.[index]?.description && (
                     <p className="text-red-500 text-sm">
@@ -129,7 +147,13 @@ export default function UploadVideosPage() {
                     id={`videoFile${index}`}
                     type="file"
                     accept="video/*"
-                    onChange={(e) => handleVideoChange(index, "video", e.target.files ? e.target.files[0] : null)}
+                    onChange={(e) =>
+                      handleVideoChange(
+                        index,
+                        "video",
+                        e.target.files ? e.target.files[0] : null
+                      )
+                    }
                   />
                   {errors.videos?.[index]?.video && (
                     <p className="text-red-500 text-sm">
@@ -144,7 +168,9 @@ export default function UploadVideosPage() {
               Add Another Video
             </Button>
 
-            <Button type="submit" className="w-full mt-4">Upload Videos</Button>
+            <Button type="submit" className="w-full mt-4">
+              Upload Videos
+            </Button>
           </form>
         </CardContent>
       </Card>

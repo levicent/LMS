@@ -17,7 +17,7 @@ import {
 import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { X } from "lucide-react";
-import VideoUploader from "@/components/VideoUploader/VideoUploader";
+// import VideoUploader from "@/components/VideoUploader/VideoUploader";
 
 interface FormValues {
   title: string;
@@ -90,12 +90,12 @@ export default function CreateOrEditCourseForm({
     }));
   };
 
-  const handleVideoUpload = (file: File) => {
-    setFormData((prev) => ({
-      ...prev,
-      video: file,
-    }));
-  };
+  // const handleVideoUpload = (file: File) => {
+  //   setFormData((prev) => ({
+  //     ...prev,
+  //     video: file,
+  //   }));
+  // };
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
