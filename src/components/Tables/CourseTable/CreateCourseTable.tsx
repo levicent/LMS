@@ -10,6 +10,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  FormHelperText,
   MenuItem,
 } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -29,7 +30,7 @@ interface FormValues {
   category: string;
   tags: string;
   language: string;
-  video: File | null; 
+  video: File | null;
 }
 
 interface CourseData {
@@ -61,7 +62,7 @@ const CreateOrEditCourseForm: React.FC = () => {
     category: courseData.category || "",
     tags: courseData.tags?.join(",") || "",
     language: courseData.language || "English",
-    video: null, 
+    video: null,
   });
 
   const {
@@ -81,7 +82,7 @@ const CreateOrEditCourseForm: React.FC = () => {
     const file = e.target.files?.[0] || null;
     setFormData((prev) => ({
       ...prev,
-      video: file,  // Update the video file in state
+      video: file, // Update the video file in state
     }));
   };
 
@@ -108,8 +109,6 @@ const CreateOrEditCourseForm: React.FC = () => {
         formDataToSubmit.append("video", formData.video);
       }
 
-
-     
       if (id) {
         await axios.put(
           `${import.meta.env.VITE_API_URL}/api/courses/${id}`,
@@ -205,34 +204,42 @@ const CreateOrEditCourseForm: React.FC = () => {
                   multiline
                   fullWidth
                   error={!!errors.description}
-                  helperText={errors.description ? "Description is required" : ""}
+                  helperText={
+                    errors.description ? "Description is required" : ""
+                  }
                   value={formData.description}
                   onChange={handleChange}
                   name="description"
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-  <FormControl fullWidth variant="outlined" error={!!errors.instructor}>
-    <InputLabel id="instructor-label">Instructor ID</InputLabel>
-    <Select
-      {...register("instructor", { required: true })}
-      labelId="instructor-label"
-      label="Instructor ID"
-      value={formData.instructor}
-      onChange={handleChange}
-      name="instructor"
-    >
-      <MenuItem value="">
-        <em>None</em>
-      </MenuItem>
-      <MenuItem value="instructor1">Instructor 1</MenuItem>
-      <MenuItem value="instructor2">Instructor 2</MenuItem>
-      <MenuItem value="instructor3">Instructor 3</MenuItem>
-      {/* Add more instructors as needed */}
-    </Select>
-    {errors.instructor && <FormHelperText>Instructor ID is required</FormHelperText>}
-  </FormControl>
-</Grid>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.instructor}
+                >
+                  <InputLabel id="instructor-label">Instructor ID</InputLabel>
+                  <Select
+                    {...register("instructor", { required: true })}
+                    labelId="instructor-label"
+                    label="Instructor ID"
+                    value={formData.instructor}
+                    onChange={handleChange}
+                    name="instructor"
+                  >
+                    <MenuItem value="">
+                      <em>None</em>
+                    </MenuItem>
+                    <MenuItem value="instructor1">Instructor 1</MenuItem>
+                    <MenuItem value="instructor2">Instructor 2</MenuItem>
+                    <MenuItem value="instructor3">Instructor 3</MenuItem>
+                    {/* Add more instructors as needed */}
+                  </Select>
+                  {errors.instructor && (
+                    <FormHelperText>Instructor ID is required</FormHelperText>
+                  )}
+                </FormControl>
+              </Grid>
 
               <Grid item xs={12} sm={6}>
                 <TextField
@@ -248,7 +255,11 @@ const CreateOrEditCourseForm: React.FC = () => {
                 />
               </Grid>
               <Grid item xs={12} sm={6}>
-                <FormControl fullWidth variant="outlined" error={!!errors.level}>
+                <FormControl
+                  fullWidth
+                  variant="outlined"
+                  error={!!errors.level}
+                >
                   <InputLabel>Level</InputLabel>
                   <Select
                     {...register("level", { required: true })}
