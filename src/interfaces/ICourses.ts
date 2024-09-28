@@ -19,7 +19,7 @@ export interface ICourse {
   price: string;
   duration: string;
   level: "beginner" | "intermediate" | "advanced";
-  // instructor: Types.ObjectId;
+  instructor: Types.ObjectId;
   //   modules?: IModule[];
   category:
     | "Development"

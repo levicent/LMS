@@ -17,11 +17,11 @@ const courseSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
-    // instructor: {
-    //   type: mongoose.Schema.Types.ObjectId,
-    //   ref: "User",
-    //   required: true,
-    // },
+    instructor: {
+        type: mongoose_1.default.Schema.Types.ObjectId,
+        ref: "User",
+        required: true,
+    },
     duration: {
         type: String,
         required: true,

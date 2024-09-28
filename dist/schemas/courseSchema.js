@@ -8,7 +8,7 @@ exports.courseSchema = zod_1.z.object({
     price: zod_1.z.string().min(1, "Price is required"),
     duration: zod_1.z.string().min(1, "Duration is required"),
     level: zod_1.z.enum(["beginner", "intermediate", "advanced"]),
-    // instructor: z.string().min(1, "Instructor is required"),
+    instructor: zod_1.z.string().min(1, "Instructor is required"),
     category: zod_1.z.enum([
         "Development",
         "Business",
