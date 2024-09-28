@@ -16,10 +16,10 @@ export interface IQuiz {
 export interface ICourse {
   title: string;
   description: string;
-  price: number;
-  duration: number;
+  price: string;
+  duration: string;
   level: "beginner" | "intermediate" | "advanced";
-  instructor: Types.ObjectId;
+  // instructor: Types.ObjectId;
   //   modules?: IModule[];
   category:
     | "Development"
@@ -37,7 +37,7 @@ export interface ICourse {
     | "Teaching & Academics";
   studentsEnrolled: { user: Types.ObjectId }[];
   reviews?: { user: Types.ObjectId }[];
-  language: string[];
+  language: string;
   tags?: string[];
 
   createdAt: Date;

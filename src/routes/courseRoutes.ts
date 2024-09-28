@@ -11,7 +11,12 @@ import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
 
 router.post("/courses", authMiddleware, checkRole(["teacher"]), createCourse);
-router.get("/courses", authMiddleware, checkRole(["teacher"]), getAllCourses);
+router.get(
+  "/courses",
+  authMiddleware,
+  checkRole(["teacher", "admin"]),
+  getAllCourses
+);
 router.get(
   "/courses/:id",
   authMiddleware,
