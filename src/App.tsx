@@ -41,14 +41,13 @@ const App: React.FC = () => {
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route
-                  path="/instructorDashboard"
+                  path="/instructor/dashboard"
                   element={<InstructorDashboard />}
                 />
                 <Route
                   path="/videoDashboard"
                   element={<VideoUploadDashboard />}
                 />
-
 
                 {/* Admin Routes */}
 

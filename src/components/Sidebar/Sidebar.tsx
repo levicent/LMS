@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { NavLink, useLocation } from "react-router-dom";
-import SidebarLinkGroup from "./SidebarLinkGroup";
+// import SidebarLinkGroup from "./SidebarLinkGroup";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserGraduate,
@@ -110,15 +110,15 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
             <ul className="mb-6 flex flex-col gap-1.5">
               {/* <!-- Menu Item Dashboard --> */}
-              <SidebarLinkGroup
+              {/* <SidebarLinkGroup
                 activeCondition={
                   pathname === "/" || pathname.includes("dashboard")
                 }
               >
                 {(handleClick: any, open: any) => (
-                  <React.Fragment>{/* Menu Logic Here */}</React.Fragment>
+                  <React.Fragment></React.Fragment>
                 )}
-              </SidebarLinkGroup>
+              </SidebarLinkGroup> */}
               {/* <!-- Menu Item Dashboard --> */}
 
               {/* <!-- Menu Items --> */}
