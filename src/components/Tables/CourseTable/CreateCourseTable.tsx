@@ -58,7 +58,7 @@ const CreateCourseTable: React.FC = () => {
     if (userId) {
       setFormData((prevFormData) => ({
         ...prevFormData,
-        instructor: userId, // Set the instructor to userId
+        instructor: userId,
       }));
     }
   }, [userId]);
