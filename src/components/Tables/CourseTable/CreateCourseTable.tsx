@@ -111,7 +111,6 @@ const CreateCourseTable: React.FC = () => {
         );
         toast.success("Course created successfully");
       }
-      toast.success("Course created successfully");
       navigate("/instructor/dashboard");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
