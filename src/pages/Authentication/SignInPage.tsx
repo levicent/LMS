@@ -25,6 +25,8 @@ const SignInPage: React.FC = () => {
     if (!isLoading) {
       if (role === "admin") {
         navigate("/admin/dashboard");
+      } else if (role === "teacher") {
+        navigate("/instructor/dashboard");
       } else if (role === "student") {
         navigate("/");
       }
@@ -45,7 +47,7 @@ const SignInPage: React.FC = () => {
           navigate("/admin/dashboard");
         } else if (role === "teacher") {
           navigate("/instructor/dashboard");
-        } else {
+        } else if (role === "student") {
           navigate("/");
         }
       }
