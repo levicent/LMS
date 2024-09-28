@@ -5,34 +5,31 @@ import Sidebar from "../components/Sidebar/Sidebar";
 interface AdminLayoutProps {
   children: React.ReactNode;
 }
+
 const AdminLayout = ({ children }: AdminLayoutProps) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
-    <div className="">
-      {/* <!-- ===== Page Wrapper Start ===== --> */}
-      <div className="flex h-screen overflow-hidden">
-        {/* <!-- ===== Sidebar Start ===== --> */}
-        <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-        {/* <!-- ===== Sidebar End ===== --> */}
+    <div className="flex h-screen overflow-hidden">
+      {/* Sidebar */}
+      <Sidebar sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-        {/* <!-- ===== Content Area Start ===== --> */}
-        <div className="relative flex flex-1 flex-col">
-          {/* <!-- ===== Header Start ===== --> */}
-          <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
-          {/* <!-- ===== Header End ===== --> */}
+      {/* Content Area */}
+      <div
+        className={`relative flex flex-1 flex-col transition-all duration-300 ${
+          sidebarOpen ? "ml-64" : "ml-0"
+        }`}  // Adjusts content based on sidebar state
+      >
+        {/* Header */}
+        <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
 
-          {/* <!-- ===== Main Content Start ===== --> */}
-          <main className="flex-1 overflow-y-auto">
-            <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
-              {children}
-            </div>
-          </main>
-          {/* <!-- ===== Main Content End ===== --> */}
-        </div>
-        {/* <!-- ===== Content Area End ===== --> */}
+        {/* Main Content */}
+        <main className="flex-1 overflow-y-auto bg-gray-100">
+          <div className="mx-auto max-w-screen-2xl p-4 md:p-6 2xl:p-10">
+            {children}
+          </div>
+        </main>
       </div>
-      {/* <!-- ===== Page Wrapper End ===== --> */}
     </div>
   );
 };
