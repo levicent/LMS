@@ -20,10 +20,6 @@ const HomePage: React.FC = () => {
 
   const { isAuthenticated } = authContext;
 
-  const handleDashboardRedirect = () => {
-    navigate("/dashboard");
-  };
-
   const categories = [
     "All",
     "Development",
@@ -133,10 +129,7 @@ const HomePage: React.FC = () => {
               </Link>
             ) : (
               <Link to="/my-courses">
-                <button
-                  onClick={handleDashboardRedirect}
-                  className="mt-8 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-green-700 transition duration-300"
-                >
+                <button className="mt-8 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-green-700 transition duration-300">
                   Continue Learning
                 </button>
               </Link>
