@@ -1,6 +1,7 @@
 import { useState } from "react";
 import Header from "../components/Header/Header";
 import Sidebar from "../components/Sidebar/Sidebar";
+// import { Bars3Icon } from "@heroicons/react/24/outline";// Import the three-line hamburger icon
 
 interface AdminLayoutProps {
   children: React.ReactNode;
@@ -22,6 +23,14 @@ const AdminLayout = ({ children }: AdminLayoutProps) => {
       >
         {/* Header */}
         <Header sidebarOpen={sidebarOpen} setSidebarOpen={setSidebarOpen} />
+
+        {/* Hamburger Icon for toggling sidebar */}
+        {/* <button
+          onClick={() => setSidebarOpen(!sidebarOpen)}
+          className="p-2 text-gray-500 hover:text-gray-700 focus:outline-none focus:ring"
+        >
+          <Bars3Icon className="w-6 h-6" />
+        </button> */}
 
         {/* Main Content */}
         <main className="flex-1 overflow-y-auto bg-gray-100">
