@@ -12,6 +12,7 @@ import {
   MagnifyingGlassIcon,
   ShoppingCartIcon,
   ChevronRightIcon,
+  BookOpenIcon,
 } from "@heroicons/react/20/solid";
 import { FaSignOutAlt } from "react-icons/fa";
 import { HiSun, HiMoon } from "react-icons/hi";
@@ -154,7 +155,7 @@ export default function Navbar() {
                 </PopoverButton>
                 <PopoverPanel
                   className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${
-                    theme === "dark" ? "bg-gray-700" : "bg-white"
+                    theme === "dark" ? "bg-gray-800" : "bg-white"
                   } ring-1 ring-black ring-opacity-5`}
                 >
                   <div className="py-1">
@@ -164,7 +165,7 @@ export default function Navbar() {
                         to={category.href}
                         className={`block px-4 py-2 text-sm ${
                           theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-600"
+                            ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
@@ -189,7 +190,7 @@ export default function Navbar() {
                 </PopoverButton>
                 <PopoverPanel
                   className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${
-                    theme === "dark" ? "bg-gray-700" : "bg-white"
+                    theme === "dark" ? "bg-gray-800" : "bg-white"
                   } ring-1 ring-black ring-opacity-5`}
                 >
                   <div className="py-1">
@@ -199,7 +200,7 @@ export default function Navbar() {
                         to={item.href}
                         className={`block px-4 py-2 text-sm ${
                           theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-600"
+                            ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
@@ -346,15 +347,16 @@ export default function Navbar() {
                         <span>My Profile</span>
                       </Link>
                       <Link
-                        to="/wishlist"
+                        to="/my-courses"
                         className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
                           theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
                         }`}
                       >
-                        <HeartIcon className="h-5 w-5" />
-                        <span>Wishlist</span>
+                        <BookOpenIcon className="h-5 w-5" />{" "}
+                        {/* Change the icon here */}
+                        <span>My Learning</span>
                       </Link>
                       <Link
                         to="/messages"
