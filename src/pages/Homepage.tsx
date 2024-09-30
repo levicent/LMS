@@ -132,12 +132,14 @@ const HomePage: React.FC = () => {
                 </button>
               </Link>
             ) : (
-              <button
-                onClick={handleDashboardRedirect}
-                className="mt-8 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-green-700 transition duration-300"
-              >
-                Continue Learning
-              </button>
+              <Link to="/my-courses">
+                <button
+                  onClick={handleDashboardRedirect}
+                  className="mt-8 px-8 py-4 bg-green-600 text-white text-lg font-semibold rounded-lg shadow hover:bg-green-700 transition duration-300"
+                >
+                  Continue Learning
+                </button>
+              </Link>
             )}
           </section>
 
@@ -364,7 +366,7 @@ const HomePage: React.FC = () => {
               Join millions of learners and start acquiring the skills you need
               for your future today.
             </p>
-            <Link to={isAuthenticated ? "/dashboard" : "/signup"}>
+            <Link to={isAuthenticated ? "/my-courses" : "/signup"}>
               <button className="px-8 py-4 bg-white text-blue-600 text-lg font-semibold rounded-lg shadow hover:bg-gray-100 transition duration-300">
                 {isAuthenticated
                   ? "Go to My Courses"
