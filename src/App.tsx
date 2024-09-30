@@ -19,7 +19,8 @@ import LearningDashboard from "./pages/LearningDashboard";
 import ContactPage from "./pages/ContactPage";
 import PrivateRoutes from "./routes/PrivateRoutes";
 import CreateUsersTablePage from "./pages/Dashboard/Tables/CreateUsersTablePage";
-// import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
+import CourseDashboard from "./pages/Dashboard/CourseDashboard";
+import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -44,10 +45,19 @@ const App: React.FC = () => {
                   path="/instructor/dashboard"
                   element={<InstructorDashboard />}
                 />
-                {/* <Route
-                  path="/videoDashboard"
+                <Route
+                  path="/instructor/dashboard/videoDashboard"
                   element={<VideoUploadDashboard />}
-                /> */}
+                />
+                <Route
+                  path="/instructor/dashboard"
+                  element={<InstructorDashboard />}
+                />
+                <Route
+                  path="/instructor/dashboard/Course"
+                  element={<CourseDashboard />}
+                />
+                
 
                 {/* Admin Routes */}
 
