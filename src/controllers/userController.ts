@@ -2,37 +2,16 @@ import User from "../models/User";
 import { Request, Response } from "express";
 import { updateUserSchema, userRegisterSchema } from "../schemas/userSchema";
 import multer from "multer";
-import path from "path";
+import { v2 as cloudinary } from "cloudinary";
+import fs from "fs";
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    cb(null, "uploads/");
-  },
-  filename: (req, file, cb) => {
-    cb(
-      null,
-      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
-    );
-  },
+cloudinary.config({
+  cloud_name: "de51cdx8q",
+  api_key: "142799684141986",
+  api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
 });
 
-const upload = multer({
-  storage: storage,
-  limits: { fileSize: 1024 * 1024 * 2 },
-  fileFilter: (req, file, cb) => {
-    const filetypes = /jpeg|jpg|png/;
-    const extname = filetypes.test(
-      path.extname(file.originalname).toLowerCase()
-    );
-    const mimetype = filetypes.test(file.mimetype);
-
-    if (mimetype && extname) {
-      return cb(null, true);
-    } else {
-      cb(new Error("Only JPEG, JPG, PNG files are allowed"));
-    }
-  },
-});
+const upload = multer({ dest: "uploads/" });
 
 export const createUser = async (req: Request, res: Response) => {
   try {
@@ -163,7 +142,6 @@ export const updateUserProfile = [
   upload.single("profilePicture"),
   async (req: Request, res: Response) => {
     try {
-      console.log("Uploaded file details", req.file);
       const userId = req.user?.id;
       if (!userId) {
         return res.status(400).json({ message: "User ID not provided" });
@@ -177,7 +155,11 @@ export const updateUserProfile = [
       }
 
       if (req.file) {
-        parsed.data.image = req.file.path;
+        const result = await cloudinary.uploader.upload(req.file.path);
+        folder: "profile-pictures";
+
+        parsed.data.image = result.secure_url;
+        fs.unlinkSync(req.file.path);
       }
 
       const updatedUser = await User.findByIdAndUpdate(userId, parsed.data, {
@@ -190,7 +172,11 @@ export const updateUserProfile = [
 
       res
         .status(200)
-        .json({ message: "User profile updated successfully", updatedUser });
+        .json({
+          message: "User profile updated successfully",
+          updatedUser,
+          imageUrl: parsed.data.image,
+        });
     } catch (error) {
       console.error("Error updating user profile:", error);
       res.status(500).json({ message: "Internal server error" });

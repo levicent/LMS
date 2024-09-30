@@ -27,30 +27,14 @@ exports.updateUserProfile = exports.getUserProfile = exports.deleteUserById = ex
 const User_1 = __importDefault(require("../models/User"));
 const userSchema_1 = require("../schemas/userSchema");
 const multer_1 = __importDefault(require("multer"));
-const path_1 = __importDefault(require("path"));
-const storage = multer_1.default.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, "uploads/");
-    },
-    filename: (req, file, cb) => {
-        cb(null, file.fieldname + "-" + Date.now() + path_1.default.extname(file.originalname));
-    },
+const cloudinary_1 = require("cloudinary");
+const fs_1 = __importDefault(require("fs"));
+cloudinary_1.v2.config({
+    cloud_name: "de51cdx8q",
+    api_key: "142799684141986",
+    api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
 });
-const upload = (0, multer_1.default)({
-    storage: storage,
-    limits: { fileSize: 1024 * 1024 * 2 },
-    fileFilter: (req, file, cb) => {
-        const filetypes = /jpeg|jpg|png/;
-        const extname = filetypes.test(path_1.default.extname(file.originalname).toLowerCase());
-        const mimetype = filetypes.test(file.mimetype);
-        if (mimetype && extname) {
-            return cb(null, true);
-        }
-        else {
-            cb(new Error("Only JPEG, JPG, PNG files are allowed"));
-        }
-    },
-});
+const upload = (0, multer_1.default)({ dest: "uploads/" });
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const _a = req.body, { email, phone } = _a, rest = __rest(_a, ["email", "phone"]);
@@ -179,7 +163,6 @@ exports.updateUserProfile = [
     (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         var _c;
         try {
-            console.log("Uploaded file details", req.file);
             const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
             if (!userId) {
                 return res.status(400).json({ message: "User ID not provided" });
@@ -191,7 +174,10 @@ exports.updateUserProfile = [
                     .json({ message: "Validation failed", errors: parsed.error.errors });
             }
             if (req.file) {
-                parsed.data.image = req.file.path;
+                const result = yield cloudinary_1.v2.uploader.upload(req.file.path);
+                folder: "profile-pictures";
+                parsed.data.image = result.secure_url;
+                fs_1.default.unlinkSync(req.file.path);
             }
             const updatedUser = yield User_1.default.findByIdAndUpdate(userId, parsed.data, {
                 new: true,

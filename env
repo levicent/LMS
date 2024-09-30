@@ -1,3 +1,0 @@
-JWT_SECRET_KEY = 'thisisasecret'
-MONGODB_URI = 'mongodb+srv://abdulminhaz2:Abdul123@cluster0.cxd433y.mongodb.net/LMS'
-PORT = 3000
