@@ -4,11 +4,19 @@ import { updateUserSchema, userRegisterSchema } from "../schemas/userSchema";
 import multer from "multer";
 import { v2 as cloudinary } from "cloudinary";
 import fs from "fs";
+import dotenv from "dotenv";
+dotenv.config();
 
 cloudinary.config({
-  cloud_name: "de51cdx8q",
-  api_key: "142799684141986",
-  api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
+});
+
+console.log({
+  cloud_name: process.env.CLOUD_NAME,
+  api_key: process.env.API_KEY,
+  api_secret: process.env.API_SECRET,
 });
 
 const upload = multer({ dest: "uploads/" });
