@@ -18,10 +18,12 @@ const courseSchema_1 = require("../schemas/courseSchema");
 const cloudinary_1 = require("cloudinary");
 const multer_1 = __importDefault(require("multer"));
 const fs_1 = __importDefault(require("fs"));
+const dotenv_1 = __importDefault(require("dotenv"));
+dotenv_1.default.config();
 cloudinary_1.v2.config({
-    cloud_name: "de51cdx8q",
-    api_key: "142799684141986",
-    api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 });
 const uploads = (0, multer_1.default)({ dest: "uploads/" });
 exports.createCourse = [
