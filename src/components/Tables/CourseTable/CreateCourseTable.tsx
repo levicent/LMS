@@ -30,6 +30,7 @@ interface FormValues {
   category: string;
   tags: string[];
   language: string;
+  thumbnail: File | null;
 }
 
 interface CourseData extends FormValues {}
@@ -52,6 +53,7 @@ const CreateCourseTable: React.FC = () => {
     category: courseData.category || "Development",
     tags: courseData.tags || [],
     language: courseData.language || "",
+    thumbnail: null,
   });
 
   useEffect(() => {
@@ -70,31 +72,55 @@ const CreateCourseTable: React.FC = () => {
   } = useForm<FormValues>();
 
   const handleChange = (e: any) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({
-      ...prev,
-      [name as keyof FormValues]: value,
-    }));
+    const { name, value, files } = e.target;
+    if (name === "thumbnail") {
+      // Handle file input for thumbnail
+      setFormData((prev) => ({
+        ...prev,
+        thumbnail: files[0] || null,
+      }));
+    } else {
+      setFormData((prev) => ({
+        ...prev,
+        [name as keyof FormValues]: value,
+      }));
+    }
   };
-
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log("Submitted data", data);
-    const courseData = {
-      ...data,
-      instructor: formData.instructor,
-    };
 
+    // Split tags if they are entered as a comma-separated string
     if (!Array.isArray(data.tags)) {
       data.tags = data.tags ? (data.tags as unknown as string).split(",") : [];
     }
+
+    // Create a new FormData object to handle multipart/form-data
+    const formDataToSubmit = new FormData();
+    formDataToSubmit.append("title", data.title);
+    formDataToSubmit.append("description", data.description);
+    formDataToSubmit.append("price", data.price);
+    formDataToSubmit.append("duration", data.duration);
+    formDataToSubmit.append("level", data.level);
+    formDataToSubmit.append("category", data.category);
+    formDataToSubmit.append("tags", data.tags.join(",")); // Join tags as a comma-separated string
+    formDataToSubmit.append("language", data.language);
+    formDataToSubmit.append("instructor", formData.instructor); // Add the instructor ID
+
+    // Append the thumbnail if it exists
+    if (formData.thumbnail) {
+      formDataToSubmit.append("thumbnail", formData.thumbnail);
+    }
+
     try {
+      // If id exists, we are updating, otherwise creating a new course
       if (id) {
         await axios.put(
           `${import.meta.env.VITE_API_URL}/api/courses/${id}`,
-          courseData,
+          formDataToSubmit,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "multipart/form-data", // Ensure correct content-type
             },
           }
         );
@@ -102,15 +128,17 @@ const CreateCourseTable: React.FC = () => {
       } else {
         await axios.post(
           `${import.meta.env.VITE_API_URL}/api/courses`,
-          courseData,
+          formDataToSubmit,
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
+              "Content-Type": "multipart/form-data", // Ensure correct content-type
             },
           }
         );
         toast.success("Course created successfully");
       }
+
       navigate("/instructor/dashboard/videoDashboard");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
@@ -313,6 +341,16 @@ const CreateCourseTable: React.FC = () => {
                   value={formData.language}
                   onChange={handleChange}
                   name="language"
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <Typography variant="subtitle1">Thumbnail</Typography>
+                <input
+                  type="file"
+                  accept="image/*"
+                  name="thumbnail"
+                  onChange={handleChange}
+                  style={{ marginBottom: "20px" }}
                 />
               </Grid>
             </Grid>

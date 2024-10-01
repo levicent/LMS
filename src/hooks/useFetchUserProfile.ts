@@ -18,6 +18,7 @@ const fetchUserProfile = async (): Promise<User> => {
       },
     }
   );
+  console.log("UserProfile", data);
   return data;
 };
 

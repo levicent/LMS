@@ -23,7 +23,6 @@ interface FormValues {
 export default function UploadVideosPage() {
   const navigate = useNavigate();
   const {
-    register,
     handleSubmit,
     formState: { errors },
     setValue,
@@ -46,7 +45,7 @@ export default function UploadVideosPage() {
 
     // Set the value in the react-hook-form state for validation if needed
     if (field === "title" || field === "description") {
-      setValue(`videos[${index}].${field}`, value as string);
+      setValue(`videos.${index}.${field}` as const, value as string);
     }
   };
 
@@ -151,7 +150,7 @@ export default function UploadVideosPage() {
                       handleVideoChange(
                         index,
                         "video",
-                        e.target.files ? e.target.files[0] : null
+                        e.target.files ? e.target.files[0] : ""
                       )
                     }
                   />
