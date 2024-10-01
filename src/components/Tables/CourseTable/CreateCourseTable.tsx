@@ -124,8 +124,8 @@ const CreateCourseTable: React.FC = () => {
         );
         toast.success("Course updated successfully");
       } else {
-        toast.promise(
-          await axios.post(
+        await toast.promise(
+          axios.post(
             `${import.meta.env.VITE_API_URL}/api/courses`,
             formDataToSubmit,
             {
