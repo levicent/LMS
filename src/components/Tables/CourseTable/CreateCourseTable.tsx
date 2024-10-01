@@ -74,10 +74,10 @@ const CreateCourseTable: React.FC = () => {
   const handleChange = (e: any) => {
     const { name, value, files } = e.target;
     if (name === "thumbnail") {
-      // Handle file input for thumbnail
+      const selectedFile = files[0];
       setFormData((prev) => ({
         ...prev,
-        thumbnail: files[0] || null,
+        thumbnail: selectedFile || null,
       }));
     } else {
       setFormData((prev) => ({
@@ -86,15 +86,14 @@ const CreateCourseTable: React.FC = () => {
       }));
     }
   };
+
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     console.log("Submitted data", data);
 
-    // Split tags if they are entered as a comma-separated string
     if (!Array.isArray(data.tags)) {
       data.tags = data.tags ? (data.tags as unknown as string).split(",") : [];
     }
 
-    // Create a new FormData object to handle multipart/form-data
     const formDataToSubmit = new FormData();
     formDataToSubmit.append("title", data.title);
     formDataToSubmit.append("description", data.description);
@@ -102,9 +101,9 @@ const CreateCourseTable: React.FC = () => {
     formDataToSubmit.append("duration", data.duration);
     formDataToSubmit.append("level", data.level);
     formDataToSubmit.append("category", data.category);
-    formDataToSubmit.append("tags", data.tags.join(",")); // Join tags as a comma-separated string
+    formDataToSubmit.append("tags", data.tags.join(","));
     formDataToSubmit.append("language", data.language);
-    formDataToSubmit.append("instructor", formData.instructor); // Add the instructor ID
+    formDataToSubmit.append("instructor", formData.instructor);
 
     // Append the thumbnail if it exists
     if (formData.thumbnail) {
@@ -120,7 +119,6 @@ const CreateCourseTable: React.FC = () => {
           {
             headers: {
               Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "multipart/form-data", // Ensure correct content-type
             },
           }
         );
