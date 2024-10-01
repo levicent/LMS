@@ -32,22 +32,21 @@ export const createCourse = [
       }
 
       if (req.file) {
-        const thumbnail = await cloudinary.uploader.upload(req.file.path);
-        folder: "courses";
+        const thumbnail = await cloudinary.uploader.upload(req.file.path, {
+          folder: "courses",
+        });
         parsed.data.thumbnail = thumbnail.secure_url;
         fs.unlinkSync(req.file.path);
       }
 
-      const newCourse = new Course(data);
+      const newCourse = new Course(parsed.data);
       await newCourse.save();
 
-      res
-        .status(201)
-        .json({
-          message: "Course created successfully",
-          newCourse,
-          thumbnailUrl: parsed.data.thumbnail,
-        });
+      res.status(201).json({
+        message: "Course created successfully",
+        newCourse,
+        thumbnailUrl: parsed.data.thumbnail,
+      });
     } catch (error) {
       console.error("Error creating course: ", error);
       res.status(500).json({ message: "Internal server error" });

@@ -40,16 +40,15 @@ exports.createCourse = [
                 return res.status(400).json({ message: "Course already exists" });
             }
             if (req.file) {
-                const thumbnail = yield cloudinary_1.v2.uploader.upload(req.file.path);
-                folder: "courses";
+                const thumbnail = yield cloudinary_1.v2.uploader.upload(req.file.path, {
+                    folder: "courses",
+                });
                 parsed.data.thumbnail = thumbnail.secure_url;
                 fs_1.default.unlinkSync(req.file.path);
             }
-            const newCourse = new Courses_1.default(data);
+            const newCourse = new Courses_1.default(parsed.data);
             yield newCourse.save();
-            res
-                .status(201)
-                .json({
+            res.status(201).json({
                 message: "Course created successfully",
                 newCourse,
                 thumbnailUrl: parsed.data.thumbnail,
