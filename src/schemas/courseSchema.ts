@@ -7,6 +7,7 @@ export const courseSchema = z.object({
   duration: z.string().min(1, "Duration is required"),
   level: z.enum(["beginner", "intermediate", "advanced"]),
   instructor: z.string().min(1, "Instructor is required"),
+  thumbnail: z.string().optional(),
   category: z.enum([
     "Development",
     "Business",

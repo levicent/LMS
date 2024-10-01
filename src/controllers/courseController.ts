@@ -1,32 +1,59 @@
 import Course from "../models/Courses";
 import { Request, Response } from "express";
 import { courseSchema, courseUpdateSchema } from "../schemas/courseSchema";
-export const createCourse = async (req: Request, res: Response) => {
-  try {
-    const data = req.body;
-    const parsed = courseSchema.safeParse(data);
+import { v2 as cloudinary } from "cloudinary";
+import multer from "multer";
+import fs from "fs";
 
-    if (!parsed.success) {
-      return res
-        .status(400)
-        .json({ message: "Validation failed", errors: parsed.error.errors });
+cloudinary.config({
+  cloud_name: "de51cdx8q",
+  api_key: "142799684141986",
+  api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
+});
+
+const uploads = multer({ dest: "uploads/" });
+
+export const createCourse = [
+  uploads.single("thumbnail"),
+  async (req: Request, res: Response) => {
+    try {
+      const data = req.body;
+      const parsed = courseSchema.safeParse(data);
+
+      if (!parsed.success) {
+        return res
+          .status(400)
+          .json({ message: "Validation failed", errors: parsed.error.errors });
+      }
+
+      const existingCourse = await Course.findOne({ title: data.title });
+      if (existingCourse) {
+        return res.status(400).json({ message: "Course already exists" });
+      }
+
+      if (req.file) {
+        const thumbnail = await cloudinary.uploader.upload(req.file.path);
+        folder: "courses";
+        parsed.data.thumbnail = thumbnail.secure_url;
+        fs.unlinkSync(req.file.path);
+      }
+
+      const newCourse = new Course(data);
+      await newCourse.save();
+
+      res
+        .status(201)
+        .json({
+          message: "Course created successfully",
+          newCourse,
+          thumbnailUrl: parsed.data.thumbnail,
+        });
+    } catch (error) {
+      console.error("Error creating course: ", error);
+      res.status(500).json({ message: "Internal server error" });
     }
-
-    const existingCourse = await Course.findOne({ title: data.title });
-    if (existingCourse) {
-      return res.status(400).json({ message: "Course already exists" });
-    }
-
-    const newCourse = new Course(data);
-    await newCourse.save();
-
-    res.status(201).json({ message: "Course created successfully" });
-  } catch (error) {
-    console.error("Error creating course: ", error);
-    res.status(500).json({ message: "Internal server error" });
-  }
-};
-
+  },
+];
 export const getAllCourses = async (req: Request, res: Response) => {
   try {
     const courses = await Course.find();

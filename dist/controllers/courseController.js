@@ -15,29 +15,52 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.deleteCourseById = exports.updateCourseById = exports.getCourseById = exports.getAllCourses = exports.createCourse = void 0;
 const Courses_1 = __importDefault(require("../models/Courses"));
 const courseSchema_1 = require("../schemas/courseSchema");
-const createCourse = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    try {
-        const data = req.body;
-        const parsed = courseSchema_1.courseSchema.safeParse(data);
-        if (!parsed.success) {
-            return res
-                .status(400)
-                .json({ message: "Validation failed", errors: parsed.error.errors });
-        }
-        const existingCourse = yield Courses_1.default.findOne({ title: data.title });
-        if (existingCourse) {
-            return res.status(400).json({ message: "Course already exists" });
-        }
-        const newCourse = new Courses_1.default(data);
-        yield newCourse.save();
-        res.status(201).json({ message: "Course created successfully" });
-    }
-    catch (error) {
-        console.error("Error creating course: ", error);
-        res.status(500).json({ message: "Internal server error" });
-    }
+const cloudinary_1 = require("cloudinary");
+const multer_1 = __importDefault(require("multer"));
+const fs_1 = __importDefault(require("fs"));
+cloudinary_1.v2.config({
+    cloud_name: "de51cdx8q",
+    api_key: "142799684141986",
+    api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
 });
-exports.createCourse = createCourse;
+const uploads = (0, multer_1.default)({ dest: "uploads/" });
+exports.createCourse = [
+    uploads.single("thumbnail"),
+    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+        try {
+            const data = req.body;
+            const parsed = courseSchema_1.courseSchema.safeParse(data);
+            if (!parsed.success) {
+                return res
+                    .status(400)
+                    .json({ message: "Validation failed", errors: parsed.error.errors });
+            }
+            const existingCourse = yield Courses_1.default.findOne({ title: data.title });
+            if (existingCourse) {
+                return res.status(400).json({ message: "Course already exists" });
+            }
+            if (req.file) {
+                const thumbnail = yield cloudinary_1.v2.uploader.upload(req.file.path);
+                folder: "courses";
+                parsed.data.thumbnail = thumbnail.secure_url;
+                fs_1.default.unlinkSync(req.file.path);
+            }
+            const newCourse = new Courses_1.default(data);
+            yield newCourse.save();
+            res
+                .status(201)
+                .json({
+                message: "Course created successfully",
+                newCourse,
+                thumbnailUrl: parsed.data.thumbnail,
+            });
+        }
+        catch (error) {
+            console.error("Error creating course: ", error);
+            res.status(500).json({ message: "Internal server error" });
+        }
+    }),
+];
 const getAllCourses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const courses = yield Courses_1.default.find();

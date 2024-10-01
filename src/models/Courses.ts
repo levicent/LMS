@@ -31,6 +31,10 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
     required: true,
     enum: ["beginner", "intermediate", "advanced"],
   },
+
+  thumbnail: {
+    type: String,
+  },
   //   modules: [
   //     {
   //       titles: String,

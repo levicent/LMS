@@ -1,9 +1,8 @@
 import mongoose from "mongoose";
 import app from "./app";
-import dotenv from "dotenv";
-import { resolve } from "path";
+import * as dotenv from "dotenv";
+dotenv.config({ path: __dirname + "/.env" });
 
-dotenv.config({ path: resolve(__dirname, "..", ".env") });
 const PORT = process.env.PORT || 5000;
 
 mongoose

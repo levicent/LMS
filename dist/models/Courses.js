@@ -31,6 +31,9 @@ const courseSchema = new mongoose_1.default.Schema({
         required: true,
         enum: ["beginner", "intermediate", "advanced"],
     },
+    thumbnail: {
+        type: String,
+    },
     //   modules: [
     //     {
     //       titles: String,

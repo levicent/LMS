@@ -118,10 +118,6 @@ export const getUserProfile = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const imageUrl = user.image
-      ? `${req.protocol}://${req.get("host")}/${user.image}`
-      : null;
-
     res.json({
       id: user.id,
       email: user.email,
@@ -129,7 +125,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
-      image: imageUrl,
+      image: user.image,
       password: user.password,
     });
   } catch (error) {
@@ -170,13 +166,11 @@ export const updateUserProfile = [
         return res.status(404).json({ message: "User not found" });
       }
 
-      res
-        .status(200)
-        .json({
-          message: "User profile updated successfully",
-          updatedUser,
-          imageUrl: parsed.data.image,
-        });
+      res.status(200).json({
+        message: "User profile updated successfully",
+        updatedUser,
+        imageUrl: parsed.data.image,
+      });
     } catch (error) {
       console.error("Error updating user profile:", error);
       res.status(500).json({ message: "Internal server error" });

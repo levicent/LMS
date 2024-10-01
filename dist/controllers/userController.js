@@ -30,9 +30,14 @@ const multer_1 = __importDefault(require("multer"));
 const cloudinary_1 = require("cloudinary");
 const fs_1 = __importDefault(require("fs"));
 cloudinary_1.v2.config({
-    cloud_name: "de51cdx8q",
-    api_key: "142799684141986",
-    api_secret: "GDxxJBjJEy1DezYIq4eNUBR-m8w",
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
+});
+console.log({
+    cloud_name: process.env.CLOUD_NAME,
+    api_key: process.env.API_KEY,
+    api_secret: process.env.API_SECRET,
 });
 const upload = (0, multer_1.default)({ dest: "uploads/" });
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -128,9 +133,9 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.deleteUserById = deleteUserById;
 const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _a;
     try {
-        const userId = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!userId) {
             return res.status(400).json({ message: "User ID not provided" });
         }
@@ -138,9 +143,6 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!user) {
             return res.status(404).json({ message: "User not found" });
         }
-        const imageUrl = user.image
-            ? `${req.protocol}://${req.get("host")}/${user.image}`
-            : null;
         res.json({
             id: user.id,
             email: user.email,
@@ -148,7 +150,7 @@ const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function*
             firstName: user.firstName,
             lastName: user.lastName,
             role: user.role,
-            image: imageUrl,
+            image: user.image,
             password: user.password,
         });
     }
@@ -161,9 +163,9 @@ exports.getUserProfile = getUserProfile;
 exports.updateUserProfile = [
     upload.single("profilePicture"),
     (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        var _c;
+        var _a;
         try {
-            const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
+            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             if (!userId) {
                 return res.status(400).json({ message: "User ID not provided" });
             }
@@ -185,9 +187,11 @@ exports.updateUserProfile = [
             if (!updatedUser) {
                 return res.status(404).json({ message: "User not found" });
             }
-            res
-                .status(200)
-                .json({ message: "User profile updated successfully", updatedUser });
+            res.status(200).json({
+                message: "User profile updated successfully",
+                updatedUser,
+                imageUrl: parsed.data.image,
+            });
         }
         catch (error) {
             console.error("Error updating user profile:", error);
