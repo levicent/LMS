@@ -124,20 +124,25 @@ const CreateCourseTable: React.FC = () => {
         );
         toast.success("Course updated successfully");
       } else {
-        await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/courses`,
-          formDataToSubmit,
+        toast.promise(
+          await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/courses`,
+            formDataToSubmit,
+            {
+              headers: {
+                Authorization: `Bearer ${localStorage.getItem("token")}`,
+              },
+            }
+          ),
           {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-              "Content-Type": "multipart/form-data", // Ensure correct content-type
-            },
+            pending: "Creating course...",
+            success: "Course created successfully",
+            error: "Error creating course",
           }
         );
-        toast.success("Course created successfully");
       }
 
-      navigate("/instructor/dashboard/videoDashboard");
+      // navigate("/instructor/dashboard/videoDashboard");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(`Error: ${error.response.data.message}`);
