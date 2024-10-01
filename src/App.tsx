@@ -49,15 +49,11 @@ const App: React.FC = () => {
                   path="/instructor/dashboard/videoDashboard"
                   element={<VideoUploadDashboard />}
                 />
+
                 <Route
-                  path="/instructor/dashboard"
-                  element={<InstructorDashboard />}
-                />
-                <Route
-                  path="/instructor/dashboard/Course"
+                  path="/instructor/dashboard/courses"
                   element={<CourseDashboard />}
                 />
-                
 
                 {/* Admin Routes */}
 
