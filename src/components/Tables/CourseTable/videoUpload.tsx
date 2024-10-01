@@ -33,8 +33,8 @@ export default function UploadVideosPage() {
 
   const handleVideoChange = (
     index: number,
-    field: string,
-    value: string | File
+    field: "title" | "description" | "video",
+    value: string | File | null
   ) => {
     const updatedVideos = [...videoSections];
     updatedVideos[index] = {
@@ -45,7 +45,14 @@ export default function UploadVideosPage() {
 
     // Set the value in the react-hook-form state for validation if needed
     if (field === "title" || field === "description") {
-      setValue(`videos.${index}.${field}` as const, value as string);
+      setValue(
+        `videos.${index}.${field}` as
+          | `videos.${number}.title`
+          | `videos.${number}.description`,
+        value as string
+      );
+    } else if (field === "video" && value instanceof File) {
+      setValue(`videos.${index}.${field}`, value);
     }
   };
 
