@@ -33,6 +33,12 @@ const userSchema = new mongoose_1.default.Schema({
         enum: ["student", "teacher", "admin"],
         default: "student",
     },
+    refreshToken: {
+        type: String,
+    },
+    refreshTokenExp: {
+        type: Date,
+    },
 });
 const User = mongoose_1.default.model("User", userSchema);
 exports.default = User;

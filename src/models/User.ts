@@ -31,6 +31,12 @@ const userSchema: mongoose.Schema<IUserModel> = new mongoose.Schema({
     enum: ["student", "teacher", "admin"],
     default: "student",
   },
+  refreshToken: {
+    type: String,
+  },
+  refreshTokenExp: {
+    type: Date,
+  },
 });
 
 const User: mongoose.Model<IUserModel> = mongoose.model("User", userSchema);

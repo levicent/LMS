@@ -36,11 +36,6 @@ cloudinary_1.v2.config({
     api_key: process.env.API_KEY,
     api_secret: process.env.API_SECRET,
 });
-console.log({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-});
 const upload = (0, multer_1.default)({ dest: "uploads/" });
 const createUser = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {

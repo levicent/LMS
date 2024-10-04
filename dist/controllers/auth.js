@@ -17,6 +17,16 @@ const User_1 = __importDefault(require("../models/User"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userSchema_1 = require("../schemas/userSchema");
+const generateAccessToken = (user) => {
+    return jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET_KEY, {
+        expiresIn: "15m",
+    });
+};
+const generateRefreshToken = (user) => {
+    return jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.JWT_REFRESH_KEY, {
+        expiresIn: "7d",
+    });
+};
 const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { firstName, lastName, email, password, phone } = req.body;
@@ -39,8 +49,21 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             phone,
         });
         yield user.save();
-        const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
-        res.status(201).json({ message: "User registered successfully", token });
+        const accessToken = generateAccessToken({
+            id: user._id,
+            role: user.role,
+        });
+        const refreshToken = generateRefreshToken({
+            id: user._id,
+            role: user.role,
+        });
+        user.refreshToken = refreshToken;
+        yield user.save();
+        res.status(201).json({
+            message: "User registered successfully",
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+        });
     }
     catch (error) {
         console.error("Error registering user", error);
@@ -65,8 +88,21 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!comparePassword) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
-        const token = jsonwebtoken_1.default.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET_KEY, { expiresIn: "1h" });
-        res.status(200).json({ message: "User logged in successfully", token });
+        const accessToken = generateAccessToken({
+            id: user._id,
+            role: user.role,
+        });
+        const refreshToken = generateRefreshToken({
+            id: user._id,
+            role: user.role,
+        });
+        user.refreshToken = refreshToken;
+        yield user.save();
+        res.status(200).json({
+            message: "User logged in successfully",
+            accessToken: accessToken,
+            refreshToken: refreshToken,
+        });
     }
     catch (error) {
         console.error("Error logging in user", error);

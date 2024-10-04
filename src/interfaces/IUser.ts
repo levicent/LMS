@@ -6,4 +6,6 @@ export interface IUser {
   phone: Number;
   image: String;
   role: "student" | "teacher" | "admin";
+  refreshToken: String;
+  refreshTokenExp: Date;
 }
