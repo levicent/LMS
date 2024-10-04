@@ -118,6 +118,7 @@ const HomePage: React.FC = () => {
                         currentCategory === "All" ||
                         course.category === currentCategory
                     )
+                    .slice(0, 6)
                     .map((course,id) => (
                       <div
                         key={id} 
@@ -147,6 +148,12 @@ const HomePage: React.FC = () => {
                             <span className="text-gray-700 dark:text-gray-300">
                              Price : {course.price}
                             </span>
+                          </div>
+                          <div className="flex items-center mb-4">
+                          <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                        <span className="text-gray-700 dark:text-gray-300">
+                          {course.rating}
+                        </span>
                           </div>
                           {/* <div className="text-sm text-gray-500 dark:text-gray-400">
                             <span className="flex items-center">
