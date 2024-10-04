@@ -30,6 +30,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
+      const decoded = jwtDecode<DecodedToken>(token);
+      setRole(decoded.role);
       setIsAuthenticated(true);
     }
   }, []);
