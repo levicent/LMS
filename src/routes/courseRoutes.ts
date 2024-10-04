@@ -13,7 +13,7 @@ import checkRole from "../middleware/role";
 router.post("/courses", authMiddleware, checkRole(["teacher"]), createCourse);
 router.get(
   "/courses",
-  authMiddleware,
+  // authMiddleware,
   // checkRole(["teacher", "admin", "student"]),
   getAllCourses
 );
