@@ -6,6 +6,7 @@ import ParticlesComponent from "../components/ParticleBackground/ParticleBackgro
 import { useTheme } from "../context/themeContext";
 import AuthContext from "../context/authContext";
 import { Star, Users, Clock, Award, BookOpen, Globe, Zap } from "lucide-react";
+import { useFetchCourses } from "@/hooks/useFetchCourse";
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
@@ -20,88 +21,10 @@ const HomePage: React.FC = () => {
 
   const { isAuthenticated } = authContext;
 
-  const categories = [
-    "All",
-    "Development",
-    "Business",
-    "IT & Software",
-    "Design",
-    "Marketing",
-  ];
-  const courses = [
-    {
-      id: 1,
-      title: "Complete Web Development Bootcamp",
-      instructor: "Dr. Angela Yu",
-      rating: 4.7,
-      students: 125000,
-      hours: 65,
-      level: "Beginner to Advanced",
-      category: "Development",
-      image:
-        "https://images.unsplash.com/photo-1498050108023-c5249f4df085?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2072&q=80",
-    },
-    {
-      id: 2,
-      title: "Machine Learning A-Z™: Hands-On Python & R In Data Science",
-      instructor: "Kirill Eremenko, Hadelin de Ponteves",
-      rating: 4.5,
-      students: 692000,
-      hours: 44,
-      level: "Intermediate",
-      category: "IT & Software",
-      image:
-        "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80",
-    },
-    {
-      id: 3,
-      title: "The Complete Digital Marketing Course - 12 Courses in 1",
-      instructor: "Rob Percival, Daragh Walsh",
-      rating: 4.4,
-      students: 435000,
-      hours: 52,
-      level: "All Levels",
-      category: "Marketing",
-      image:
-        "https://images.unsplash.com/photo-1460925895917-afdab827c52f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2015&q=80",
-    },
-    {
-      id: 4,
-      title: "UX & Web Design Master Course: Strategy, Design, Development",
-      instructor: "Joe Natoli",
-      rating: 4.6,
-      students: 78000,
-      hours: 23,
-      level: "All Levels",
-      category: "Design",
-      image:
-        "https://images.unsplash.com/photo-1561070791-2526d30994b5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2064&q=80",
-    },
-    {
-      id: 5,
-      title: "An Entire MBA in 1 Course:Award Winning Business School Prof",
-      instructor: "Chris Haroun",
-      rating: 4.5,
-      students: 430000,
-      hours: 49,
-      level: "Beginner",
-      category: "Business",
-      image:
-        "https://images.unsplash.com/photo-1507679799987-c73779587ccf?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2071&q=80",
-    },
-    {
-      id: 6,
-      title: "iOS 13 & Swift 5 - The Complete iOS App Development Bootcamp",
-      instructor: "Dr. Angela Yu",
-      rating: 4.8,
-      students: 95000,
-      hours: 59,
-      level: "Beginner to Advanced",
-      category: "Development",
-      image:
-        "https://images.unsplash.com/photo-1621839673705-6617adf9e890?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2032&q=80",
-    },
-  ];
+  const { data: courses, isLoading } = useFetchCourses();
+  if (!isLoading) {
+    console.log(courses);
+  }
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
@@ -142,7 +65,7 @@ const HomePage: React.FC = () => {
               Explore Our Course Categories
             </h2>
             <div className="flex flex-wrap justify-center gap-4">
-              {categories.map((category) => (
+              {/* {categories.map((category) => (
                 <button
                   key={category}
                   onClick={() => setCurrentCategory(category)}
@@ -154,7 +77,7 @@ const HomePage: React.FC = () => {
                 >
                   {category}
                 </button>
-              ))}
+              ))} */}
             </div>
           </section>
 
@@ -164,54 +87,60 @@ const HomePage: React.FC = () => {
               Featured Courses
             </h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {courses
-                .filter(
-                  (course) =>
-                    currentCategory === "All" ||
-                    course.category === currentCategory
-                )
-                .map((course) => (
-                  <div
-                    key={course.id}
-                    className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-                  >
-                    <img
-                      src={course.image}
-                      alt={course.title}
-                      className="w-full h-48 object-cover"
-                    />
-                    <div className="p-6">
-                      <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                        {course.title}
-                      </h3>
-                      <p className="text-gray-600 dark:text-gray-400 mb-4">
-                        {course.instructor}
-                      </p>
-                      <div className="flex items-center mb-4">
-                        <Star className="w-5 h-5 text-yellow-400 mr-1" />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {course.rating}
-                        </span>
-                        <span className="text-gray-500 dark:text-gray-400 ml-2">
-                          ({course.students.toLocaleString()} students)
-                        </span>
+              {/* {Array.isArray(courses) && courses.length > 0 ? (
+                courses
+                  .filter(
+                    (course) =>
+                      currentCategory === "All" ||
+                      course.category === currentCategory
+                  )
+                  .map((course) => (
+                    <div
+                      key={course.id}
+                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+                    >
+                      <img
+                        src={course.image}
+                        alt={course.title}
+                        className="w-full h-48 object-cover"
+                      />
+                      <div className="p-6">
+                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                          {course.title}
+                        </h3>
+                        <p className="text-gray-600 dark:text-gray-400 mb-4">
+                          {course.instructor}
+                        </p>
+                        <div className="flex items-center mb-4">
+                          <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                          <span className="text-gray-700 dark:text-gray-300">
+                            {course.rating}
+                          </span>
+                          <span className="text-gray-500 dark:text-gray-400 ml-2">
+                            ({course.students.toLocaleString()} students)
+                          </span>
+                        </div>
+                        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                          <span className="flex items-center">
+                            <Clock className="w-4 h-4 mr-1" />
+                            {course.hours} hours
+                          </span>
+                          <span className="flex items-center">
+                            <Users className="w-4 h-4 mr-1" />
+                            {course.level}
+                          </span>
+                        </div>
+                        <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
+                          Enroll Now
+                        </button>
                       </div>
-                      <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                        <span className="flex items-center">
-                          <Clock className="w-4 h-4 mr-1" />
-                          {course.hours} hours
-                        </span>
-                        <span className="flex items-center">
-                          <Users className="w-4 h-4 mr-1" />
-                          {course.level}
-                        </span>
-                      </div>
-                      <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
-                        Enroll Now
-                      </button>
                     </div>
-                  </div>
-                ))}
+                  ))
+              ) : (
+                <div className="text-center text-2xl text-gray-500">
+                  No Courses Found
+                </div>
+              )} */}
             </div>
           </section>
 
