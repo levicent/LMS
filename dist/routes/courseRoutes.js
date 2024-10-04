@@ -9,7 +9,9 @@ const courseController_1 = require("../controllers/courseController");
 const auth_1 = __importDefault(require("../middleware/auth"));
 const role_1 = __importDefault(require("../middleware/role"));
 router.post("/courses", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.createCourse);
-router.get("/courses", auth_1.default, (0, role_1.default)(["teacher", "admin", "student"]), courseController_1.getAllCourses);
+router.get("/courses", auth_1.default, 
+// checkRole(["teacher", "admin", "student"]),
+courseController_1.getAllCourses);
 router.get("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.getCourseById);
 router.put("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.updateCourseById);
 router.delete("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.deleteCourseById);

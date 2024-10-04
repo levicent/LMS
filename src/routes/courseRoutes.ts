@@ -14,7 +14,7 @@ router.post("/courses", authMiddleware, checkRole(["teacher"]), createCourse);
 router.get(
   "/courses",
   authMiddleware,
-  checkRole(["teacher", "admin", "student"]),
+  // checkRole(["teacher", "admin", "student"]),
   getAllCourses
 );
 router.get(
