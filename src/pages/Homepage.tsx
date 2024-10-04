@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState ,useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
@@ -7,17 +7,26 @@ import { useTheme } from "../context/themeContext";
 import AuthContext from "../context/authContext";
 import { Star, Users, Clock, Award, BookOpen, Globe, Zap } from "lucide-react";
 import { useFetchCourses } from "@/hooks/useFetchCourse";
+import ShimmerCard from "./ShimmerCard";
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
   const authContext = useContext(AuthContext);
   const navigate = useNavigate();
   const [currentCategory, setCurrentCategory] = useState("All");
+  const [loading, setIsLoading] = useState(true);
 
   if (!authContext) {
     navigate("/login");
     return null;
   }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsLoading(false); // Stop loading after 2 seconds
+    }, 2000); // 2-second delay
+
+    return () => clearTimeout(timer); // Clean up the timer
+  }, []);
 
   const { isAuthenticated } = authContext;
 
@@ -59,90 +68,106 @@ const HomePage: React.FC = () => {
             )}
           </section>
 
-          {/* Course Categories */}
+          {/* Course Categories */} 
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
               Explore Our Course Categories
             </h2>
             <div className="flex flex-wrap justify-center gap-4">
-              {/* {categories.map((category) => (
-                <button
-                  key={category}
-                  onClick={() => setCurrentCategory(category)}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-colors ${
-                    currentCategory === category
-                      ? "bg-blue-600 text-white"
-                      : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-                  }`}
-                >
-                  {category}
-                </button>
-              ))} */}
+              {Array.isArray(courses) && courses.length > 0 ? (
+                // Extract unique categories from the courses array
+                [...new Set(courses.map((course) => course.category))].map(
+                  (category, index) => (
+                    <button
+                      key={index}
+                      onClick={() => setCurrentCategory(category)}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${currentCategory === category
+                        ? "bg-blue-600 text-white"
+                        : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                        }`}
+                    >
+                      {category}
+                    </button>
+                  )
+                )
+              ) : (
+                <div>No categories available</div>
+              )}
             </div>
           </section>
-
           {/* Featured Courses */}
           <section className="mb-16">
+            
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
               Featured Courses
-            </h2>
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {/* {Array.isArray(courses) && courses.length > 0 ? (
-                courses
-                  .filter(
-                    (course) =>
-                      currentCategory === "All" ||
-                      course.category === currentCategory
-                  )
-                  .map((course) => (
-                    <div
-                      key={course.id}
-                      className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-                    >
-                      <img
-                        src={course.image}
-                        alt={course.title}
-                        className="w-full h-48 object-cover"
-                      />
-                      <div className="p-6">
-                        <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                          {course.title}
-                        </h3>
-                        <p className="text-gray-600 dark:text-gray-400 mb-4">
-                          {course.instructor}
-                        </p>
-                        <div className="flex items-center mb-4">
-                          <Star className="w-5 h-5 text-yellow-400 mr-1" />
-                          <span className="text-gray-700 dark:text-gray-300">
-                            {course.rating}
-                          </span>
-                          <span className="text-gray-500 dark:text-gray-400 ml-2">
-                            ({course.students.toLocaleString()} students)
-                          </span>
+            </h2> 
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array(6) // Display 6 shimmer cards while loading
+                  .fill(0)
+                  .map((_, index) => (
+                    <ShimmerCard key={index} />
+                  ))}
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                {Array.isArray(courses) && courses.length > 0 ? (
+                  courses
+                    .filter(
+                      (course) =>
+                        currentCategory === "All" ||
+                        course.category === currentCategory
+                    )
+                    .map((course,id) => (
+                      <div
+                        key={id} 
+                        className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
+                      >
+                        <img
+                          src="https://via.placeholder.com/150"
+                          alt={course.title}
+                          className="w-full h-48 object-cover"
+                        />
+                        <div className="p-6">
+                          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+                            {course.title}
+                          </h3>
+                          <p className="text-gray-600 dark:text-gray-400 mb-4">
+                            {course.description}
+                          </p>
+                          <p className="text-gray-600 dark:text-white font- bold mb-4">
+                            Instructor : {course.instructor}
+                          </p>
+                          <div className="flex items-center mb-4">
+                            <span className="text-gray-700 dark:text-gray-300">
+                             {course.studentsEnrolled.length} students
+                            </span>
+                          </div>
+                          <div className="flex items-center mb-4">
+                            <span className="text-gray-700 dark:text-gray-300">
+                             Price : {course.price}
+                            </span>
+                          </div>
+                          {/* <div className="text-sm text-gray-500 dark:text-gray-400">
+                            <span className="flex items-center">
+                              Tags: {course.tags.join(", ")}
+                            </span>
+                          </div> */}
+                          <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
+                            Enroll Now
+                          </button>
                         </div>
-                        <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
-                          <span className="flex items-center">
-                            <Clock className="w-4 h-4 mr-1" />
-                            {course.hours} hours
-                          </span>
-                          <span className="flex items-center">
-                            <Users className="w-4 h-4 mr-1" />
-                            {course.level}
-                          </span>
-                        </div>
-                        <button className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300">
-                          Enroll Now
-                        </button>
                       </div>
-                    </div>
-                  ))
-              ) : (
-                <div className="text-center text-2xl text-gray-500">
-                  No Courses Found
-                </div>
-              )} */}
-            </div>
+                    ))
+                ) : (
+                  <div className="text-center text-2xl text-gray-500">
+                    No Courses Found
+                  </div>
+                )}
+              </div>
+            )}
           </section>
+
 
           {/* Our Impact */}
           <section className="mb-16">
