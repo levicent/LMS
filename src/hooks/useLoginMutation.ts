@@ -2,7 +2,7 @@ import axios from "axios";
 import { useMutation } from "react-query";
 
 export const useLoginMutation = (options: {
-  onSuccess: (data: { token: string }) => void;
+  onSuccess: (data: { accessToken: string }) => void;
   onError: (error: any) => void;
 }) => {
   return useMutation(

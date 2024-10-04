@@ -37,8 +37,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const { mutateAsync: loginMutation, isLoading: loginLoading } =
     useLoginMutation({
       onSuccess: (data) => {
-        localStorage.setItem("token", data.token);
-        const decoded = jwtDecode<DecodedToken>(data.token);
+        localStorage.setItem("token", data.accessToken);
+        const decoded = jwtDecode<DecodedToken>(data.accessToken);
         const role = decoded.role;
         setRole(role);
         setIsAuthenticated(true);
