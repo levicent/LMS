@@ -19,7 +19,7 @@ const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const userSchema_1 = require("../schemas/userSchema");
 const generateAccessToken = (user) => {
     return jsonwebtoken_1.default.sign({ id: user.id, role: user.role }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "15m",
+        expiresIn: "1m",
     });
 };
 const generateRefreshToken = (user) => {
