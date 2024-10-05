@@ -1,4 +1,4 @@
-import React, { useContext, useState ,useEffect } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Navbar from "../components/Navbar/Navbar";
 import Footer from "../components/Footer/Footer";
@@ -68,7 +68,7 @@ const HomePage: React.FC = () => {
             )}
           </section>
 
-          {/* Course Categories */} 
+          {/* Course Categories */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
               Explore Our Course Categories
@@ -81,10 +81,11 @@ const HomePage: React.FC = () => {
                     <button
                       key={index}
                       onClick={() => setCurrentCategory(category)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${currentCategory === category
-                        ? "bg-blue-600 text-white"
-                        : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-                        }`}
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        currentCategory === category
+                          ? "bg-blue-600 text-white"
+                          : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
+                      }`}
                     >
                       {category}
                     </button>
@@ -97,10 +98,9 @@ const HomePage: React.FC = () => {
           </section>
           {/* Featured Courses */}
           <section className="mb-16">
-            
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
               Featured Courses
-            </h2> 
+            </h2>
             {loading ? (
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                 {Array(6) // Display 6 shimmer cards while loading
@@ -119,9 +119,9 @@ const HomePage: React.FC = () => {
                         course.category === currentCategory
                     )
                     .slice(0, 6)
-                    .map((course,id) => (
+                    .map((course, id) => (
                       <div
-                        key={id} 
+                        key={id}
                         className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
                       >
                         <img
@@ -141,19 +141,19 @@ const HomePage: React.FC = () => {
                           </p>
                           <div className="flex items-center mb-4">
                             <span className="text-gray-700 dark:text-gray-300">
-                             {course.studentsEnrolled.length} students
+                              {course.studentsEnrolled.length} students
                             </span>
                           </div>
                           <div className="flex items-center mb-4">
                             <span className="text-gray-700 dark:text-gray-300">
-                             Price : {course.price}
+                              Price : {course.price}
                             </span>
                           </div>
                           <div className="flex items-center mb-4">
-                          <Star className="w-5 h-5 text-yellow-400 mr-1" />
-                        <span className="text-gray-700 dark:text-gray-300">
-                          {course.rating}
-                        </span>
+                            <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {course.rating}
+                            </span>
                           </div>
                           {/* <div className="text-sm text-gray-500 dark:text-gray-400">
                             <span className="flex items-center">
@@ -174,7 +174,6 @@ const HomePage: React.FC = () => {
               </div>
             )}
           </section>
-
 
           {/* Our Impact */}
           <section className="mb-16">
