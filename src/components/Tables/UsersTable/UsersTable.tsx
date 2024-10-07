@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
   Table,
@@ -14,6 +15,7 @@ import {
   Typography,
   Card,
   CardContent,
+  TablePagination,
 } from "@mui/material";
 import { Add, Edit, Delete } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
@@ -28,6 +30,10 @@ const UsersTable = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check if the view is mobile-sized
 
+  // Pagination state
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(6); // Set rows per page to 6
+
   const handleEdit = (user: any) => {
     navigate(`/admin/dashboard/user/edit/${user._id}`, { state: { user } });
   };
@@ -41,8 +47,24 @@ const UsersTable = () => {
     navigate("/admin/dashboard/user/create");
   };
 
+  // Handle page change
+  const handleChangePage = (event: unknown, newPage: number) => {
+    setPage(newPage);
+  };
+
+  // Handle rows per page change
+  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRowsPerPage(parseInt(event.target.value, 10));
+    setPage(0);
+  };
+
   if (isLoading) return <p>Loading users...</p>;
   if (error) return <p>Error fetching users.</p>;
+
+  // Slice users array for pagination
+  const paginatedUsers: User[] = Array.isArray(users) 
+  ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
+  : [];
 
   return (
     <>
@@ -68,7 +90,7 @@ const UsersTable = () => {
       {isMobile ? (
         <Box>
           {Array.isArray(users) && users.length > 0 ? (
-            users.map((user, index) => (
+            paginatedUsers.map((user, index) => (
               <Card key={index} sx={{ marginBottom: 2 }}>
                 <CardContent>
                   <Typography variant="h6">
@@ -113,7 +135,7 @@ const UsersTable = () => {
             </TableHead>
             <TableBody>
               {Array.isArray(users) && users.length > 0 ? (
-                users.map((user, index) => (
+                paginatedUsers.map((user, index) => (
                   <TableRow key={index}>
                     <TableCell>{user.firstName}</TableCell>
                     <TableCell>{user.lastName}</TableCell>
@@ -137,6 +159,44 @@ const UsersTable = () => {
               )}
             </TableBody>
           </Table>
+
+          {/* Pagination */}
+          <Box
+  sx={{
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 2,
+    width: "100%", // Ensure pagination takes full width on mobile
+  }}
+>
+  <TablePagination
+    component="div"
+    count={users?.length || 0}
+    page={page}
+    onPageChange={handleChangePage}
+    rowsPerPage={rowsPerPage}
+    onRowsPerPageChange={handleChangeRowsPerPage}
+    rowsPerPageOptions={[6, 12, 24]} // Optional: modify if needed
+    sx={{
+      "& .MuiTablePagination-toolbar": {
+        display: "flex",
+        justifyContent: isMobile ? "space-between" : "center", // Space between for mobile
+        flexDirection: isMobile ? "column" : "row", // Stack on mobile
+        padding: isMobile ? "10px 0" : "0", // Padding for better mobile experience
+      },
+      "& .MuiTablePagination-selectLabel, & .MuiTablePagination-input, & .MuiTablePagination-displayedRows": {
+        fontSize: isMobile ? "0.875rem" : "1rem", // Smaller font size for mobile
+      },
+      "& .MuiTablePagination-actions": {
+        display: "flex",
+        justifyContent: "center", // Center actions on all views
+        width: isMobile ? "100%" : "auto", // Full width for mobile
+      },
+    }}
+  />
+</Box>
+
         </TableContainer>
       )}
     </>
