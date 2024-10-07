@@ -40,6 +40,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     useLoginMutation({
       onSuccess: (data) => {
         localStorage.setItem("token", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
         const decoded = jwtDecode<DecodedToken>(data.accessToken);
         const role = decoded.role;
         setRole(role);

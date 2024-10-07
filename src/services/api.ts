@@ -1,36 +1,46 @@
 import axios from "axios";
-import { getNewAccessToken } from "./authHelper";
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_URL,
-  withCredentials: true,
+  baseURL: `${import.meta.env.VITE_API_URL}/api`,
 });
 
-api.interceptors.request.use(async (config) => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
-  }
-  return config;
-});
+api.interceptors.request.use(
+  async (config) => {
+    const accessToken = localStorage.getItem("token");
+    if (accessToken) {
+      config.headers.Authorization = `Bearer ${accessToken}`;
+    }
+    return config;
+  },
+  (error) => Promise.reject(error)
+);
 
 api.interceptors.response.use(
   (response) => response,
   async (error) => {
     const originalRequest = error.config;
-    if (error.response.status === 401 && !originalRequest._retry) {
-      error.config._retry = true;
-      const token = await getNewAccessToken();
-      if (token) {
-        localStorage.setItem("token", token);
-        originalRequest.headers.Authorization = `Bearer ${token}`;
+    if (error.response && !originalRequest._retry) {
+      // originalRequest._retry = true;
+      try {
+        const refreshToken = localStorage.getItem("refreshToken");
+        console.log("Refresh token", refreshToken);
+        const { data } = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/refresh-token`,
+          {
+            refreshToken,
+          }
+        );
+        localStorage.setItem("token", data.accessToken);
+        console.log("Access token refreshed", data.accessToken);
         return api(originalRequest);
-      } else {
-        localStorage.removeItem("token");
+      } catch (error) {
+        console.error("Refresh token expired or invalid", error);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+        return Promise.reject(error);
       }
     }
     return Promise.reject(error);
   }
 );
-
 export default api;

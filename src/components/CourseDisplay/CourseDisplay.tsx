@@ -1,7 +1,7 @@
 // import { Search } from "lucide-react"
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input"
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFetchCourses } from "@/hooks/useFetchCourse";
 
 export default function CourseDisplay() {
@@ -13,10 +13,6 @@ export default function CourseDisplay() {
   ) => {
     setCategory(event.target.value);
   };
-
-  useEffect(() => {
-    console.log("Courses", courses);
-  });
 
   return (
     <div className="min-h-screen text-white p-8 shadow-lg">
