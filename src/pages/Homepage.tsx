@@ -122,7 +122,10 @@ const HomePage: React.FC = () => {
                         className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
                       >
                         <img
-                          src="https://via.placeholder.com/150"
+                          src={
+                            course?.thumbnail ||
+                            "https://via.placeholder.com/150"
+                          }
                           alt={course.title}
                           className="w-full h-48 object-cover"
                         />
