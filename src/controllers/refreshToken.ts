@@ -14,6 +14,15 @@ const generateAccessToken = (user: { id: string; role: string }) => {
     }
   );
 };
+const generateRefreshToken = (user: { id: string; role: string }) => {
+  return jwt.sign(
+    { id: user.id, role: user.role },
+    process.env.JWT_REFRESH_KEY as string,
+    {
+      expiresIn: "7d",
+    }
+  );
+};
 
 export const refreshToken = async (req: Request, res: Response) => {
   const { refreshToken } = req.body;
@@ -40,7 +49,17 @@ export const refreshToken = async (req: Request, res: Response) => {
       role: user.role,
     });
 
-    res.status(200).json({ accessToken });
+    const newRefreshToken = generateRefreshToken({
+      id: user._id as string,
+      role: user.role,
+    });
+
+    user.refreshToken = newRefreshToken;
+    await user.save();
+
+    res
+      .status(200)
+      .json({ accessToken: accessToken, refreshToken: newRefreshToken });
   } catch (error) {
     console.error("Error refreshing token: ", error);
     res.status(500).json({ message: "Invalid or expired refresh token" });

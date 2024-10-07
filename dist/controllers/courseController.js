@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.deleteCourseById = exports.updateCourseById = exports.getCourseById = exports.getAllCourses = exports.createCourse = void 0;
+exports.searchCourseByQuery = exports.deleteCourseById = exports.updateCourseById = exports.getCourseById = exports.getAllCourses = exports.createCourse = void 0;
 const Courses_1 = __importDefault(require("../models/Courses"));
 const courseSchema_1 = require("../schemas/courseSchema");
 const cloudinary_1 = require("cloudinary");
@@ -129,3 +129,23 @@ const deleteCourseById = (req, res) => __awaiter(void 0, void 0, void 0, functio
     }
 });
 exports.deleteCourseById = deleteCourseById;
+const searchCourseByQuery = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { query } = req.query;
+        if (!query) {
+            return res.status(400).json({ message: "Please provide a query" });
+        }
+        const courses = yield Courses_1.default.find({
+            title: { $regex: query, $options: "i" },
+        });
+        if (courses.length === 0) {
+            return res.status(404).json({ message: "No courses found" });
+        }
+        res.status(200).json({ courses });
+    }
+    catch (error) {
+        console.error("Error searching course by category", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.searchCourseByQuery = searchCourseByQuery;

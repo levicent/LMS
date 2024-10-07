@@ -6,6 +6,7 @@ import {
   getCourseById,
   updateCourseById,
   deleteCourseById,
+  searchCourseByQuery,
 } from "../controllers/courseController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -35,5 +36,7 @@ router.delete(
   checkRole(["teacher"]),
   deleteCourseById
 );
+
+router.get("/course/search", searchCourseByQuery);
 
 export default router;
