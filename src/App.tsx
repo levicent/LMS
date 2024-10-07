@@ -21,6 +21,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import CreateUsersTablePage from "./pages/Dashboard/Tables/CreateUsersTablePage";
 import CourseDashboard from "./pages/Dashboard/CourseDashboard";
 import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
+import CourseSearchResult from "./pages/CourseSearchResult";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -41,6 +42,10 @@ const App: React.FC = () => {
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route
+                  path="/course-search-result"
+                  element={<CourseSearchResult />}
+                />
                 <Route
                   path="/instructor/dashboard"
                   element={<InstructorDashboard />}
