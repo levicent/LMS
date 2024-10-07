@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Button,
   TextField,
@@ -6,7 +6,6 @@ import {
   Typography,
   Paper,
   Grid,
-  IconButton,
   Select,
   FormControl,
   InputLabel,
@@ -14,7 +13,6 @@ import {
 } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
-import CloseIcon from "@mui/icons-material/Close";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -71,18 +69,20 @@ const CreateCourseTable: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const handleChange = (e: any) => {
-    const { name, value, files } = e.target;
-    if (name === "thumbnail") {
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
+  ) => {
+    const { name, value, files } = e.target as HTMLInputElement;
+    if (name === "thumbnail" && files) {
       const selectedFile = files[0];
       setFormData((prev) => ({
         ...prev,
         thumbnail: selectedFile || null,
       }));
-    } else {
+    } else if (name) {
       setFormData((prev) => ({
         ...prev,
-        [name as keyof FormValues]: value,
+        [name]: value,
       }));
     }
   };
@@ -105,13 +105,11 @@ const CreateCourseTable: React.FC = () => {
     formDataToSubmit.append("language", data.language);
     formDataToSubmit.append("instructor", formData.instructor);
 
-    // Append the thumbnail if it exists
     if (formData.thumbnail) {
       formDataToSubmit.append("thumbnail", formData.thumbnail);
     }
 
     try {
-      // If id exists, we are updating, otherwise creating a new course
       if (id) {
         await axios.put(
           `${import.meta.env.VITE_API_URL}/api/courses/${id}`,
@@ -141,8 +139,6 @@ const CreateCourseTable: React.FC = () => {
           }
         );
       }
-
-      // navigate("/instructor/dashboard/videoDashboard");
     } catch (error: any) {
       if (error.response && error.response.status === 400) {
         toast.error(`Error: ${error.response.data.message}`);
@@ -153,222 +149,241 @@ const CreateCourseTable: React.FC = () => {
   };
 
   return (
-    <div>
+    <Box
+      sx={{
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
+        minHeight: "100vh",
+        padding: { xs: 2, sm: 4 },
+      }}
+    >
       <ToastContainer />
-      <Box
+      <Paper
+        elevation={3}
         sx={{
-          display: "flex",
-          justifyContent: "center",
-          alignItems: "center",
-          height: "100vh",
+          padding: { xs: 2, sm: 3, md: 4 },
+          width: "100%",
+          maxWidth: "900px",
+          borderRadius: "10px",
         }}
       >
-        <Paper
-          elevation={3}
+        <Typography
+          variant="h4"
+          component="h1"
+          gutterBottom
+          sx={{ mb: { xs: 2, sm: 3, md: 4 } }}
+        >
+          {id ? "Edit Course" : "Create Course"}
+        </Typography>
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
           sx={{
-            padding: "30px",
-            width: "100%",
-            maxWidth: "900px",
-            borderRadius: "10px",
+            "& .MuiTextField-root": { marginBottom: { xs: 1.5, sm: 2 } },
+            "& .MuiFormControl-root": { marginBottom: { xs: 1.5, sm: 2 } },
           }}
         >
-          <div className="flex justify-between items-center">
-            <Typography variant="h5" gutterBottom>
-              {id ? "Edit Course" : "Create Course"}
-            </Typography>
-            <IconButton
-              onClick={() => navigate("/admin/courses")}
-              aria-label="Close"
-            >
-              <CloseIcon />
-            </IconButton>
-          </div>
-          <Box
-            className="my-2 mx-2 py-2 px-1"
-            component="form"
-            onSubmit={handleSubmit(onSubmit)}
-            sx={{
-              "& .MuiTextField-root": { marginBottom: "20px" },
-            }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("title", { required: true })}
-                  label="Title"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.title}
-                  helperText={errors.title ? "Title is required" : ""}
-                  value={formData.title}
+          <Grid container spacing={{ xs: 1.5, sm: 2 }}>
+            <Grid item xs={12}>
+              <TextField
+                {...register("title", { required: "Title is required" })}
+                label="Title"
+                variant="outlined"
+                fullWidth
+                error={!!errors.title}
+                helperText={errors.title?.message}
+                value={formData.title}
+                onChange={handleChange}
+                name="title"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...register("description", {
+                  required: "Description is required",
+                })}
+                label="Description"
+                variant="outlined"
+                fullWidth
+                multiline
+                rows={4}
+                error={!!errors.description}
+                helperText={errors.description?.message}
+                value={formData.description}
+                onChange={handleChange}
+                name="description"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register("price", { required: "Price is required" })}
+                label="Price"
+                variant="outlined"
+                fullWidth
+                error={!!errors.price}
+                helperText={errors.price?.message}
+                value={formData.price}
+                onChange={handleChange}
+                name="price"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <TextField
+                {...register("duration", { required: "Duration is required" })}
+                label="Duration (in hours)"
+                variant="outlined"
+                fullWidth
+                error={!!errors.duration}
+                helperText={errors.duration?.message}
+                value={formData.duration}
+                onChange={handleChange}
+                name="duration"
+              />
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl fullWidth variant="outlined" error={!!errors.level}>
+                <InputLabel>Level</InputLabel>
+                <Select
+                  {...register("level", { required: "Level is required" })}
+                  label="Level"
+                  value={formData.level}
                   onChange={handleChange}
-                  name="title"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("description", { required: true })}
-                  label="Description"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.description}
-                  helperText={
-                    errors.description ? "Description is required" : ""
-                  }
-                  value={formData.description}
-                  onChange={handleChange}
-                  name="description"
-                  multiline
-                  rows={4}
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  {...register("price", { required: true })}
-                  label="Price"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.price}
-                  helperText={errors.price ? "Price is required" : ""}
-                  value={formData.price}
-                  onChange={handleChange}
-                  name="price"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  {...register("duration", { required: true })}
-                  label="Duration (in hours)"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.duration}
-                  helperText={errors.duration ? "Duration is required" : ""}
-                  value={formData.duration}
-                  onChange={handleChange}
-                  name="duration"
-                />
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.level}
+                  name="level"
                 >
-                  <InputLabel>Level</InputLabel>
-                  <Select
-                    {...register("level", { required: true })}
-                    label="Level"
-                    value={formData.level}
-                    onChange={handleChange}
-                    name="level"
-                  >
-                    <MenuItem value="beginner">Beginner</MenuItem>
-                    <MenuItem value="intermediate">Intermediate</MenuItem>
-                    <MenuItem value="advanced">Advanced</MenuItem>
-                  </Select>
-                </FormControl>
+                  <MenuItem value="beginner">Beginner</MenuItem>
+                  <MenuItem value="intermediate">Intermediate</MenuItem>
+                  <MenuItem value="advanced">Advanced</MenuItem>
+                </Select>
                 {errors.level && (
                   <Typography variant="caption" color="error">
-                    Level is required
+                    {errors.level.message}
                   </Typography>
                 )}
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <FormControl
-                  fullWidth
-                  variant="outlined"
-                  error={!!errors.category}
+              </FormControl>
+            </Grid>
+            <Grid item xs={12} sm={6}>
+              <FormControl
+                fullWidth
+                variant="outlined"
+                error={!!errors.category}
+              >
+                <InputLabel>Category</InputLabel>
+                <Select
+                  {...register("category", {
+                    required: "Category is required",
+                  })}
+                  label="Category"
+                  value={formData.category}
+                  onChange={handleChange}
+                  name="category"
                 >
-                  <InputLabel>Category</InputLabel>
-                  <Select
-                    {...register("category", { required: true })}
-                    label="Category"
-                    value={formData.category}
-                    onChange={handleChange}
-                    name="category"
-                  >
-                    <MenuItem value="Development">Development</MenuItem>
-                    <MenuItem value="Business">Business</MenuItem>
-                    <MenuItem value="Finance & Accounting">
-                      Finance & Accounting
-                    </MenuItem>
-                    <MenuItem value="IT & Software">IT & Software</MenuItem>
-                    <MenuItem value="Personal Development">
-                      Personal Development
-                    </MenuItem>
-                    <MenuItem value="Design">Design</MenuItem>
-                    <MenuItem value="Marketing">Marketing</MenuItem>
-                    <MenuItem value="Lifestyle">Lifestyle</MenuItem>
-                    <MenuItem value="Photography & Video">
-                      Photography & Video
-                    </MenuItem>
-                    <MenuItem value="Health & Fitness">
-                      Health & Fitness
-                    </MenuItem>
-                    <MenuItem value="Music">Music</MenuItem>
-                    <MenuItem value="Teaching & Academics">
-                      Teaching & Academics
-                    </MenuItem>
-                  </Select>
-                </FormControl>
+                  <MenuItem value="Development">Development</MenuItem>
+                  <MenuItem value="Business">Business</MenuItem>
+                  <MenuItem value="Finance & Accounting">
+                    Finance & Accounting
+                  </MenuItem>
+                  <MenuItem value="IT & Software">IT & Software</MenuItem>
+                  <MenuItem value="Personal Development">
+                    Personal Development
+                  </MenuItem>
+                  <MenuItem value="Design">Design</MenuItem>
+                  <MenuItem value="Marketing">Marketing</MenuItem>
+                  <MenuItem value="Lifestyle">Lifestyle</MenuItem>
+                  <MenuItem value="Photography & Video">
+                    Photography & Video
+                  </MenuItem>
+                  <MenuItem value="Health & Fitness">Health & Fitness</MenuItem>
+                  <MenuItem value="Music">Music</MenuItem>
+                  <MenuItem value="Teaching & Academics">
+                    Teaching & Academics
+                  </MenuItem>
+                </Select>
                 {errors.category && (
                   <Typography variant="caption" color="error">
-                    Category is required
+                    {errors.category.message}
                   </Typography>
                 )}
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("tags")}
-                  label="Tags (comma-separated)"
-                  variant="outlined"
-                  fullWidth
-                  value={formData.tags.join(", ")}
-                  onChange={(e) =>
-                    setFormData({
-                      ...formData,
-                      tags: e.target.value.split(",").map((tag) => tag.trim()),
-                    })
-                  }
-                  name="tags"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  {...register("language", { required: true })}
-                  label="Language"
-                  variant="outlined"
-                  fullWidth
-                  error={!!errors.language}
-                  helperText={errors.language ? "Language is required" : ""}
-                  value={formData.language}
-                  onChange={handleChange}
-                  name="language"
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <Typography variant="subtitle1">Thumbnail</Typography>
-                <input
-                  type="file"
-                  accept="image/*"
-                  name="thumbnail"
-                  onChange={handleChange}
-                  style={{ marginBottom: "20px" }}
-                />
-              </Grid>
+              </FormControl>
             </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...register("tags")}
+                label="Tags (comma-separated)"
+                variant="outlined"
+                fullWidth
+                value={formData.tags.join(", ")}
+                onChange={(e) =>
+                  setFormData({
+                    ...formData,
+                    tags: e.target.value.split(",").map((tag) => tag.trim()),
+                  })
+                }
+                name="tags"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <TextField
+                {...register("language", { required: "Language is required" })}
+                label="Language"
+                variant="outlined"
+                fullWidth
+                error={!!errors.language}
+                helperText={errors.language?.message}
+                value={formData.language}
+                onChange={handleChange}
+                name="language"
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography variant="subtitle1" gutterBottom>
+                Thumbnail
+              </Typography>
+              <input
+                type="file"
+                accept="image/*"
+                name="thumbnail"
+                onChange={handleChange}
+                style={{ display: "none" }}
+                id="thumbnail-upload"
+              />
+              <label htmlFor="thumbnail-upload">
+                <Button
+                  variant="contained"
+                  component="span"
+                  sx={{ marginTop: 1 }}
+                >
+                  Choose File
+                </Button>
+              </label>
+              {formData.thumbnail && (
+                <Typography variant="body2" sx={{ marginTop: 1 }}>
+                  Selected file: {formData.thumbnail.name}
+                </Typography>
+              )}
+            </Grid>
+          </Grid>
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "flex-end",
+              marginTop: { xs: 2, sm: 3 },
+            }}
+          >
             <Button
               type="submit"
-              color="primary"
               variant="contained"
-              sx={{ alignSelf: "flex-end", mt: 2 }}
+              color="primary"
+              size="large"
+              fullWidth={true}
+              sx={{ maxWidth: { sm: "200px" } }}
             >
-              {id ? "Save Changes" : "Create"}
+              {id ? "Save Changes" : "Create Course"}
             </Button>
           </Box>
-        </Paper>
-      </Box>
-    </div>
+        </Box>
+      </Paper>
+    </Box>
   );
 };
 
