@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/services/api";
 import { useMutation } from "react-query";
 
 export const useUpdateUser = (options: {
@@ -13,15 +13,11 @@ export const useUpdateUser = (options: {
       phone?: string;
       password?: string;
     }) => {
-      const response = await axios.put(
-        `${import.meta.env.VITE_API_URL}/api/profile`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.put(`/profile`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       return response.data;
     },
     {

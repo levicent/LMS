@@ -63,6 +63,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.removeItem("token");
+    localStorage.removeItem("refreshToken");
     toast.info("You have been logged out");
   };
   return (
