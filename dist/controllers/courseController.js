@@ -64,7 +64,7 @@ exports.createCourse = [
 ];
 const getAllCourses = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const courses = yield Courses_1.default.find();
+        const courses = yield Courses_1.default.find().populate("instructor", "firstName lastName");
         if (!courses) {
             return res.status(404).json({ message: "No courses found" });
         }
