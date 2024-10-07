@@ -125,18 +125,23 @@ export const searchCourseByQuery = async (req: Request, res: Response) => {
   try {
     const { query } = req.query;
     if (!query) {
-      return res.status(400).json({ message: "Please provide a query" });
+      return res.status(400).json({ message: "Please provide a search query" });
     }
+    // Split the query into individual words
+    const searchTerms = Array.isArray(query) ? query : [query];
+    const regexQueries = searchTerms.map(term => ({
+      title: { $regex: term, $options: "i" }
+    }));
+    // Find courses that match any of the regex queries
     const courses = await Course.find({
-      title: { $regex: query, $options: "i" },
+      $or: regexQueries
     });
-
     if (courses.length === 0) {
       return res.status(404).json({ message: "No courses found" });
     }
-    res.status(200).json({ courses });
+    res.status(200).json(courses);
   } catch (error) {
-    console.error("Error searching course by category", error);
+    console.error("Error searching courses by title", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
