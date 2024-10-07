@@ -134,24 +134,25 @@ const HomePage: React.FC = () => {
                             {course.description}
                           </p>
                           <p className="text-gray-600 dark:text-white font- bold mb-4">
-                            Instructor : {course.instructor}
+                            Instructor : {course.instructor?.firstName}{" "}
+                            {course.instructor?.lastName}
                           </p>
-                          <div className="flex items-center mb-4">
-                            <span className="text-gray-700 dark:text-gray-300">
-                              {course.studentsEnrolled.length} students
-                            </span>
-                          </div>
                           <div className="flex items-center mb-4">
                             <span className="text-gray-700 dark:text-gray-300">
                               Price : {course.price}
                             </span>
                           </div>
                           <div className="flex items-center mb-4">
-                            <Star className="w-5 h-5 text-yellow-400 mr-1" />
                             <span className="text-gray-700 dark:text-gray-300">
-                              {course.rating}
+                              {course.level}
                             </span>
                           </div>
+                          {/* <div className="flex items-center mb-4">
+                            <Star className="w-5 h-5 text-yellow-400 mr-1" />
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {course.}
+                            </span>
+                          </div> */}
                           {/* <div className="text-sm text-gray-500 dark:text-gray-400">
                             <span className="flex items-center">
                               Tags: {course.tags.join(", ")}

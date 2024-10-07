@@ -3,14 +3,17 @@ import { useQuery } from "react-query";
 
 interface CourseData {
   title: string;
-  courseDescription: string;
-  coursePrice: number;
-  instructorId: string;
-  duration: number;
+  description: string;
+  price: string;
+  instructor: {
+    _id: string;
+    firstName: string;
+    lastName: string;
+  };
+  duration: string;
   level: string;
   thumbnail: string;
   category: string;
-  tags: string[];
   language: string;
 }
 
@@ -23,6 +26,7 @@ const fetchCourses = async (): Promise<CourseData[]> => {
     //   },
     // }
   );
+  console.log(response.data.courses);
   return response.data.courses;
 };
 
