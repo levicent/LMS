@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardFooter } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { useLocation } from "react-router-dom";
+import DefaultLayout from "@/layout/DefaultLayout";
 
 import {
   DropdownMenu,
@@ -243,196 +244,198 @@ export default function SearchResults() {
   }, [filteredCourses, sortBy]);
 
   return (
-    <div className="container mx-auto px-4 py-8 bg-white">
-      <h1 className="text-3xl font-bold mb-6 text-gray-900">
-        {filteredCourses.length} results for "{query}"
-      </h1>
-      <div className="flex flex-col lg:flex-row gap-8">
-        <aside className="w-full lg:w-1/4">
-          <Card className="bg-white border border-gray-200">
-            <CardContent className="p-4">
-              <h2 className="text-xl font-semibold mb-4 text-gray-800">
-                Filter
-              </h2>
-              {filters.map((filter) => (
-                <div key={filter.name} className="mb-4">
-                  <h3 className="font-medium mb-2 text-gray-700">
-                    {filter.name}
-                  </h3>
-                  {filter.options.map((option) => (
-                    <label
-                      key={option}
-                      className="flex items-center space-x-2 mb-2"
-                    >
-                      <Checkbox
-                        id={`${filter.name}-${option}`}
-                        checked={
-                          selectedFilters[filter.name]?.[option] || false
-                        }
-                        onCheckedChange={() =>
-                          toggleFilter(filter.name, option)
-                        }
-                      />
-                      <span className="text-sm text-gray-600">{option}</span>
-                    </label>
-                  ))}
-                  {filter.options.length > 4 && (
-                    <Button
-                      variant="link"
-                      className="text-sm p-0 text-blue-600"
-                    >
-                      Show more
-                    </Button>
-                  )}
-                </div>
-              ))}
-            </CardContent>
-          </Card>
-        </aside>
-        <main className="w-full lg:w-3/4">
-          <div className="flex justify-between items-center mb-4">
-            <p className="text-sm text-gray-600">
-              {filteredCourses.length} results
-            </p>
-            <DropdownMenu>
-              <DropdownMenuTrigger asChild>
-                <Button variant="outline" className="bg-white text-gray-700">
-                  Sort by: {sortBy} <ChevronDown className="ml-2 h-4 w-4" />
-                </Button>
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="bg-white">
-                <DropdownMenuItem
-                  onClick={() => setSortBy("Most Relevant")}
-                  className="text-gray-700 hover:bg-gray-100"
-                >
-                  Most Relevant
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => setSortBy("Most Popular")}
-                  className="text-gray-700 hover:bg-gray-100"
-                >
-                  Most Popular
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => setSortBy("Highest Rated")}
-                  className="text-gray-700 hover:bg-gray-100"
-                >
-                  Highest Rated
-                </DropdownMenuItem>
-                <DropdownMenuItem
-                  onClick={() => setSortBy("Newest")}
-                  className="text-gray-700 hover:bg-gray-100"
-                >
-                  Newest
-                </DropdownMenuItem>
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-          <div className="space-y-4">
-            {filteredCourses.map((course) => (
-              <Card
-                key={course.id}
-                className="flex flex-col sm:flex-row bg-white shadow-sm"
-              >
-                <img
-                  src={course.image}
-                  alt={course.title}
-                  className="w-full sm:w-60 h-32 object-cover"
-                />
-                <CardContent className="flex-grow p-4">
-                  <h3 className="text-xl font-bold mb-2 text-gray-900">
-                    {course.title}
-                  </h3>
-                  <p className="text-sm text-gray-600 mb-2">
-                    {course.instructor}
-                  </p>
-                  <div className="flex items-center mb-2">
-                    <span className="text-orange-400 font-bold mr-1">
-                      {course.rating}
-                    </span>
-                    <div className="flex">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-4 w-4 ${
-                            i < Math.floor(course.rating)
-                              ? "text-orange-400 fill-current"
-                              : "text-gray-300"
-                          }`}
+    <DefaultLayout>
+      <div className="container mx-auto px-4 py-8 bg-white">
+        <h1 className="text-3xl font-bold mb-6 text-gray-900">
+          {filteredCourses.length} results for "{query}"
+        </h1>
+        <div className="flex flex-col lg:flex-row gap-8">
+          <aside className="w-full lg:w-1/4">
+            <Card className="bg-white border border-gray-200">
+              <CardContent className="p-4">
+                <h2 className="text-xl font-semibold mb-4 text-gray-800">
+                  Filter
+                </h2>
+                {filters.map((filter) => (
+                  <div key={filter.name} className="mb-4">
+                    <h3 className="font-medium mb-2 text-gray-700">
+                      {filter.name}
+                    </h3>
+                    {filter.options.map((option) => (
+                      <label
+                        key={option}
+                        className="flex items-center space-x-2 mb-2"
+                      >
+                        <Checkbox
+                          id={`${filter.name}-${option}`}
+                          checked={
+                            selectedFilters[filter.name]?.[option] || false
+                          }
+                          onCheckedChange={() =>
+                            toggleFilter(filter.name, option)
+                          }
                         />
-                      ))}
-                    </div>
-                    <span className="text-sm text-gray-600 ml-1">
-                      ({course.students.toLocaleString()})
-                    </span>
+                        <span className="text-sm text-gray-600">{option}</span>
+                      </label>
+                    ))}
+                    {filter.options.length > 4 && (
+                      <Button
+                        variant="link"
+                        className="text-sm p-0 text-blue-600"
+                      >
+                        Show more
+                      </Button>
+                    )}
                   </div>
-                  <p className="text-sm text-gray-700">
-                    {course.duration} • {course.level} • {course.language}
-                  </p>
-                  {course.bestseller && (
-                    <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded mt-2">
-                      Bestseller
-                    </span>
-                  )}
-                  {course.hotAndNew && (
-                    <span className="inline-block bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded mt-2">
-                      Hot & New
-                    </span>
-                  )}
-                </CardContent>
-                <CardFooter className="p-4 flex flex-col items-end justify-between">
-                  <div className="text-2xl font-bold text-gray-900">
-                    ₹{course.price}
-                  </div>
-                  <div className="text-sm text-gray-500 line-through">
-                    ₹{course.originalPrice}
-                  </div>
-                </CardFooter>
-              </Card>
-            ))}
-          </div>
-          <div className="mt-8 flex justify-center">
-            <nav className="inline-flex rounded-md shadow">
-              <Button variant="outline" className="bg-white text-gray-700">
-                <ChevronLeft className="h-4 w-4" />
-              </Button>
-              <Button variant="outline" className="bg-white text-gray-700">
-                1
-              </Button>
-              <Button variant="outline" className="bg-white text-gray-700">
-                2
-              </Button>
-              <Button variant="outline" className="bg-white text-gray-700">
-                3
-              </Button>
-              <Button variant="outline" className="bg-white text-gray-700">
-                <ChevronRight className="h-4 w-4" />
-              </Button>
-            </nav>
-          </div>
-          <div className="mt-8">
-            <h3 className="text-lg font-semibold mb-4 text-gray-900">
-              Related searches
-            </h3>
-            <div className="flex flex-wrap gap-2">
-              {[
-                "python for beginners",
-                "python data science",
-                "python machine learning",
-                "python web development",
-                "python game development",
-              ].map((tag) => (
-                <span
-                  key={tag}
-                  className="bg-gray-100 text-gray-800 text-sm font-medium px-2.5 py-0.5 rounded"
+                ))}
+              </CardContent>
+            </Card>
+          </aside>
+          <main className="w-full lg:w-3/4">
+            <div className="flex justify-between items-center mb-4">
+              <p className="text-sm text-gray-600">
+                {filteredCourses.length} results
+              </p>
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Button variant="outline" className="bg-white text-gray-700">
+                    Sort by: {sortBy} <ChevronDown className="ml-2 h-4 w-4" />
+                  </Button>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent align="end" className="bg-white">
+                  <DropdownMenuItem
+                    onClick={() => setSortBy("Most Relevant")}
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    Most Relevant
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setSortBy("Most Popular")}
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    Most Popular
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setSortBy("Highest Rated")}
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    Highest Rated
+                  </DropdownMenuItem>
+                  <DropdownMenuItem
+                    onClick={() => setSortBy("Newest")}
+                    className="text-gray-700 hover:bg-gray-100"
+                  >
+                    Newest
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </div>
+            <div className="space-y-4">
+              {filteredCourses.map((course) => (
+                <Card
+                  key={course.id}
+                  className="flex flex-col sm:flex-row bg-white shadow-sm"
                 >
-                  {tag}
-                </span>
+                  <img
+                    src={course.image}
+                    alt={course.title}
+                    className="w-full sm:w-60 h-32 object-cover"
+                  />
+                  <CardContent className="flex-grow p-4">
+                    <h3 className="text-xl font-bold mb-2 text-gray-900">
+                      {course.title}
+                    </h3>
+                    <p className="text-sm text-gray-600 mb-2">
+                      {course.instructor}
+                    </p>
+                    <div className="flex items-center mb-2">
+                      <span className="text-orange-400 font-bold mr-1">
+                        {course.rating}
+                      </span>
+                      <div className="flex">
+                        {[...Array(5)].map((_, i) => (
+                          <Star
+                            key={i}
+                            className={`h-4 w-4 ${
+                              i < Math.floor(course.rating)
+                                ? "text-orange-400 fill-current"
+                                : "text-gray-300"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-sm text-gray-600 ml-1">
+                        ({course.students.toLocaleString()})
+                      </span>
+                    </div>
+                    <p className="text-sm text-gray-700">
+                      {course.duration} • {course.level} • {course.language}
+                    </p>
+                    {course.bestseller && (
+                      <span className="inline-block bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-0.5 rounded mt-2">
+                        Bestseller
+                      </span>
+                    )}
+                    {course.hotAndNew && (
+                      <span className="inline-block bg-orange-100 text-orange-800 text-xs font-semibold px-2.5 py-0.5 rounded mt-2">
+                        Hot & New
+                      </span>
+                    )}
+                  </CardContent>
+                  <CardFooter className="p-4 flex flex-col items-end justify-between">
+                    <div className="text-2xl font-bold text-gray-900">
+                      ₹{course.price}
+                    </div>
+                    <div className="text-sm text-gray-500 line-through">
+                      ₹{course.originalPrice}
+                    </div>
+                  </CardFooter>
+                </Card>
               ))}
             </div>
-          </div>
-        </main>
+            <div className="mt-8 flex justify-center">
+              <nav className="inline-flex rounded-md shadow">
+                <Button variant="outline" className="bg-white text-gray-700">
+                  <ChevronLeft className="h-4 w-4" />
+                </Button>
+                <Button variant="outline" className="bg-white text-gray-700">
+                  1
+                </Button>
+                <Button variant="outline" className="bg-white text-gray-700">
+                  2
+                </Button>
+                <Button variant="outline" className="bg-white text-gray-700">
+                  3
+                </Button>
+                <Button variant="outline" className="bg-white text-gray-700">
+                  <ChevronRight className="h-4 w-4" />
+                </Button>
+              </nav>
+            </div>
+            <div className="mt-8">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">
+                Related searches
+              </h3>
+              <div className="flex flex-wrap gap-2">
+                {[
+                  "python for beginners",
+                  "python data science",
+                  "python machine learning",
+                  "python web development",
+                  "python game development",
+                ].map((tag) => (
+                  <span
+                    key={tag}
+                    className="bg-gray-100 text-gray-800 text-sm font-medium px-2.5 py-0.5 rounded"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+            </div>
+          </main>
+        </div>
       </div>
-    </div>
+    </DefaultLayout>
   );
 }
