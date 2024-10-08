@@ -2,6 +2,7 @@ import { MagnifyingGlassIcon } from "@radix-ui/react-icons";
 import { useTheme } from "../../context/themeContext";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { Search, X } from 'lucide-react';
 
 function SearchBar() {
   const themeContext = useTheme();
@@ -61,66 +62,87 @@ export const MobileSearchBar = () => {
     const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
       e.preventDefault();
       if (searchQuery.trim()) {
-        navigate(`/search?query=${searchQuery}`);
+        navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
         setIsExpanded(false);
+        setSearchQuery("");
       }
     };
   
-    return (
-      <div className="flex items-center lg:hidden">
-        {!isExpanded ? (
-          <>
-            {/* Search Icon Button */}
-            <button
-              onClick={() => setIsExpanded(true)}
-              className={`p-2 rounded-full ${
-                theme === "dark"
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-500 hover:text-gray-600"
-              }`}
-              aria-label="Open search"
-            >
-              <MagnifyingGlassIcon className="h-6 w-6" />
-            </button>
+    const isDark = theme === "dark";
   
-            
-          </>
-        ) : (
-          <div className="flex items-center gap-2 w-full max-w-[calc(100vw-2rem)]">
-            <form onSubmit={handleSearch} className="flex-1 relative">
-              <input
-                type="text"
-                placeholder="Search for anything"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                autoFocus
-                className={`w-full pl-10 pr-4 py-2 rounded-lg text-sm ${
-                  theme === "dark"
-                    ? "bg-gray-800 text-white placeholder-gray-400"
-                    : "bg-gray-100 text-gray-900 placeholder-gray-500"
-                }`}
-              />
-              <MagnifyingGlassIcon 
-                className={`absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-500"
-                }`} 
-              />
-            </form>
-            <button
-              onClick={() => {
-                setIsExpanded(false);
-                setSearchQuery("");
-              }}
-              className={`p-2 rounded-full flex-shrink-0 ${
-                theme === "dark"
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-500 hover:text-gray-600"
-              }`}
-            >
-            </button>
+    return (
+      <>
+        {/* Search Icon Button */}
+        <button
+          onClick={() => setIsExpanded(true)}
+          className={`p-2 rounded-full ${
+            isDark 
+              ? "text-gray-400 hover:text-white" 
+              : "text-gray-500 hover:text-gray-600"
+          }`}
+          aria-label="Open search"
+        >
+          <Search className="h-6 w-6" />
+        </button>
+  
+        {/* Full Screen Search Overlay */}
+        {isExpanded && (
+          <div className="fixed inset-0 z-50">
+            {/* Backdrop */}
+            <div className={`absolute inset-0 ${
+              isDark ? "bg-gray-900/95" : "bg-white/95"
+            }`} />
+  
+            {/* Search Content */}
+            <div className="relative h-full">
+              {/* Top Bar */}
+              <div className={`w-full p-4 ${
+                isDark ? "bg-gray-800" : "bg-white"
+              } shadow-lg`}>
+                <div className="max-w-3xl mx-auto flex items-center gap-2">
+                  <form onSubmit={handleSearch} className="flex-1 relative">
+                    <input 
+                      type="text"
+                      placeholder="Search for anything"
+                      value={searchQuery}
+                      onChange={(e) => setSearchQuery(e.target.value)}
+                      autoFocus
+                      className={`w-full pl-10 pr-4 py-2 rounded-lg text-sm outline-none ${
+                        isDark
+                          ? "bg-gray-700 text-white placeholder-gray-400 focus:bg-gray-600"
+                          : "bg-gray-100 text-gray-900 placeholder-gray-500 focus:bg-gray-200"
+                      }`}
+                    />
+                    <Search 
+                      className={`absolute left-3 top-1/2 -translate-y-1/2 h-5 w-5 ${
+                        isDark ? "text-gray-400" : "text-gray-500"
+                      }`}
+                    />
+                  </form>
+                  <button
+                    onClick={() => {
+                      setIsExpanded(false);
+                      setSearchQuery("");
+                    }}
+                    className={`p-2 rounded-full ${
+                      isDark 
+                        ? "text-gray-400 hover:text-white hover:bg-gray-700" 
+                        : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+                    }`}
+                    aria-label="Close search"
+                  >
+                    <X className="h-6 w-6" />
+                  </button>
+                </div>
+              </div>
+  
+              {/* Search Results Area (if needed) */}
+              <div className="max-w-3xl mx-auto p-4">
+                {/* Add search results or suggestions here */}
+              </div>
+            </div>
           </div>
         )}
-      </div>
+      </>
     );
   };
-

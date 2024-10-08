@@ -36,3 +36,13 @@ const ShimmerCard: React.FC = () => {
       <div className="h-10 bg-gray-200 rounded"></div>
     </div>
   );
+
+  export const ShimmerHeading = () => {
+    return (
+      <div className="w-full max-w-md mx-auto h-9 md:h-10 mb-8 rounded-lg overflow-hidden relative isolate">
+        <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gray-200/80 to-transparent 
+                      dark:via-gray-700/50 translate-x-[-100%] animate-shimmer" />
+        <div className="w-full h-full bg-gray-200 dark:bg-gray-700 rounded-lg" />
+      </div>
+    );
+  };
