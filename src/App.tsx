@@ -26,6 +26,7 @@ import CreateUsersTablePage from "./pages/Dashboard/Tables/CreateUsersTablePage"
 import CourseDashboard from "./pages/Dashboard/CourseDashboard";
 import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
 import CourseSearchResult from "./pages/CourseSearchResult";
+import SearchResults from "./components/SearchBar/SearchResults";
 
 const CourseInfoWrapper = () => {
   const location = useLocation();
@@ -56,6 +57,7 @@ const App: React.FC = () => {
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
+                <Route path="/search" element={<SearchResults />} />
                 <Route
                   path="/course-search-result"
                   element={<CourseSearchResult />}

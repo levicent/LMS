@@ -19,6 +19,7 @@ import { HiSun, HiMoon } from "react-icons/hi";
 import { useTheme } from "../../context/themeContext";
 import AuthContext from "../../context/authContext";
 import { useFetchUserProfile } from "../../hooks/useFetchUserProfile";
+import SearchBar, { MobileSearchBar } from "../SearchBar/SearchBar";
 
 const categories = [
   { name: "Development", href: "/category/development" },
@@ -60,7 +61,6 @@ export default function Navbar() {
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const authContext = useContext(AuthContext);
   if (!authContext) {
@@ -242,28 +242,7 @@ export default function Navbar() {
 
             <div className="flex items-center space-x-4">
               {/* Search bar */}
-              <form className="relative">
-                <input
-                  type="text"
-                  placeholder="Search for anything"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  className={`w-64 pl-10 pr-4 py-2 rounded-md text-sm ${
-                    theme === "dark"
-                      ? "bg-gray-700 text-white placeholder-gray-400"
-                      : "bg-gray-100 text-gray-900 placeholder-gray-500"
-                  }`}
-                />
-                <button
-                  type="submit"
-                  className={`absolute left-3 top-2.5 ${
-                    theme === "dark" ? "text-gray-400" : "text-gray-500"
-                  }`}
-                >
-                  <MagnifyingGlassIcon className="h-5 w-5" />
-                </button>
-              </form>
-
+                  <SearchBar/>
               {/* Wishlist icon */}
               <button
                 className={`p-1 rounded-full ${
@@ -434,16 +413,8 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center lg:hidden">
-            <button
-              onClick={() => setSearchOpen(!searchOpen)}
-              className={`p-1 rounded-full ${
-                theme === "dark"
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-500 hover:text-gray-600"
-              }`}
-            >
-              <MagnifyingGlassIcon className="h-6 w-6" />
-            </button>
+           {/* <SearchBar/> */}
+           <MobileSearchBar/>
             <button
               className={`p-1 rounded-full ${
                 theme === "dark"
@@ -456,31 +427,11 @@ export default function Navbar() {
           </div>
         </div>
 
-        {searchOpen && (
+        {/* {searchOpen && (
           <form className="mt-4 lg:hidden">
-            <div className="relative">
-              <input
-                type="text"
-                placeholder="Search for anything"
-                value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
-                className={`w-full pl-10 pr-4 py-2 rounded-md text-sm ${
-                  theme === "dark"
-                    ? "bg-gray-700 text-white placeholder-gray-400"
-                    : "bg-gray-100 text-gray-900 placeholder-gray-500"
-                }`}
-              />
-              <button
-                type="submit"
-                className={`absolute left-3 top-2.5 ${
-                  theme === "dark" ? "text-gray-400" : "text-gray-500"
-                }`}
-              >
-                <MagnifyingGlassIcon className="h-5 w-5" />
-              </button>
-            </div>
+            <MobileSearchBar/>
           </form>
-        )}
+        )} */}
       </nav>
 
       {/* Mobile menu */}
