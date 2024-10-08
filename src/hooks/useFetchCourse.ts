@@ -32,8 +32,9 @@ const fetchCourses = async (): Promise<CourseData[]> => {
 
 const fetchCourseByQuery = async (query: string): Promise<CourseData[]> => {
   const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/courses?query=${query}`
+    `${import.meta.env.VITE_API_URL}/api/course/search?query=${query}`
   );
+  console.log(response.data.courses);
   return response.data.courses;
 };
 
@@ -42,5 +43,11 @@ export const useFetchCourses = () => {
 };
 
 export const useFetchCourseByQuery = (query: string) => {
-  return useQuery<CourseData[]>("courses", () => fetchCourseByQuery(query));
+  return useQuery<CourseData[]>(
+    ["coursesByQuery", query],
+    () => fetchCourseByQuery(query),
+    {
+      enabled: !!query,
+    }
+  );
 };
