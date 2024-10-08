@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../hooks/useLoginMutation";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
@@ -27,6 +28,8 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
   const [error, setError] = useState<string | null>(null);
   const [role, setRole] = useState<string | null>(null);
 
+  const navigate = useNavigate();
+
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (token) {
@@ -46,6 +49,13 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setRole(role);
         setIsAuthenticated(true);
         setError(null);
+        if (role === "admin") {
+          navigate("/admin/dashboard");
+        } else if (role === "teacher") {
+          navigate("/instructor/dashboard");
+        } else if (role === "student") {
+          navigate("/");
+        }
       },
       onError: (err) => {
         setIsAuthenticated(false);

@@ -41,11 +41,11 @@ const CourseInfoWrapper = () => {
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
-      <AuthProvider>
-        <ThemeProvider>
-          <CartProvider>
-            <ToastContainer />
-            <Router>
+      <ThemeProvider>
+        <CartProvider>
+          <ToastContainer />
+          <Router>
+            <AuthProvider>
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/signin" element={<SignInPage />} />
@@ -87,10 +87,10 @@ const App: React.FC = () => {
                   element={<PrivateRoutes element={<CreateUsersTablePage />} />}
                 />
               </Routes>
-            </Router>
-          </CartProvider>
-        </ThemeProvider>
-      </AuthProvider>
+            </AuthProvider>
+          </Router>
+        </CartProvider>
+      </ThemeProvider>
     </div>
   );
 };

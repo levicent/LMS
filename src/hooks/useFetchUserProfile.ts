@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
-import api from "@/services/api";
-
+import axios from "axios";
 interface User {
   firstName: string;
   lastName: string;
@@ -9,15 +8,21 @@ interface User {
   image: string;
   password: string;
 }
+
 const fetchUserProfile = async (): Promise<User> => {
-  const { data } = await api.get(`/profile`, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem("token")}`,
-    },
-  });
+  const { data } = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/profile`,
+    {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem("token")}`,
+      },
+    }
+  );
   return data;
 };
 
 export const useFetchUserProfile = () => {
-  return useQuery<User>("profile", fetchUserProfile);
+  return useQuery<User>("profile", fetchUserProfile, {
+    retry: false,
+  });
 };

@@ -1,4 +1,4 @@
-import { useState, useContext, useEffect } from "react";
+import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
 import {
@@ -58,7 +58,6 @@ export default function Navbar() {
   const themeContext = useTheme();
   const { theme, toggleTheme } = themeContext;
 
-  const [userImage, setUserImage] = useState("");
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
@@ -82,20 +81,12 @@ export default function Navbar() {
     navigate("/");
   };
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      navigate(`/course-search-result?q=${encodeURIComponent(searchQuery)}`);
-    }
-  };
-
-  useEffect(() => {
-    if (user?.image) {
-      setUserImage(user.image);
-    } else {
-      setUserImage("/image/blank-profile-picture-973460_1280.png");
-    }
-  }, [user]);
+  // const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+  //   e.preventDefault();
+  //   if (searchQuery.trim()) {
+  //     navigate(`/course-search-result?q=${encodeURIComponent(searchQuery)}`);
+  //   }
+  // };
 
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
@@ -251,7 +242,7 @@ export default function Navbar() {
 
             <div className="flex items-center space-x-4">
               {/* Search bar */}
-              <form onSubmit={handleSearch} className="relative">
+              <form className="relative">
                 <input
                   type="text"
                   placeholder="Search for anything"
@@ -300,7 +291,10 @@ export default function Navbar() {
                 <Popover className="relative">
                   <PopoverButton className="flex items-center space-x-2">
                     <img
-                      src={userImage}
+                      src={
+                        user?.image ||
+                        "/image/blank-profile-picture-973460_1280.png"
+                      }
                       className="h-8 w-8 rounded-full"
                       alt="User Avatar"
                     />
@@ -316,7 +310,10 @@ export default function Navbar() {
                         className="flex items-center space-x-3"
                       >
                         <img
-                          src={userImage}
+                          src={
+                            user?.image ||
+                            "/image/blank-profile-picture-973460_1280.png"
+                          }
                           className="h-10 w-10 rounded-full"
                           alt="User Avatar"
                         />
@@ -368,7 +365,6 @@ export default function Navbar() {
                         }`}
                       >
                         <BookOpenIcon className="h-5 w-5" />{" "}
-                        {/* Change the icon here */}
                         <span>My Learning</span>
                       </Link>
                       <Link
@@ -420,7 +416,6 @@ export default function Navbar() {
                 </button>
               )}
 
-              {/* Theme toggle */}
               <button
                 onClick={toggleTheme}
                 className={`p-1 rounded-full ${
@@ -438,7 +433,6 @@ export default function Navbar() {
             </div>
           </div>
 
-          {/* Mobile right section */}
           <div className="flex items-center lg:hidden">
             <button
               onClick={() => setSearchOpen(!searchOpen)}
@@ -462,9 +456,8 @@ export default function Navbar() {
           </div>
         </div>
 
-        {/* Mobile search bar */}
         {searchOpen && (
-          <form onSubmit={handleSearch} className="mt-4 lg:hidden">
+          <form className="mt-4 lg:hidden">
             <div className="relative">
               <input
                 type="text"
@@ -529,7 +522,10 @@ export default function Navbar() {
               <div className="mb-6">
                 <Link to="/profile" className="flex items-center space-x-3">
                   <img
-                    src={userImage}
+                    src={
+                      user?.image ||
+                      "/image/blank-profile-picture-973460_1280.png"
+                    }
                     className="h-12 w-12 rounded-full"
                     alt="User Avatar"
                   />

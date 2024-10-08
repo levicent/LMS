@@ -1,6 +1,6 @@
-import React, { useState, useContext, useEffect } from "react";
+import React, { useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 import AuthContext from "@/context/authContext";
 
@@ -11,7 +11,6 @@ type FormValues = {
 
 const SignInPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
-  const navigate = useNavigate();
 
   const authContext = useContext(AuthContext);
 
@@ -19,19 +18,7 @@ const SignInPage: React.FC = () => {
     throw new Error("useAuth must be used within an AuthProvider");
   }
 
-  const { login, role, loading: isLoading } = authContext;
-
-  useEffect(() => {
-    if (!isLoading) {
-      if (role === "admin") {
-        navigate("/admin/dashboard");
-      } else if (role === "teacher") {
-        navigate("/instructor/dashboard");
-      } else if (role === "student") {
-        navigate("/");
-      }
-    }
-  }, [role]);
+  const { login } = authContext;
 
   const {
     handleSubmit,
@@ -42,15 +29,6 @@ const SignInPage: React.FC = () => {
   const onSubmit: SubmitHandler<FormValues> = (data) => {
     try {
       login(data);
-      if (!isLoading) {
-        if (role === "admin") {
-          navigate("/admin/dashboard");
-        } else if (role === "teacher") {
-          navigate("/instructor/dashboard");
-        } else if (role === "student") {
-          navigate("/");
-        }
-      }
     } catch (error) {
       console.error("Login failed", error);
     }
