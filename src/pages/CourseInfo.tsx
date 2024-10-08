@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,6 +46,10 @@ export default function CourseInfo() {
   const location = useLocation();
   const course: CourseData = location.state?.course;
   const [activeTab, setActiveTab] = useState("overview");
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (!course) return <div>Course not found</div>;
 

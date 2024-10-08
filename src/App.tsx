@@ -1,12 +1,7 @@
 import React from "react";
 import { AuthProvider } from "./context/authContext";
 import { ThemeProvider } from "./context/themeContext";
-import {
-  BrowserRouter as Router,
-  Routes,
-  Route,
-  useLocation,
-} from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import HomePage from "./pages/Homepage";
 import SignInPage from "./pages/Authentication/SignInPage";
 import SignupPage from "./pages/Authentication/SignUpPage";
@@ -28,17 +23,6 @@ import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
 import CourseSearchResult from "./pages/CourseSearchResult";
 import SearchResults from "./components/SearchBar/SearchResults";
 
-const CourseInfoWrapper = () => {
-  const location = useLocation();
-  const course = location.state?.course;
-
-  if (!course) {
-    return <div>Course not found</div>;
-  }
-
-  return <CourseInfo course={course} />;
-};
-
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -53,7 +37,7 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} />
                 <Route path="/profile" element={<AccountSettings />} />
-                <Route path="/course/:id" element={<CourseInfoWrapper />} />
+                <Route path="/course/:id" element={<CourseInfo />} />
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
