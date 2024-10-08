@@ -2,6 +2,7 @@ import axios from "axios";
 import { useQuery } from "react-query";
 
 interface CourseData {
+  _id: string;
   title: string;
   description: string;
   price: string;
