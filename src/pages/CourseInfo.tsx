@@ -83,18 +83,22 @@ export default function CourseInfo() {
 
   return (
     <DefaultLayout>
-      <div className="bg-gray-900 min-h-screen text-gray-100">
+      <div className="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
             <div className="lg:w-2/3">
               <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
-              <p className="text-xl text-gray-400 mb-4">{course.description}</p>
+              <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">
+                {course.description}
+              </p>
               <div className="flex items-center space-x-4 mb-4">
                 <Badge variant="secondary">{course.category}</Badge>
-                <span className="text-sm text-gray-400">
+                <span className="text-sm text-gray-500 dark:text-gray-400">
                   Last updated: {staticData.lastUpdated}
                 </span>
-                <span className="text-sm text-gray-400">{course.language}</span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {course.language}
+                </span>
               </div>
               <div className="flex items-center space-x-4 mb-4">
                 <img
@@ -109,15 +113,19 @@ export default function CourseInfo() {
                   <p className="font-semibold">
                     {course.instructor.firstName} {course.instructor.lastName}
                   </p>
-                  <p className="text-sm text-gray-400">Instructor</p>
+                  <p className="text-sm text-gray-500 dark:text-gray-400">
+                    Instructor
+                  </p>
                 </div>
               </div>
               <div className="mb-6">
                 <Ratings />
-                <span className="ml-2 text-gray-400">4.95 out of 5</span>
+                <span className="ml-2 text-gray-600 dark:text-gray-400">
+                  4.95 out of 5
+                </span>
               </div>
               <Tabs defaultValue="overview" className="space-y-4">
-                <TabsList className="bg-gray-800">
+                <TabsList className="bg-white dark:bg-gray-800">
                   <TabsTrigger
                     value="overview"
                     onClick={() => setActiveTab("overview")}
@@ -141,7 +149,7 @@ export default function CourseInfo() {
                   value="overview"
                   className={activeTab === "overview" ? "" : "hidden"}
                 >
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <CardHeader>
                       <CardTitle>What you'll learn</CardTitle>
                     </CardHeader>
@@ -158,7 +166,7 @@ export default function CourseInfo() {
                       </ul>
                     </CardContent>
                   </Card>
-                  <Card className="mt-4 bg-gray-800 border-gray-700">
+                  <Card className="mt-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <CardHeader>
                       <CardTitle>Course content</CardTitle>
                     </CardHeader>
@@ -190,7 +198,7 @@ export default function CourseInfo() {
                       </div>
                     </CardContent>
                   </Card>
-                  <Card className="mt-4 bg-gray-800 border-gray-700">
+                  <Card className="mt-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <CardHeader>
                       <CardTitle>Requirements</CardTitle>
                     </CardHeader>
@@ -211,7 +219,7 @@ export default function CourseInfo() {
                   value="curriculum"
                   className={activeTab === "curriculum" ? "" : "hidden"}
                 >
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <CardHeader>
                       <CardTitle>Course Curriculum</CardTitle>
                     </CardHeader>
@@ -221,7 +229,7 @@ export default function CourseInfo() {
                           <h3 className="font-semibold text-lg mb-2">
                             {section.title}
                           </h3>
-                          <p className="text-sm text-gray-400">
+                          <p className="text-sm text-gray-600 dark:text-gray-400">
                             {section.lectures} lectures • {section.duration}
                           </p>
                         </div>
@@ -233,7 +241,7 @@ export default function CourseInfo() {
                   value="instructor"
                   className={activeTab === "instructor" ? "" : "hidden"}
                 >
-                  <Card className="bg-gray-800 border-gray-700">
+                  <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                     <CardHeader>
                       <CardTitle>Instructor</CardTitle>
                     </CardHeader>
@@ -252,10 +260,12 @@ export default function CourseInfo() {
                             {course.instructor.firstName}{" "}
                             {course.instructor.lastName}
                           </h3>
-                          <p className="text-gray-400">Instructor</p>
+                          <p className="text-gray-600 dark:text-gray-400">
+                            Instructor
+                          </p>
                         </div>
                       </div>
-                      <p className="text-gray-300">
+                      <p className="text-gray-700 dark:text-gray-300">
                         {course.instructor.bio ||
                           "Experienced instructor with a passion for teaching and a deep understanding of the subject matter. Committed to helping students achieve their learning goals and succeed in their careers."}
                       </p>
@@ -265,7 +275,7 @@ export default function CourseInfo() {
               </Tabs>
             </div>
             <div className="lg:w-1/3">
-              <Card className="sticky top-8 bg-gray-800 border-gray-700">
+              <Card className="sticky top-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardContent className="p-0">
                   <img
                     src={
@@ -282,11 +292,11 @@ export default function CourseInfo() {
                   </div>
                   <Button
                     onClick={handleAddToCart}
-                    className="w-full mb-4 bg-blue-600 hover:bg-blue-700"
+                    className="w-full mb-4 bg-blue-600 hover:bg-blue-700 text-white"
                   >
                     <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
                   </Button>
-                  <p className="text-sm text-gray-400 text-center mb-4">
+                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
                     30-Day Money-Back Guarantee
                   </p>
                   <div className="space-y-2">
