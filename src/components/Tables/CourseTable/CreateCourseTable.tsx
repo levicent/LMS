@@ -12,8 +12,8 @@ import {
   MenuItem,
 } from "@mui/material";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useNavigate, useLocation, useParams } from "react-router-dom";
-import axios from "axios";
+import { useLocation, useParams } from "react-router-dom";
+import api from "@/services/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { useGetUserId } from "@/hooks/useGetUserId";
@@ -34,7 +34,6 @@ interface FormValues {
 interface CourseData extends FormValues {}
 
 const CreateCourseTable: React.FC = () => {
-  const navigate = useNavigate();
   const location = useLocation();
   const { id } = useParams<{ id: string }>();
   const courseData: CourseData = location.state?.course || {};
@@ -69,10 +68,8 @@ const CreateCourseTable: React.FC = () => {
     formState: { errors },
   } = useForm<FormValues>();
 
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | { name?: string; value: unknown }>
-  ) => {
-    const { name, value, files } = e.target as HTMLInputElement;
+  const handleChange = (e: any) => {
+    const { name, value, files } = e.target;
     if (name === "thumbnail" && files) {
       const selectedFile = files[0];
       setFormData((prev) => ({
@@ -111,27 +108,19 @@ const CreateCourseTable: React.FC = () => {
 
     try {
       if (id) {
-        await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/courses/${id}`,
-          formDataToSubmit,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        await api.put(`/courses/${id}`, formDataToSubmit, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         toast.success("Course updated successfully");
       } else {
         await toast.promise(
-          axios.post(
-            `${import.meta.env.VITE_API_URL}/api/courses`,
-            formDataToSubmit,
-            {
-              headers: {
-                Authorization: `Bearer ${localStorage.getItem("token")}`,
-              },
-            }
-          ),
+          api.post(`/courses`, formDataToSubmit, {
+            headers: {
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }),
           {
             pending: "Creating course...",
             success: "Course created successfully",

@@ -1,6 +1,5 @@
 import { useQuery } from "react-query";
-import axios from "axios";
-
+import api from "@/services/api";
 interface User {
   firstName: string;
   lastName: string;
@@ -10,14 +9,11 @@ interface User {
 }
 
 const fetchUserDetails = async (): Promise<User[]> => {
-  const { data } = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/users`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
+  const { data } = await api.get(`/users`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const users = data.users;
   return users;
 };

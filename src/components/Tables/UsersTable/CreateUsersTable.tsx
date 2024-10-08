@@ -15,7 +15,7 @@ import {
 import { useForm, SubmitHandler } from "react-hook-form";
 import { useNavigate, useLocation, useParams } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
-import axios from "axios";
+import api from "@/services/api";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
@@ -70,18 +70,14 @@ const CreateUsersTable: React.FC = () => {
     console.log("Submitted data", data);
     try {
       if (id) {
-        await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/users/${id}`,
-          data,
-          {
-            headers: {
-              Authorization: `Bearer ${localStorage.getItem("token")}`,
-            },
-          }
-        );
+        await api.put(`/users/${id}`, data, {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem("token")}`,
+          },
+        });
         toast.success("User updated successfully");
       } else {
-        await axios.post(`${import.meta.env.VITE_API_URL}/api/register`, data, {
+        await api.post(`/register`, data, {
           headers: {
             Authorization: `Bearer ${localStorage.getItem("token")}`,
           },

@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/services/api";
 import { useMutation } from "react-query";
 
 interface CreateCourseData {
@@ -19,15 +19,11 @@ export const useCreateCourse = (options: {
 }) => {
   return useMutation(
     async (data: CreateCourseData) => {
-      const response = await axios.post(
-        `${import.meta.env.VITE_API_URL}/api/course`,
-        data,
-        {
-          headers: {
-            Authorization: `Bearer ${localStorage.getItem("token")}`,
-          },
-        }
-      );
+      const response = await api.post(`/course`, data, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+      });
       return response.data;
     },
     {

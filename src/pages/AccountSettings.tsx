@@ -1,15 +1,12 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../context/themeContext";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { useFetchUserProfile } from "../hooks/useFetchUserProfile";
-import useCheckTokenExpiration from "@/hooks/useCheckTokenExpiration";
 import { toast } from "react-toastify";
 
 const Settings = () => {
-  useCheckTokenExpiration();
-
   interface FormData {
     firstName?: string;
     lastName?: string;
@@ -22,7 +19,6 @@ const Settings = () => {
   const {
     register,
     handleSubmit,
-    setValue,
     reset,
     formState: { errors },
   } = useForm<FormData>({
@@ -45,14 +41,6 @@ const Settings = () => {
     }
   };
 
-  useEffect(() => {
-    if (user) {
-      setValue("firstName", user.firstName);
-      setValue("lastName", user.lastName);
-      setValue("email", user.email);
-      setValue("phone", user.phone);
-    }
-  }, [user, setValue]);
   const handleCancel = () => {
     // Reset form to initial values
     reset({
@@ -224,21 +212,20 @@ const Settings = () => {
                   </div>
 
                   <div className="flex justify-between mt-6">
-  <button
-    type="button"
-    onClick={handleCancel}
-    className="w-1/2 mr-2 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
-  >
-    Cancel
-  </button>
-  <button
-    type="submit"
-    className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
-  >
-    Save Changes
-  </button>
-</div>
-                  
+                    <button
+                      type="button"
+                      onClick={handleCancel}
+                      className="w-1/2 mr-2 bg-gray-500 hover:bg-gray-600 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
+                    >
+                      Cancel
+                    </button>
+                    <button
+                      type="submit"
+                      className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
+                    >
+                      Save Changes
+                    </button>
+                  </div>
                 </form>
               </div>
             </div>
@@ -269,7 +256,7 @@ const Settings = () => {
                       >
                         Update
                       </button> */}
-                       <button
+                      <button
                         type="button"
                         className="text-sm text-red-600 hover:text-red-700 focus:outline-none ml-4"
                         onClick={handleDeleteClick}
@@ -299,7 +286,6 @@ const Settings = () => {
                   </div>
 
                   <div className="flex justify-between">
-                    
                     {/* <button
                       type="submit"
                       className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"

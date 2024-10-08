@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/services/api";
 import { useQuery } from "react-query";
 
 interface Instructor {
@@ -10,14 +10,11 @@ interface Instructor {
 }
 
 const fetchInstructors = async (): Promise<Instructor[]> => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/instructors`,
-    {
-      headers: {
-        Authorization: `Bearer ${localStorage.getItem("token")}`,
-      },
-    }
-  );
+  const response = await api.get(`/instructors`, {
+    headers: {
+      Authorization: `Bearer ${localStorage.getItem("token")}`,
+    },
+  });
   const instructors = response.data.instructors;
   return instructors;
 };

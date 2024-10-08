@@ -27,7 +27,6 @@ const fetchCourses = async (): Promise<CourseData[]> => {
     //   },
     // }
   );
-  console.log(response.data.courses);
   return response.data.courses;
 };
 
