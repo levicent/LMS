@@ -1,9 +1,9 @@
-import React, { useContext } from "react";
+import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
 import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
-import AuthContext from "../context/authContext";
+
 
 type FormValues = {
   name: string;
@@ -13,14 +13,14 @@ type FormValues = {
 };
 
 const ContactPage: React.FC = () => {
-  const navigate = useNavigate();
-  const authContext = useContext(AuthContext);
+  // const navigate = useNavigate();
+  // const authContext = useContext(AuthContext);
 
-  if (!authContext) {
-    throw new Error("useAuth must be used within an AuthProvider");
-  }
+  // if (!authContext) {
+  //   throw new Error("useAuth must be used within an AuthProvider");
+  // }
 
-  const { isAuthenticated } = authContext;
+  // const { isAuthenticated } = authContext;
 
   const {
     handleSubmit,
@@ -38,11 +38,11 @@ const ContactPage: React.FC = () => {
     }
   };
 
-  if (!isAuthenticated) {
-    // Redirect to login page if not authenticated
-    navigate("/signin");
-    return null;
-  }
+  // if (!isAuthenticated) {
+  //   // Redirect to login page if not authenticated
+  //   navigate("/signin");
+  //   return null;
+  // }
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
