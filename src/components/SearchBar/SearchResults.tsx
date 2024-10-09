@@ -2,7 +2,7 @@
 import { useLocation } from "react-router-dom";
 import { useFetchCourseByQuery } from "@/hooks/useFetchCourse";
 import { SearchX } from 'lucide-react';
-import ShimmerCard, { ShimmerCard1 } from '@/pages/ShimmerCard';
+import { ShimmerCard1 } from '@/pages/ShimmerCard';
 import Navbar from '../Navbar/Navbar';
 import Footer from '../Footer/Footer';
 import { useEffect, useState } from "react";
@@ -86,6 +86,8 @@ const SearchResults = () => {
           </div>
         ) : (
             <>
+            
+            
              <div className="flex flex-col items-center gap-6">
             {courses?.map((course) => (
               <CourseCard key={course._id} course={course}  />
