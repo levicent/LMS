@@ -94,81 +94,85 @@ const HomePage: React.FC = () => {
             </div>
           </section>
           {/* Featured Courses */}
-          <section className="mb-16">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
-              Featured Courses
-            </h2>
-            {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {Array(6) // Display 6 shimmer cards while loading
-                  .fill(0)
-                  .map((_, index) => (
-                    <ShimmerCard key={index} />
-                  ))}
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                {Array.isArray(courses) && courses.length > 0 ? (
-                  courses
-                    .filter(
-                      (course) =>
-                        currentCategory === "All" ||
-                        course.category === currentCategory
-                    )
-                    .slice(0, 6)
-                    .map((course, id) => (
-                      <div
-                        key={id}
-                        className="bg-white dark:bg-gray-800 rounded-lg shadow-md overflow-hidden transition-transform duration-300 hover:scale-105"
-                      >
-                        <img
-                          src={
-                            course?.thumbnail ||
-                            "https://via.placeholder.com/150"
-                          }
-                          alt={course.title}
-                          className="w-full h-48 object-cover"
-                        />
-                        <div className="p-6">
-                          <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                            {course.title}
-                          </h3>
-                          <p className="text-gray-600 dark:text-gray-400 mb-4">
-                            {course.description}
-                          </p>
-                          <p className="text-gray-600 dark:text-white font- bold mb-4">
-                            Instructor : {course.instructor?.firstName}{" "}
-                            {course.instructor?.lastName}
-                          </p>
-                          <div className="flex items-center mb-4">
-                            <span className="text-gray-700 dark:text-gray-300">
-                              Price : {course.price}
-                            </span>
-                          </div>
-                          <div className="flex items-center mb-4">
-                            <span className="text-gray-700 dark:text-gray-300">
-                              {course.level}
-                            </span>
-                          </div>
-                          <Link
-                            to={`/course/${course._id}`}
-                            state={{ course }}
-                            className="mt-4 w-full px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition duration-300"
-                          >
-                            Enroll Now
-                          </Link>
-                        </div>
-                      </div>
-                    ))
-                ) : (
-                  <div className="text-center text-2xl text-gray-500">
-                    No Courses Found
+          <section className="py-16 bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
+  <div className="container mx-auto px-4">
+    <h2 className="text-4xl font-extrabold text-gray-900 dark:text-white mb-8 text-center">
+      Featured Courses
+    </h2>
+    {loading ? (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {Array(6)
+          .fill(0)
+          .map((_, index) => (
+            <ShimmerCard key={index} />
+          ))}
+      </div>
+    ) : (
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {Array.isArray(courses) && courses.length > 0 ? (
+          courses
+            .filter(
+              (course) =>
+                currentCategory === "All" ||
+                course.category === currentCategory
+            )
+            .slice(0, 6)
+            .map((course, id) => (
+              <div
+                key={id}
+                className="bg-white dark:bg-gray-800 rounded-xl shadow-xl overflow-hidden transition-all duration-300 hover:shadow-2xl hover:-translate-y-2"
+              >
+                <div className="relative">
+                  <img
+                    src={
+                      course?.thumbnail ||
+                      "https://via.placeholder.com/150"
+                    }
+                    alt={course.title}
+                    className="w-full h-56 object-cover"
+                  />
+                  <div className="absolute top-0 right-0 bg-blue-600 text-white text-xs font-bold px-3 py-1 m-2 rounded-full">
+                    {course.level}
                   </div>
-                )}
+                </div>
+                <div className="p-6">
+                  <h3 className="text-xl font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+                    {course.title}
+                  </h3>
+                  <p className="text-gray-600 dark:text-gray-300 mb-4">
+                    Instructor: {course.instructor?.firstName}{" "}
+                    {course.instructor?.lastName}
+                  </p>
+                  <div className="flex items-center justify-between mb-4">
+                    <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
+                      ${course.price}
+                    </span>
+                    <div className="flex items-center">
+                      <svg className="w-5 h-5 text-yellow-400" fill="currentColor" viewBox="0 0 20 20">
+                        <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                      </svg>
+                      <span className="ml-1 text-gray-600 dark:text-gray-300">4.5</span>
+                    </div>
+                  </div>
+                  <Link
+                    to={`/course/${course._id}`}
+                    state={{ course }}
+                    className="block w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-center font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105"
+                  >
+                    Enroll Now
+                  </Link>
+                </div>
               </div>
-            )}
-          </section>
-
+            ))
+        ) : (
+          <div className="col-span-full text-center text-2xl text-gray-500 dark:text-gray-400">
+            No Courses Found
+          </div>
+        )}
+      </div>
+    )}
+  </div>
+</section>
           {/* Our Impact */}
           <section className="mb-16">
             <h2 className="text-3xl font-bold text-gray-900 dark:text-gray-100 mb-6 text-center">
