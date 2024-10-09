@@ -122,11 +122,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <img
-                src="https://tailwindui.com/img/logos/mark.svg?color=blue"
-                alt="LMS"
-                className="h-8 w-auto"
-              />
+              <img src="" alt="LMS" className="h-8 w-auto" />
               <span
                 className={`text-xl font-bold ${
                   theme === "dark" ? "text-white" : "text-blue-600"
