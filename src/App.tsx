@@ -22,7 +22,7 @@ import CourseDashboard from "./pages/Dashboard/CourseDashboard";
 import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
 import CourseSearchResult from "./pages/CourseSearchResult";
 import SearchResults from "./components/SearchBar/SearchResults";
-
+import ShoppingCart from "./pages/ShoppingCart";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -59,6 +59,8 @@ const App: React.FC = () => {
                   element={<CourseDashboard />}
                 />
 
+                {/* Shopping Cart */}
+                <Route path="/cart" element={<ShoppingCart />} />
                 {/* Admin Routes */}
                 <Route
                   path="/admin/dashboard"

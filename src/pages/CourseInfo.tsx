@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,7 @@ import {
 import DefaultLayout from "@/layout/DefaultLayout";
 import Ratings from "@/components/Ratings/Ratings";
 import { useCart } from "@/context/cartContext";
+import { toast } from "react-toastify";
 
 interface CourseData {
   _id: string;
@@ -46,6 +47,7 @@ export default function CourseInfo() {
   const location = useLocation();
   const course: CourseData = location.state?.course;
   const [activeTab, setActiveTab] = useState("overview");
+  const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -56,9 +58,19 @@ export default function CourseInfo() {
   const handleAddToCart = () => {
     addToCart({
       id: course._id,
+      thumbnail: course.thumbnail,
       name: course.title,
+      instructor: {
+        id: course.instructor._id,
+        firstName: course.instructor.firstName,
+        lastName: course.instructor.lastName,
+      },
       price: parseFloat(course.price),
+      duraton: course.duration,
+      level: course.level,
     });
+    setIsAddedToCart(true);
+    toast.info("Course added to cart");
   };
 
   const staticData = {
@@ -296,12 +308,22 @@ export default function CourseInfo() {
                   <div className="text-3xl sm:text-4xl font-bold mb-4">
                     ₹{parseFloat(course.price).toFixed(2)}
                   </div>
-                  <Button
-                    onClick={handleAddToCart}
-                    className="w-full mb-4 bg-blue-600 hover:bg-blue-700 text-white"
-                  >
-                    <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
-                  </Button>
+
+                  {isAddedToCart ? (
+                    <Link to="/cart">
+                      <Button className="w-full mb-4 bg-blue-700 hover:bg-blue-700 text-white">
+                        <ShoppingCart className="mr-2 h-4 w-4" /> Go to Cart
+                      </Button>
+                    </Link>
+                  ) : (
+                    <Button
+                      onClick={handleAddToCart}
+                      className="w-full mb-4 bg-blue-600 hover:bg-blue-700 text-white"
+                    >
+                      <ShoppingCart className="mr-2 h-4 w-4" /> Add to Cart
+                    </Button>
+                  )}
+
                   <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
                     30-Day Money-Back Guarantee
                   </p>

@@ -9,7 +9,6 @@ import {
   HeartIcon,
   UserCircleIcon,
   BellIcon,
-  MagnifyingGlassIcon,
   ShoppingCartIcon,
   ChevronRightIcon,
   BookOpenIcon,
@@ -20,6 +19,7 @@ import { useTheme } from "../../context/themeContext";
 import AuthContext from "../../context/authContext";
 import { useFetchUserProfile } from "../../hooks/useFetchUserProfile";
 import SearchBar, { MobileSearchBar } from "../SearchBar/SearchBar";
+import { useCart } from "@/context/cartContext";
 
 const categories = [
   { name: "Development", href: "/category/development" },
@@ -58,9 +58,9 @@ const products = [
 export default function Navbar() {
   const themeContext = useTheme();
   const { theme, toggleTheme } = themeContext;
+  const { cart } = useCart();
 
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [searchOpen, setSearchOpen] = useState(false);
 
   const authContext = useContext(AuthContext);
   if (!authContext) {
@@ -122,11 +122,7 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <img
-                src="https://tailwindui.com/img/logos/mark.svg?color=blue"
-                alt="LMS"
-                className="h-8 w-auto"
-              />
+              <img src="" alt="LMS" className="h-8 w-auto" />
               <span
                 className={`text-xl font-bold ${
                   theme === "dark" ? "text-white" : "text-blue-600"
@@ -242,7 +238,7 @@ export default function Navbar() {
 
             <div className="flex items-center space-x-4">
               {/* Search bar */}
-                  <SearchBar/>
+              <SearchBar />
               {/* Wishlist icon */}
               <button
                 className={`p-1 rounded-full ${
@@ -255,15 +251,20 @@ export default function Navbar() {
               </button>
 
               {/* Cart icon */}
-              <button
-                className={`p-1 rounded-full ${
-                  theme === "dark"
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-500 hover:text-gray-600"
-                }`}
-              >
-                <ShoppingCartIcon className="h-6 w-6" />
-              </button>
+              <Link to="/cart">
+                <button
+                  className={`p-1 rounded-full ${
+                    theme === "dark"
+                      ? "text-gray-400 hover:text-white"
+                      : "text-gray-500 hover:text-gray-600"
+                  }`}
+                >
+                  <ShoppingCartIcon className="h-6 w-6" />
+                  <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4">
+                    {cart.length}
+                  </p>
+                </button>
+              </Link>
 
               {/* User avatar or login button */}
               {isAuthenticated ? (
@@ -413,17 +414,22 @@ export default function Navbar() {
           </div>
 
           <div className="flex items-center lg:hidden">
-           {/* <SearchBar/> */}
-           <MobileSearchBar/>
-            <button
-              className={`p-1 rounded-full ${
-                theme === "dark"
-                  ? "text-gray-400 hover:text-white"
-                  : "text-gray-500 hover:text-gray-600"
-              }`}
-            >
-              <ShoppingCartIcon className="h-6 w-6" />
-            </button>
+            {/* <SearchBar/> */}
+            <MobileSearchBar />
+            <Link to="/cart">
+              <button
+                className={`p-1 rounded-full ${
+                  theme === "dark"
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-500 hover:text-gray-600"
+                }`}
+              >
+                <ShoppingCartIcon className="h-6 w-6" />
+                <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 right-4">
+                  {cart.length}
+                </p>
+              </button>
+            </Link>
           </div>
         </div>
 

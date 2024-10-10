@@ -2,8 +2,16 @@ import React, { createContext, useContext, useState } from "react";
 
 interface CartItem {
   id: string;
+  thumbnail: string;
   name: string;
+  instructor: {
+    id: string;
+    firstName: string;
+    lastName: string;
+  };
   price: number;
+  duraton: string;
+  level: string;
 }
 
 interface CartContextType {
