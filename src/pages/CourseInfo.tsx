@@ -43,7 +43,7 @@ interface CourseData {
 }
 
 export default function CourseInfo() {
-  const { addToCart } = useCart();
+  const { addToCart, isCourseInCart } = useCart();
   const location = useLocation();
   const course: CourseData = location.state?.course;
   const [activeTab, setActiveTab] = useState("overview");
@@ -55,20 +55,28 @@ export default function CourseInfo() {
 
   if (!course) return <div>Course not found</div>;
 
+  if (course) {
+    useEffect(() => {
+      setIsAddedToCart(isCourseInCart(course._id));
+    }, [course, isCourseInCart]);
+  }
+
   const handleAddToCart = () => {
-    addToCart({
-      id: course._id,
-      thumbnail: course.thumbnail,
-      name: course.title,
-      instructor: {
-        id: course.instructor._id,
-        firstName: course.instructor.firstName,
-        lastName: course.instructor.lastName,
-      },
-      price: parseFloat(course.price),
-      duraton: course.duration,
-      level: course.level,
-    });
+    if (!isAddedToCart) {
+      addToCart({
+        id: course._id,
+        thumbnail: course.thumbnail,
+        name: course.title,
+        instructor: {
+          id: course.instructor._id,
+          firstName: course.instructor.firstName,
+          lastName: course.instructor.lastName,
+        },
+        price: parseFloat(course.price),
+        duration: course.duration,
+        level: course.level,
+      });
+    }
     setIsAddedToCart(true);
     toast.info("Course added to cart");
   };

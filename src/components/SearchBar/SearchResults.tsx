@@ -1,10 +1,9 @@
-
-import { useLocation ,Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { useFetchCourseByQuery } from "@/hooks/useFetchCourse";
-import { SearchX } from 'lucide-react';
-import { ShimmerCard1 } from '@/pages/ShimmerCard';
-import Navbar from '../Navbar/Navbar';
-import Footer from '../Footer/Footer';
+import { SearchX } from "lucide-react";
+import { ShimmerCard1 } from "@/pages/ShimmerCard";
+import Navbar from "../Navbar/Navbar";
+import Footer from "../Footer/Footer";
 import { useEffect, useState } from "react";
 interface QueryError {
   message?: string; // Optional, because it might not exist
@@ -12,19 +11,12 @@ interface QueryError {
 const CourseCard = ({ course }: any) => (
   <div className="bg-white rounded-lg shadow-md hover:shadow-lg transition-all duration-300 p-6 w-full max-w-sm">
     <img
-      src={
-        course?.thumbnail ||
-        "https://via.placeholder.com/150"
-      }
+      src={course?.thumbnail || "https://via.placeholder.com/150"}
       alt={course.title}
       className="w-full h-48 object-cover"
     />
-    <h2 className="text-xl font-semibold text-gray-800 mb-3">
-      {course.title}
-    </h2>
-    <p className="text-gray-600 mb-4">
-      {course.description}
-    </p>
+    <h2 className="text-xl font-semibold text-gray-800 mb-3">{course.title}</h2>
+    <p className="text-gray-600 mb-4">{course.description}</p>
     <button className="w-full bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition-colors">
       Enroll Now
     </button>
@@ -33,25 +25,20 @@ const CourseCard = ({ course }: any) => (
 
 const NoCoursesFound = () => (
   <div className="flex flex-col items-center justify-center p-8 rounded-lg shadow-md bg-slate-50 max-w-md mx-auto space-y-4">
-  <SearchX 
-    size={64} 
-    className="text-slate-400 animate-pulse" 
-  />
-  
-  <h3 className="text-xl font-semibold text-slate-800">
-    No Courses Found
-  </h3>
-  
-  <p className="text-slate-600 text-center">
-    Try adjusting your search terms or browse all available courses
-  </p>
-  
-  <Link to="/">
-  <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200">
-     Back to Home
-  </button>
-</Link>
-</div>
+    <SearchX size={64} className="text-slate-400 animate-pulse" />
+
+    <h3 className="text-xl font-semibold text-slate-800">No Courses Found</h3>
+
+    <p className="text-slate-600 text-center">
+      Try adjusting your search terms or browse all available courses
+    </p>
+
+    <Link to="/">
+      <button className="mt-4 px-4 py-2 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition-colors duration-200">
+        Back to Home
+      </button>
+    </Link>
+  </div>
 );
 
 const SearchResults = () => {
@@ -77,12 +64,11 @@ const SearchResults = () => {
             Search Results for "{query}"
           </h1>
 
-          {error as QueryError && (
+          {(error as QueryError) && (
             <div className="flex justify-center">
               <div className="bg-red-50 border-l-4 border-red-300 p-6 rounded-lg shadow-lg max-w-sm mx-auto my-4">
                 <NoCoursesFound />
               </div>
-
             </div>
           )}
 
@@ -98,23 +84,17 @@ const SearchResults = () => {
             </div>
           ) : (
             <>
-
-
               <div className="flex flex-col items-center gap-6">
                 {courses?.map((course) => (
                   <CourseCard key={course._id} course={course} />
                 ))}
               </div>
-
             </>
-
           )}
         </div>
       </div>
       <Footer />
     </>
-
-
   );
 };
 

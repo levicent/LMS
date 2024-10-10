@@ -2,15 +2,15 @@ import React, { createContext, useContext, useState } from "react";
 
 interface CartItem {
   id: string;
-  thumbnail: string;
   name: string;
+  price: number;
+  thumbnail: string;
   instructor: {
     id: string;
     firstName: string;
     lastName: string;
   };
-  price: number;
-  duraton: string;
+  duration: string;
   level: string;
 }
 
@@ -18,6 +18,7 @@ interface CartContextType {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string) => void;
+  isCourseInCart: (id: string) => boolean;
 }
 
 interface CartProviderProps {
@@ -33,12 +34,18 @@ export function CartProvider({ children }: CartProviderProps) {
     setCart((prevCart) => [...prevCart, item]);
   };
 
+  const isCourseInCart = (id: string) => {
+    return cart.some((item) => item.id === id);
+  };
+
   const removeFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
 
   return (
-    <CartContext.Provider value={{ cart, addToCart, removeFromCart }}>
+    <CartContext.Provider
+      value={{ cart, addToCart, removeFromCart, isCourseInCart }}
+    >
       {children}
     </CartContext.Provider>
   );
