@@ -16,7 +16,7 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
   if (!authContext) {
     throw new Error("useAuth must be used within an AuthProvider");
   }
-  const { isAuthenticated, logout } = authContext;
+  const { logout } = authContext;
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

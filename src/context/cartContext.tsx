@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
+import { useFetchCart } from "@/hooks/useFetchCart";
 
 interface CartItem {
   id: string;
@@ -29,6 +30,13 @@ const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export function CartProvider({ children }: CartProviderProps) {
   const [cart, setCart] = useState<CartItem[]>([]);
+  const { data: cartData, isLoading } = useFetchCart();
+
+  useEffect(() => {
+    if (!isLoading && cartData) {
+      setCart(cartData.items);
+    }
+  }, [cartData, isLoading]);
 
   const addToCart = (item: CartItem) => {
     setCart((prevCart) => [...prevCart, item]);

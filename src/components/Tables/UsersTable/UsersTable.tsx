@@ -53,7 +53,9 @@ const UsersTable = () => {
   };
 
   // Handle rows per page change
-  const handleChangeRowsPerPage = (event: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChangeRowsPerPage = (
+    event: React.ChangeEvent<HTMLInputElement>
+  ) => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
@@ -62,9 +64,9 @@ const UsersTable = () => {
   if (error) return <p>Error fetching users.</p>;
 
   // Slice users array for pagination
-  const paginatedUsers: User[] = Array.isArray(users) 
-  ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage) 
-  : [];
+  const paginatedUsers: User[] = Array.isArray(users)
+    ? users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+    : [];
 
   return (
     <>
@@ -105,11 +107,23 @@ const UsersTable = () => {
                   <Typography variant="body2">
                     <strong>Role:</strong> {user.role}
                   </Typography>
-                  <Box sx={{ display: "flex", justifyContent: "flex-end", marginTop: 1 }}>
-                    <IconButton aria-label="edit" onClick={() => handleEdit(user)}>
+                  <Box
+                    sx={{
+                      display: "flex",
+                      justifyContent: "flex-end",
+                      marginTop: 1,
+                    }}
+                  >
+                    <IconButton
+                      aria-label="edit"
+                      onClick={() => handleEdit(user)}
+                    >
                       <Edit />
                     </IconButton>
-                    <IconButton aria-label="delete" onClick={() => handleDelete(user)}>
+                    <IconButton
+                      aria-label="delete"
+                      onClick={() => handleDelete(user)}
+                    >
                       <Delete />
                     </IconButton>
                   </Box>
@@ -143,10 +157,16 @@ const UsersTable = () => {
                     <TableCell>{user.phone}</TableCell>
                     <TableCell>{user.role}</TableCell>
                     <TableCell>
-                      <IconButton aria-label="edit" onClick={() => handleEdit(user)}>
+                      <IconButton
+                        aria-label="edit"
+                        onClick={() => handleEdit(user)}
+                      >
                         <Edit />
                       </IconButton>
-                      <IconButton aria-label="delete" onClick={() => handleDelete(user)}>
+                      <IconButton
+                        aria-label="delete"
+                        onClick={() => handleDelete(user)}
+                      >
                         <Delete />
                       </IconButton>
                     </TableCell>
@@ -162,41 +182,41 @@ const UsersTable = () => {
 
           {/* Pagination */}
           <Box
-  sx={{
-    display: "flex",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 2,
-    width: "100%", // Ensure pagination takes full width on mobile
-  }}
->
-  <TablePagination
-    component="div"
-    count={users?.length || 0}
-    page={page}
-    onPageChange={handleChangePage}
-    rowsPerPage={rowsPerPage}
-    onRowsPerPageChange={handleChangeRowsPerPage}
-    rowsPerPageOptions={[6, 12, 24]} // Optional: modify if needed
-    sx={{
-      "& .MuiTablePagination-toolbar": {
-        display: "flex",
-        justifyContent: isMobile ? "space-between" : "center", // Space between for mobile
-        flexDirection: isMobile ? "column" : "row", // Stack on mobile
-        padding: isMobile ? "10px 0" : "0", // Padding for better mobile experience
-      },
-      "& .MuiTablePagination-selectLabel, & .MuiTablePagination-input, & .MuiTablePagination-displayedRows": {
-        fontSize: isMobile ? "0.875rem" : "1rem", // Smaller font size for mobile
-      },
-      "& .MuiTablePagination-actions": {
-        display: "flex",
-        justifyContent: "center", // Center actions on all views
-        width: isMobile ? "100%" : "auto", // Full width for mobile
-      },
-    }}
-  />
-</Box>
-
+            sx={{
+              display: "flex",
+              justifyContent: "center",
+              alignItems: "center",
+              marginTop: 2,
+              width: "100%", // Ensure pagination takes full width on mobile
+            }}
+          >
+            <TablePagination
+              component="div"
+              count={users?.length || 0}
+              page={page}
+              onPageChange={handleChangePage}
+              rowsPerPage={rowsPerPage}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+              rowsPerPageOptions={[6, 12, 24]} // Optional: modify if needed
+              sx={{
+                "& .MuiTablePagination-toolbar": {
+                  display: "flex",
+                  justifyContent: isMobile ? "space-between" : "center", // Space between for mobile
+                  flexDirection: isMobile ? "column" : "row", // Stack on mobile
+                  padding: isMobile ? "10px 0" : "0", // Padding for better mobile experience
+                },
+                "& .MuiTablePagination-selectLabel, & .MuiTablePagination-input, & .MuiTablePagination-displayedRows":
+                  {
+                    fontSize: isMobile ? "0.875rem" : "1rem", // Smaller font size for mobile
+                  },
+                "& .MuiTablePagination-actions": {
+                  display: "flex",
+                  justifyContent: "center", // Center actions on all views
+                  width: isMobile ? "100%" : "auto", // Full width for mobile
+                },
+              }}
+            />
+          </Box>
         </TableContainer>
       )}
     </>

@@ -17,7 +17,6 @@ import { useCart } from "@/context/cartContext";
 export default function Component() {
   const { cart, removeFromCart } = useCart();
   const [isHovered, setIsHovered] = useState<string | null>(null);
-
   const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
 
   return (
@@ -83,7 +82,7 @@ export default function Component() {
                           Rs {item.price.toFixed(2)}
                         </p>
                         <div className="flex gap-4 mt-2 text-sm text-gray-600 dark:text-gray-400">
-                          <p>{item.duraton} hours</p>
+                          <p>{item.duration} hours</p>
                           <p>{item.level}</p>
                         </div>
                       </div>
