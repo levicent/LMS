@@ -19,7 +19,7 @@ import {
 import DefaultLayout from "@/layout/DefaultLayout";
 import Ratings from "@/components/Ratings/Ratings";
 import { useCart } from "@/context/cartContext";
-import { toast } from "react-toastify";
+import { useAddToCart } from "@/hooks/useAddToCart";
 
 interface CourseData {
   _id: string;
@@ -43,6 +43,7 @@ interface CourseData {
 }
 
 export default function CourseInfo() {
+  const { mutate: addToCartMutation } = useAddToCart();
   const { addToCart, isCourseInCart } = useCart();
   const location = useLocation();
   const course: CourseData = location.state?.course;
@@ -63,22 +64,26 @@ export default function CourseInfo() {
 
   const handleAddToCart = () => {
     if (!isAddedToCart) {
-      addToCart({
-        id: course._id,
-        thumbnail: course.thumbnail,
+      const cartItem = {
+        productId: course._id,
         name: course.title,
+        price: parseFloat(course.price),
+        thumbnail: course.thumbnail,
         instructor: {
           id: course.instructor._id,
           firstName: course.instructor.firstName,
           lastName: course.instructor.lastName,
         },
-        price: parseFloat(course.price),
         duration: course.duration,
         level: course.level,
-      });
+      };
+
+      addToCartMutation(cartItem);
+
+      setIsAddedToCart(true);
     }
     setIsAddedToCart(true);
-    toast.info("Course added to cart");
+    
   };
 
   const staticData = {
