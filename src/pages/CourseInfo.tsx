@@ -110,12 +110,14 @@ export default function CourseInfo() {
       <div className="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
-            <div className="lg:w-2/3">
-              <h1 className="text-4xl font-bold mb-4">{course.title}</h1>
-              <p className="text-xl text-gray-600 dark:text-gray-400 mb-4">
+            <div className="w-full lg:w-2/3">
+              <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
+                {course.title}
+              </h1>
+              <p className="text-lg sm:text-xl text-gray-600 dark:text-gray-400 mb-4">
                 {course.description}
               </p>
-              <div className="flex items-center space-x-4 mb-4">
+              <div className="flex flex-wrap items-center gap-4 mb-4">
                 <Badge variant="secondary">{course.category}</Badge>
                 <span className="text-sm text-gray-500 dark:text-gray-400">
                   Last updated: {staticData.lastUpdated}
@@ -149,7 +151,7 @@ export default function CourseInfo() {
                 </span>
               </div>
               <Tabs defaultValue="overview" className="space-y-4">
-                <TabsList className="bg-white dark:bg-gray-800">
+                <TabsList className="bg-white dark:bg-gray-800 overflow-x-auto flex whitespace-nowrap">
                   <TabsTrigger
                     value="overview"
                     onClick={() => setActiveTab("overview")}
@@ -181,9 +183,9 @@ export default function CourseInfo() {
                       <ul className="grid grid-cols-1 md:grid-cols-2 gap-2">
                         {(course.topics || staticData.learningOutcomes).map(
                           (outcome, index) => (
-                            <li key={index} className="flex items-center">
-                              <Check className="h-5 w-5 text-green-500 mr-2" />
-                              {outcome}
+                            <li key={index} className="flex items-start">
+                              <Check className="h-5 w-5 text-green-500 mr-2 mt-1 flex-shrink-0" />
+                              <span>{outcome}</span>
                             </li>
                           )
                         )}
@@ -196,12 +198,12 @@ export default function CourseInfo() {
                     </CardHeader>
                     <CardContent>
                       <div className="space-y-2">
-                        <div className="flex items-center justify-between">
+                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
                           <span>{staticData.totalLectures} lectures</span>
                           <span>{course.duration}</span>
                         </div>
                         <Progress value={33} className="w-full" />
-                        <div className="flex items-center space-x-4">
+                        <div className="flex flex-wrap gap-4">
                           <div className="flex items-center">
                             <PlayCircle className="mr-2 h-4 w-4" />
                             <span>
@@ -270,7 +272,7 @@ export default function CourseInfo() {
                       <CardTitle>Instructor</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      <div className="flex items-center space-x-4 mb-4">
+                      <div className="flex flex-col sm:flex-row items-center sm:items-start space-y-4 sm:space-y-0 sm:space-x-4 mb-4">
                         <img
                           src={
                             course.instructor.avatar ||
@@ -298,7 +300,7 @@ export default function CourseInfo() {
                 </TabsContent>
               </Tabs>
             </div>
-            <div className="lg:w-1/3">
+            <div className="w-full lg:w-1/3 mt-8 lg:mt-0">
               <Card className="sticky top-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardContent className="p-0">
                   <img
@@ -311,7 +313,7 @@ export default function CourseInfo() {
                   />
                 </CardContent>
                 <CardContent className="p-6">
-                  <div className="text-4xl font-bold mb-4">
+                  <div className="text-3xl sm:text-4xl font-bold mb-4">
                     ₹{parseFloat(course.price).toFixed(2)}
                   </div>
 
