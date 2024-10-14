@@ -19,6 +19,7 @@ interface CartContextType {
   cart: CartItem[];
   addToCart: (item: CartItem) => void;
   removeFromCart: (id: string) => void;
+  clearCart: () => void;
   isCourseInCart: (id: string) => boolean;
 }
 
@@ -49,10 +50,14 @@ export function CartProvider({ children }: CartProviderProps) {
   const removeFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
+  const clearCart = () => {
+    setCart([]); 
+    localStorage.removeItem("cart"); 
+  };
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, isCourseInCart }}
+      value={{ cart, addToCart, removeFromCart, isCourseInCart,clearCart}}
     >
       {children}
     </CartContext.Provider>
