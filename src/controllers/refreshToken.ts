@@ -56,7 +56,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     // user.refreshToken = newRefreshToken;
     // await user.save();
-    // console.log("Refresh token generated successfully");
+    console.log("Access token generated successfully");
 
     res.status(200).json({ accessToken: accessToken });
   } catch (error) {
