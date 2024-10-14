@@ -1,4 +1,4 @@
-import axios from "axios";
+import api from "@/services/api";
 import { useQuery } from "react-query";
 
 interface CourseData {
@@ -19,8 +19,8 @@ interface CourseData {
 }
 
 const fetchCourses = async (): Promise<CourseData[]> => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/courses`
+  const response = await api.get(
+    `/courses`
     // {
     //   headers: {
     //     Authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -31,9 +31,7 @@ const fetchCourses = async (): Promise<CourseData[]> => {
 };
 
 const fetchCourseByQuery = async (query: string): Promise<CourseData[]> => {
-  const response = await axios.get(
-    `${import.meta.env.VITE_API_URL}/api/course/search?query=${query}`
-  );
+  const response = await api.get(`/course/search?query=${query}`);
   console.log(response.data.courses);
   return response.data.courses;
 };

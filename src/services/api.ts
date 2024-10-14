@@ -36,6 +36,7 @@ api.interceptors.response.use(
         });
         localStorage.setItem("token", data.accessToken);
         console.log("Access token refreshed", data.accessToken);
+        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
         return api(originalRequest);
       } catch (error) {
         console.error("Refresh token expired or invalid", error);
