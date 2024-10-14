@@ -1,4 +1,3 @@
-
 import api from "@/services/api";
 import { useMutation } from "react-query";
 import { toast } from "react-toastify";
@@ -40,10 +39,10 @@ export const useAddToCart = () => {
     },
     onError: (error: any) => {
       if (error.response?.status === 400) {
-        toast.error(error.response.data.message); 
+        toast.error(error.response.data.message);
       } else if (error.response?.status === 401) {
         toast.error("Please log in to add items to your cart.");
-        navigate("/signin"); 
+        navigate("/signin");
       } else {
         toast.error("Failed to add course to cart. Please try again.");
       }
