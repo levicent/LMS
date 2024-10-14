@@ -1,5 +1,5 @@
 import api from "@/services/api";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 
@@ -32,9 +32,10 @@ const addToCartApi = async (cartItem: CartItem) => {
 
 export const useAddToCart = () => {
   const navigate = useNavigate();
-
+  const   queryClient = useQueryClient();
   return useMutation(addToCartApi, {
     onSuccess: () => {
+     queryClient.invalidateQueries('cart');
       toast.success("Course added to cart!");
     },
     onError: (error: any) => {
