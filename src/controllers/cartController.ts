@@ -67,11 +67,11 @@ export const getCart = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
-
 export const removeFromCart = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
     const { productId } = req.params;
+
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized: User not found" });
     }
@@ -81,12 +81,17 @@ export const removeFromCart = async (req: Request, res: Response) => {
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
     }
-
-    cart.items = cart.items.filter(
-      (item) => item.productId.toString() !== productId
+    const updatedItems = cart.items.filter(
+      (item) => item.productId._id.toString() !== productId.toString()
     );
 
+    if (updatedItems.length === cart.items.length) {
+      return res.status(404).json({ message: "Item not found in cart" });
+    }
+
+    cart.items = updatedItems;
     await cart.save();
+
     res.status(200).json({ message: "Item removed from cart", cart });
   } catch (error) {
     console.log("Error in removeFromCart", error);

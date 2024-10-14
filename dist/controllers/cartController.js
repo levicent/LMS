@@ -85,7 +85,11 @@ const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!cart) {
             return res.status(404).json({ message: "Cart not found" });
         }
-        cart.items = cart.items.filter((item) => item.productId.toString() !== productId);
+        const updatedItems = cart.items.filter((item) => item.productId._id.toString() !== productId.toString());
+        if (updatedItems.length === cart.items.length) {
+            return res.status(404).json({ message: "Item not found in cart" });
+        }
+        cart.items = updatedItems;
         yield cart.save();
         res.status(200).json({ message: "Item removed from cart", cart });
     }
