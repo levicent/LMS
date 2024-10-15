@@ -62,10 +62,14 @@ export const register = async (req: Request, res: Response) => {
     user.refreshToken = refreshToken;
     await user.save();
 
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(201).json({
       message: "User registered successfully",
       accessToken: accessToken,
-      refreshToken: refreshToken,
     });
   } catch (error) {
     console.error("Error registering user", error);
@@ -109,10 +113,14 @@ export const login = async (req: Request, res: Response) => {
     user.refreshToken = refreshToken;
     await user.save();
 
+    res.cookie("refreshToken", refreshToken, {
+      httpOnly: true,
+      secure: true,
+      maxAge: 7 * 24 * 60 * 60 * 1000,
+    });
     res.status(200).json({
       message: "User logged in successfully",
       accessToken: accessToken,
-      refreshToken: refreshToken,
     });
   } catch (error) {
     console.error("Error logging in user", error);

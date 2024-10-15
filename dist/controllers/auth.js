@@ -59,10 +59,14 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         user.refreshToken = refreshToken;
         yield user.save();
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.status(201).json({
             message: "User registered successfully",
             accessToken: accessToken,
-            refreshToken: refreshToken,
         });
     }
     catch (error) {
@@ -98,10 +102,14 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         });
         user.refreshToken = refreshToken;
         yield user.save();
+        res.cookie("refreshToken", refreshToken, {
+            httpOnly: true,
+            secure: true,
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+        });
         res.status(200).json({
             message: "User logged in successfully",
             accessToken: accessToken,
-            refreshToken: refreshToken,
         });
     }
     catch (error) {

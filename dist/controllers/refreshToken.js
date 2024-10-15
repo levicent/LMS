@@ -23,17 +23,9 @@ const generateAccessToken = (user) => {
         expiresIn: "15m",
     });
 };
-// const generateRefreshToken = (user: { id: string; role: string }) => {
-//   return jwt.sign(
-//     { id: user.id, role: user.role },
-//     process.env.JWT_REFRESH_KEY as string,
-//     {
-//       expiresIn: "7d",
-//     }
-//   );
-// };
 const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const { refreshToken } = req.body;
+    var _a;
+    const refreshToken = (_a = req === null || req === void 0 ? void 0 : req.cookies) === null || _a === void 0 ? void 0 : _a.refreshToken;
     if (!refreshToken) {
         return res.status(401).json({ message: "Refresh token is required" });
     }
@@ -41,6 +33,7 @@ const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         const decoded = jsonwebtoken_1.default.verify(refreshToken, process.env.JWT_REFRESH_KEY);
         const user = yield User_1.default.findById(decoded.id);
         if (!user || user.refreshToken !== refreshToken) {
+            res.clearCookie("refreshToken");
             return res
                 .status(401)
                 .json({ message: "Invalid or expired refresh token" });
@@ -60,6 +53,7 @@ const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* (
     }
     catch (error) {
         console.error("Error refreshing token: ", error);
+        res.clearCookie("refreshToken");
         res.status(500).json({ message: "Invalid or expired refresh token" });
     }
 });

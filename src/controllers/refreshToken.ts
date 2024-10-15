@@ -14,18 +14,8 @@ const generateAccessToken = (user: { id: string; role: string }) => {
     }
   );
 };
-// const generateRefreshToken = (user: { id: string; role: string }) => {
-//   return jwt.sign(
-//     { id: user.id, role: user.role },
-//     process.env.JWT_REFRESH_KEY as string,
-//     {
-//       expiresIn: "7d",
-//     }
-//   );
-// };
-
 export const refreshToken = async (req: Request, res: Response) => {
-  const { refreshToken } = req.body;
+  const refreshToken = req?.cookies?.refreshToken;
 
   if (!refreshToken) {
     return res.status(401).json({ message: "Refresh token is required" });
@@ -39,6 +29,7 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     const user = await User.findById(decoded.id);
     if (!user || user.refreshToken !== refreshToken) {
+      res.clearCookie("refreshToken");
       return res
         .status(401)
         .json({ message: "Invalid or expired refresh token" });
@@ -61,6 +52,7 @@ export const refreshToken = async (req: Request, res: Response) => {
     res.status(200).json({ accessToken: accessToken });
   } catch (error) {
     console.error("Error refreshing token: ", error);
+    res.clearCookie("refreshToken");
     res.status(500).json({ message: "Invalid or expired refresh token" });
   }
 };
