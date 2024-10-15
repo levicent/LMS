@@ -2,6 +2,9 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useFetchCart } from "@/hooks/useFetchCart";
 
 interface CartItem {
+  productId:{
+    _id: string;
+  }
   id: string;
   name: string;
   price: number;
