@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.login = exports.register = void 0;
+exports.logout = exports.login = exports.register = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const bcrypt_1 = __importDefault(require("bcrypt"));
 const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
@@ -61,7 +61,7 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
+            secure: false,
             maxAge: 7 * 24 * 60 * 60 * 1000,
         });
         res.status(201).json({
@@ -104,8 +104,7 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: true,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            secure: false,
         });
         res.status(200).json({
             message: "User logged in successfully",
@@ -118,3 +117,19 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     }
 });
 exports.login = login;
+const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    try {
+        const user = yield User_1.default.findOneAndUpdate({ refreshToken }, { refreshToken: null });
+        if (!user) {
+            return res.status(400).json({ message: "User not found" });
+        }
+        res.clearCookie("refreshToken");
+        res.status(200).json({ message: "User logged out successfully" });
+    }
+    catch (error) {
+        console.error("Error logging out user", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.logout = logout;

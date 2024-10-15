@@ -24,8 +24,7 @@ const generateAccessToken = (user) => {
     });
 };
 const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
-    const refreshToken = (_a = req === null || req === void 0 ? void 0 : req.cookies) === null || _a === void 0 ? void 0 : _a.refreshToken;
+    const { refreshToken } = req.cookies;
     if (!refreshToken) {
         return res.status(401).json({ message: "Refresh token is required" });
     }
@@ -48,7 +47,6 @@ const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         // });
         // user.refreshToken = newRefreshToken;
         // await user.save();
-        console.log("Access token generated successfully");
         res.status(200).json({ accessToken: accessToken });
     }
     catch (error) {

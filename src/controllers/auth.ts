@@ -64,7 +64,7 @@ export const register = async (req: Request, res: Response) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
+      secure: false,
       maxAge: 7 * 24 * 60 * 60 * 1000,
     });
     res.status(201).json({
@@ -115,8 +115,7 @@ export const login = async (req: Request, res: Response) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: true,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: false,
     });
     res.status(200).json({
       message: "User logged in successfully",
@@ -124,6 +123,25 @@ export const login = async (req: Request, res: Response) => {
     });
   } catch (error) {
     console.error("Error logging in user", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const logout = async (req: Request, res: Response) => {
+  const { refreshToken } = req.cookies;
+
+  try {
+    const user = await User.findOneAndUpdate(
+      { refreshToken },
+      { refreshToken: null }
+    );
+    if (!user) {
+      return res.status(400).json({ message: "User not found" });
+    }
+    res.clearCookie("refreshToken");
+    res.status(200).json({ message: "User logged out successfully" });
+  } catch (error) {
+    console.error("Error logging out user", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };

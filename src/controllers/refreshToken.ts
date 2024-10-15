@@ -15,7 +15,7 @@ const generateAccessToken = (user: { id: string; role: string }) => {
   );
 };
 export const refreshToken = async (req: Request, res: Response) => {
-  const refreshToken = req?.cookies?.refreshToken;
+  const { refreshToken } = req.cookies;
 
   if (!refreshToken) {
     return res.status(401).json({ message: "Refresh token is required" });
@@ -47,7 +47,6 @@ export const refreshToken = async (req: Request, res: Response) => {
 
     // user.refreshToken = newRefreshToken;
     // await user.save();
-    console.log("Access token generated successfully");
 
     res.status(200).json({ accessToken: accessToken });
   } catch (error) {
