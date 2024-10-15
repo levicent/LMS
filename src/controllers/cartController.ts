@@ -16,7 +16,7 @@ export const addToCart = async (req: Request, res: Response) => {
       cart = new Cart({ userId, items: [] });
     }
     for (const item of data.items) {
-      const isCourseAlreadyInCart = cart.items.some(
+      const isCourseAlreadyInCart = cart.items.find(
         (cartItem) => cartItem.productId === item.productId
       );
 

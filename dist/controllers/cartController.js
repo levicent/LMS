@@ -27,7 +27,7 @@ const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             cart = new Cart_1.default({ userId, items: [] });
         }
         for (const item of data.items) {
-            const isCourseAlreadyInCart = cart.items.some((cartItem) => cartItem.productId === item.productId);
+            const isCourseAlreadyInCart = cart.items.find((cartItem) => cartItem.productId === item.productId);
             if (isCourseAlreadyInCart) {
                 return res.status(400).json({ message: "Course already in cart" });
             }
