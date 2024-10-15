@@ -31,8 +31,8 @@ const App: React.FC = () => {
         <CartProvider>
           <ToastContainer />
           <Router>
-            <ScrollToTop />
             <AuthProvider>
+              <ScrollToTop />
               <Routes>
                 <Route path="/" element={<HomePage />} />
                 <Route path="/signin" element={<SignInPage />} />

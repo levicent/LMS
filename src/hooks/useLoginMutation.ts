@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import axios from "axios";
 import { useMutation } from "react-query";
 
 export const useLoginMutation = (options: {
@@ -7,7 +7,13 @@ export const useLoginMutation = (options: {
 }) => {
   return useMutation(
     async (data: { email: string; password: string }) => {
-      const response = await api.post(`/login`, data);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/login`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       return response?.data;
     },
     {

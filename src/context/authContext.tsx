@@ -4,6 +4,7 @@ import { useLoginMutation } from "../hooks/useLoginMutation";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
 import { useCart } from "./cartContext";
+import axios from "axios";
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (data: { email: string; password: string }) => void;
@@ -45,7 +46,6 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     useLoginMutation({
       onSuccess: (data) => {
         localStorage.setItem("token", data.accessToken);
-        localStorage.setItem("refreshToken", data.refreshToken);
         const decoded = jwtDecode<DecodedToken>(data.accessToken);
         const role = decoded.role;
         setRole(role);
@@ -73,13 +73,19 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
       error: "Invalid credentials",
     });
   };
-  const logout = () => {
-    setIsAuthenticated(false);
-    localStorage.removeItem("token");
-    localStorage.removeItem("refreshToken");
-    clearCart();
+  const logout = async () => {
+    try {
+      await axios.post(`${import.meta.env.VITE_API_URL}/api/logout`);
+      setIsAuthenticated(false);
+      setRole(null);
+      localStorage.removeItem("token");
+      clearCart();
 
-    toast.info("You have been logged out");
+      toast.info("You have been logged out");
+    } catch (error) {
+      console.error("Logout error:", error);
+      toast.error("Error during logout. Please try again.");
+    }
   };
   return (
     <AuthContext.Provider

@@ -8,17 +8,12 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const accessToken = localStorage.getItem("token");
-    const isAuthRoute = ["/login", "/register"].some((path) =>
-      config.url?.includes(path)
-    );
-    if (accessToken || isAuthRoute) {
-      if (accessToken) {
-        config.headers.Authorization = `Bearer ${accessToken}`;
-      }
-      return config;
-    } else {
-      throw new Error("Token not found");
+
+    if (!accessToken) {
+      return Promise.reject("No token available");
     }
+    config.headers.Authorization = `Bearer ${accessToken}`;
+    return config;
   },
   (error) => Promise.reject(error)
 );
@@ -36,8 +31,8 @@ api.interceptors.response.use(
       try {
         const { data } = await api.post(`/refresh-token`);
         localStorage.setItem("token", data.accessToken);
-        console.log("Access token refreshed", data.accessToken);
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+
         return api(originalRequest);
       } catch (error) {
         console.error("Refresh token expired or invalid", error);
