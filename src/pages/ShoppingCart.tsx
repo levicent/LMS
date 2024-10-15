@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Link } from "react-router-dom";
 import { X, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import { useRemoveFromCart } from "@/hooks/useRemoveFromCart"; 
 import {
   Card,
   CardContent,
@@ -15,9 +16,16 @@ import DefaultLayout from "@/layout/DefaultLayout";
 import { useCart } from "@/context/cartContext";
 
 export default function Component() {
-  const { cart, removeFromCart } = useCart();
+  const { cart } = useCart();
   const [isHovered, setIsHovered] = useState<string | null>(null);
   const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+  const removeFromCartMutation = useRemoveFromCart();
+
+
+  const handleRemoveFromCart = (id: string) => {
+    console.log("Product ID to remove:", id);
+    removeFromCartMutation.mutate(id); // Pass the productId directly
+  };
 
   return (
     <DefaultLayout>
@@ -63,8 +71,8 @@ export default function Component() {
                           <h2 className="font-semibold text-lg dark:text-white group-hover:text-blue-600 dark:group-hover:text-blue-400 transition-colors">
                             {item.name}
                           </h2>
-                          <button
-                            onClick={() => removeFromCart(item.id)}
+                          <button 
+                            onClick={() => handleRemoveFromCart(item.productId._id)} 
                             className={`text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-opacity duration-300 ${
                               isHovered === item.id
                                 ? "opacity-100"
