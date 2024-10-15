@@ -8,10 +8,17 @@ const api = axios.create({
 api.interceptors.request.use(
   async (config) => {
     const accessToken = localStorage.getItem("token");
-    if (accessToken) {
-      config.headers.Authorization = `Bearer ${accessToken}`;
+    const isAuthRoute = ["/login", "/register"].some((path) =>
+      config.url?.includes(path)
+    );
+    if (accessToken || isAuthRoute) {
+      if (accessToken) {
+        config.headers.Authorization = `Bearer ${accessToken}`;
+      }
+      return config;
+    } else {
+      throw new Error("Token not found");
     }
-    return config;
   },
   (error) => Promise.reject(error)
 );

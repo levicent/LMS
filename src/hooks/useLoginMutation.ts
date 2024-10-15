@@ -8,7 +8,7 @@ export const useLoginMutation = (options: {
   return useMutation(
     async (data: { email: string; password: string }) => {
       const response = await api.post(`/login`, data);
-      return response.data;
+      return response?.data;
     },
     {
       onSuccess: options.onSuccess,

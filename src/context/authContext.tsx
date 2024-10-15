@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useLoginMutation } from "../hooks/useLoginMutation";
 import { toast } from "react-toastify";
 import { jwtDecode } from "jwt-decode";
-import {useCart} from "./cartContext";
+import { useCart } from "./cartContext";
 interface AuthContextType {
   isAuthenticated: boolean;
   login: (data: { email: string; password: string }) => void;
@@ -51,7 +51,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
         setRole(role);
         setIsAuthenticated(true);
         setError(null);
-        
+
         if (role === "admin") {
           navigate("/admin/dashboard");
         } else if (role === "teacher") {
@@ -78,7 +78,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     localStorage.removeItem("token");
     localStorage.removeItem("refreshToken");
     clearCart();
-    
+
     toast.info("You have been logged out");
   };
   return (

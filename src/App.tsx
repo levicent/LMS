@@ -23,6 +23,7 @@ import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
 import CourseSearchResult from "./pages/CourseSearchResult";
 import SearchResults from "./components/SearchBar/SearchResults";
 import ShoppingCart from "./pages/ShoppingCart";
+import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -30,6 +31,7 @@ const App: React.FC = () => {
         <CartProvider>
           <ToastContainer />
           <Router>
+            <ScrollToTop />
             <AuthProvider>
               <Routes>
                 <Route path="/" element={<HomePage />} />

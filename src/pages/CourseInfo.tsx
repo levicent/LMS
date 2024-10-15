@@ -19,7 +19,6 @@ import {
 import DefaultLayout from "@/layout/DefaultLayout";
 import Ratings from "@/components/Ratings/Ratings";
 import { useCart } from "@/context/cartContext";
-import { useAddToCart } from "@/hooks/useAddToCart";
 
 interface CourseData {
   _id: string;
@@ -43,24 +42,18 @@ interface CourseData {
 }
 
 export default function CourseInfo() {
-  const { mutate: addToCartMutation } = useAddToCart();
-  const { addToCart, isCourseInCart } = useCart();
+  const { addToCart, isCourseInCart, isAddedToCart } = useCart();
   const location = useLocation();
   const course: CourseData = location.state?.course;
   const [activeTab, setActiveTab] = useState("overview");
-  const [isAddedToCart, setIsAddedToCart] = useState(false);
-
-  useEffect(() => {
-    window.scrollTo(0, 0);
-  }, []);
 
   if (!course) return <div>Course not found</div>;
 
-  if (course) {
-    useEffect(() => {
-      setIsAddedToCart(isCourseInCart(course._id));
-    }, [course, isCourseInCart]);
-  }
+  // if (course) {
+  //   useEffect(() => {
+  //     setIsAddedToCart(isCourseInCart(course._id));
+  //   }, [course, isCourseInCart]);
+  // }
 
   const handleAddToCart = () => {
     if (!isAddedToCart) {
@@ -78,12 +71,8 @@ export default function CourseInfo() {
         level: course.level,
       };
 
-      addToCartMutation(cartItem);
-
-      setIsAddedToCart(true);
+      addToCart(cartItem);
     }
-    setIsAddedToCart(true);
-    
   };
 
   const staticData = {
