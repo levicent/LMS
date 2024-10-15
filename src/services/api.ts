@@ -2,6 +2,7 @@ import axios from "axios";
 
 const api = axios.create({
   baseURL: `${import.meta.env.VITE_API_URL}/api`,
+  withCredentials: true,
 });
 
 api.interceptors.request.use(
@@ -26,14 +27,7 @@ api.interceptors.response.use(
     ) {
       originalRequest._retry = true;
       try {
-        const refreshToken = localStorage.getItem("refreshToken");
-        if (!refreshToken) {
-          localStorage.removeItem("token");
-          return Promise.reject(error);
-        }
-        const { data } = await api.post(`/refresh-token`, {
-          refreshToken,
-        });
+        const { data } = await api.post(`/refresh-token`);
         localStorage.setItem("token", data.accessToken);
         console.log("Access token refreshed", data.accessToken);
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
@@ -41,7 +35,6 @@ api.interceptors.response.use(
       } catch (error) {
         console.error("Refresh token expired or invalid", error);
         localStorage.removeItem("token");
-        localStorage.removeItem("refreshToken");
         return Promise.reject(error);
       }
     }

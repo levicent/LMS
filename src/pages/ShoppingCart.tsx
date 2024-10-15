@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { X, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,10 @@ export default function Component() {
   const { cart, removeFromCart } = useCart();
   const [isHovered, setIsHovered] = useState<string | null>(null);
   const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
+
+  useEffect(() => {
+    console.log("Cart", cart);
+  }, []);
 
   return (
     <DefaultLayout>
@@ -64,7 +68,6 @@ export default function Component() {
                             {item.name}
                           </h2>
                           <button
-                            onClick={() => removeFromCart(item.id)}
                             className={`text-gray-400 hover:text-red-600 dark:hover:text-red-400 transition-opacity duration-300 ${
                               isHovered === item.id
                                 ? "opacity-100"

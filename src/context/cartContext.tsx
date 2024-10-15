@@ -51,13 +51,13 @@ export function CartProvider({ children }: CartProviderProps) {
     setCart((prevCart) => prevCart.filter((item) => item.id !== id));
   };
   const clearCart = () => {
-    setCart([]); 
-    localStorage.removeItem("cart"); 
+    setCart([]);
+    localStorage.removeItem("cart");
   };
 
   return (
     <CartContext.Provider
-      value={{ cart, addToCart, removeFromCart, isCourseInCart,clearCart}}
+      value={{ cart, addToCart, removeFromCart, isCourseInCart, clearCart }}
     >
       {children}
     </CartContext.Provider>
