@@ -27,7 +27,7 @@ const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
             cart = new Cart_1.default({ userId, items: [] });
         }
         for (const item of data.items) {
-            const isCourseAlreadyInCart = cart.items.find((cartItem) => cartItem.productId === item.productId);
+            const isCourseAlreadyInCart = cart.items.some((cartItem) => cartItem.productId.toString() === item.productId);
             if (isCourseAlreadyInCart) {
                 return res.status(400).json({ message: "Course already in cart" });
             }
@@ -59,9 +59,7 @@ const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized: User not found" });
         }
-        const cart = yield Cart_1.default.findOne({ userId })
-            .populate("items.productId")
-            .populate("items.instructor.id");
+        const cart = yield Cart_1.default.findOne({ userId });
         if (!cart) {
             return res.status(404).json({ message: "Cart not found" });
         }
@@ -85,7 +83,7 @@ const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
         if (!cart) {
             return res.status(404).json({ message: "Cart not found" });
         }
-        const updatedItems = cart.items.filter((item) => item.productId._id.toString() !== productId.toString());
+        const updatedItems = cart.items.filter((item) => item.productId.toString() !== productId.toString());
         if (updatedItems.length === cart.items.length) {
             return res.status(404).json({ message: "Item not found in cart" });
         }

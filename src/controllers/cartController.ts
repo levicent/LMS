@@ -16,8 +16,8 @@ export const addToCart = async (req: Request, res: Response) => {
       cart = new Cart({ userId, items: [] });
     }
     for (const item of data.items) {
-      const isCourseAlreadyInCart = cart.items.find(
-        (cartItem) => cartItem.productId === item.productId
+      const isCourseAlreadyInCart = cart.items.some(
+        (cartItem) => cartItem.productId.toString() === item.productId
       );
 
       if (isCourseAlreadyInCart) {
@@ -53,9 +53,7 @@ export const getCart = async (req: Request, res: Response) => {
       return res.status(401).json({ message: "Unauthorized: User not found" });
     }
 
-    const cart = await Cart.findOne({ userId })
-      .populate("items.productId")
-      .populate("items.instructor.id");
+    const cart = await Cart.findOne({ userId });
 
     if (!cart) {
       return res.status(404).json({ message: "Cart not found" });
@@ -67,6 +65,7 @@ export const getCart = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 export const removeFromCart = async (req: Request, res: Response) => {
   try {
     const userId = req.user?.id;
@@ -82,7 +81,7 @@ export const removeFromCart = async (req: Request, res: Response) => {
       return res.status(404).json({ message: "Cart not found" });
     }
     const updatedItems = cart.items.filter(
-      (item) => item.productId._id.toString() !== productId.toString()
+      (item) => item.productId.toString() !== productId.toString()
     );
 
     if (updatedItems.length === cart.items.length) {
