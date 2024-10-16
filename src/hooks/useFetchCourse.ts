@@ -1,3 +1,4 @@
+import axios from "axios";
 import api from "@/services/api";
 import { useQuery } from "react-query";
 
@@ -19,13 +20,8 @@ interface CourseData {
 }
 
 const fetchCourses = async (): Promise<CourseData[]> => {
-  const response = await api.get(
-    `/courses`
-    // {
-    //   headers: {
-    //     Authorization: `Bearer ${localStorage.getItem("token")}`,
-    //   },
-    // }
+  const response = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/courses`
   );
   return response.data.courses;
 };

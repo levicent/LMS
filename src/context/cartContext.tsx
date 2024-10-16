@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { useFetchCart } from "@/hooks/useFetchCart";
 import { useAddToCart } from "@/hooks/useAddToCart";
+import { useRemoveFromCart } from "@/hooks/useRemoveFromCart";
 
 interface CartItem {
   productId: string;
@@ -37,6 +38,7 @@ export function CartProvider({ children }: CartProviderProps) {
   const [isAddedToCart, setIsAddedToCart] = useState(false);
 
   const { mutate: addToCartMutate } = useAddToCart();
+  const { mutate: removeFromCartMutate } = useRemoveFromCart();
 
   useEffect(() => {
     if (!isLoading && cartData) {
@@ -51,11 +53,14 @@ export function CartProvider({ children }: CartProviderProps) {
   };
 
   const isCourseInCart = (id: string) => {
-    return cart.some((item) => item.productId === id);
+    const isCourseInCart = cart.some((item) => item.productId === id);
+    setIsAddedToCart(isCourseInCart);
+    return isCourseInCart;
   };
 
   const removeFromCart = (id: string) => {
     setCart((prevCart) => prevCart.filter((item) => item.productId !== id));
+    removeFromCartMutate(id);
     setIsAddedToCart(false);
   };
   const clearCart = () => {

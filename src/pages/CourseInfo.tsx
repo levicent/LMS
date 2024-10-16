@@ -49,11 +49,9 @@ export default function CourseInfo() {
 
   if (!course) return <div>Course not found</div>;
 
-  // if (course) {
-  //   useEffect(() => {
-  //     setIsAddedToCart(isCourseInCart(course._id));
-  //   }, [course, isCourseInCart]);
-  // }
+  useEffect(() => {
+    isCourseInCart(course._id);
+  }, [isCourseInCart]);
 
   const handleAddToCart = () => {
     if (!isAddedToCart) {

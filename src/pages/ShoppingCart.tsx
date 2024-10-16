@@ -2,7 +2,6 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { X, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { useRemoveFromCart } from "@/hooks/useRemoveFromCart";
 import {
   Card,
   CardContent,
@@ -12,37 +11,25 @@ import {
 } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
 import DefaultLayout from "@/layout/DefaultLayout";
 import { useCart } from "@/context/cartContext";
+import RemoveDialog from "@/components/DialogBox/RemoveDialog";
 
 export default function Component() {
   const { cart } = useCart();
   const [isHovered, setIsHovered] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
-  const [itemToRemove, setItemToRemove] = useState<string | null>(null);
+  const [productId, setProductId] = useState<string | null>(null);
   const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
-  const removeFromCartMutation = useRemoveFromCart();
 
-  const handleRemoveFromCart = (id: string) => {
-    setItemToRemove(id);
+  const handleRemoveFromCart = (id: string | null) => {
+    setProductId(id);
     setDialogOpen(true);
   };
 
-  const confirmRemove = () => {
-    if (itemToRemove) {
-      removeFromCartMutation.mutate(itemToRemove);
-      setDialogOpen(false);
-      setItemToRemove(null);
-    }
-  };
+  useEffect(() => {
+    console.log(dialogOpen);
+  }, [dialogOpen]);
 
   return (
     <DefaultLayout>
@@ -75,9 +62,9 @@ export default function Component() {
                 <ScrollArea className="h-[400px] pr-4">
                   {cart.map((item) => (
                     <div
-                      key={item.id}
+                      key={item.productId}
                       className="flex gap-6 py-6 group border-b border-gray-200 dark:border-gray-700 last:border-b-0"
-                      onMouseEnter={() => setIsHovered(item.id)}
+                      onMouseEnter={() => setIsHovered(item.productId)}
                       onMouseLeave={() => setIsHovered(null)}
                     >
                       <div className="relative w-32 h-24 rounded-md overflow-hidden bg-gray-100 dark:bg-gray-700">
@@ -93,11 +80,9 @@ export default function Component() {
                             {item.name}
                           </h2>
                           <button
-                            onClick={() =>
-                              handleRemoveFromCart(item.productId._id)
-                            }
+                            onClick={() => handleRemoveFromCart(item.productId)}
                             className={`text-gray-400 hover:text-gray-600 dark:hover:text-gray-300 transition-opacity duration-300 ${
-                              isHovered === item.id
+                              isHovered === item.productId
                                 ? "opacity-100"
                                 : "opacity-0"
                             }`}
@@ -144,34 +129,13 @@ export default function Component() {
           </Card>
         </div>
       </main>
-      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent>
-          <DialogHeader>
-            <DialogTitle className="text-gray-900 dark:text-gray-100">
-              Remove Course
-            </DialogTitle>
-            <DialogDescription className="text-gray-600 dark:text-gray-400">
-              Are you sure you want to remove this course from your cart?
-            </DialogDescription>
-          </DialogHeader>
-          <DialogFooter>
-            <Button
-              variant="outline"
-              onClick={() => setDialogOpen(false)}
-              className="text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-500 hover:bg-gray-200 dark:hover:bg-gray-700"
-            >
-              Cancel
-            </Button>
-            <Button
-              variant="destructive"
-              onClick={confirmRemove}
-              className="bg-red-600 hover:bg-red-700 text-white dark:bg-red-700 dark:hover:bg-red-600"
-            >
-              Remove
-            </Button>
-          </DialogFooter>
-        </DialogContent>
-      </Dialog>
+      {dialogOpen && (
+        <RemoveDialog
+          dialogOpen={dialogOpen}
+          setDialogOpen={setDialogOpen}
+          productId={productId}
+        />
+      )}
     </DefaultLayout>
   );
 }
