@@ -1,4 +1,4 @@
-import { useState } from "react";
+import  { useState } from "react";
 import { Search, Star, MoreVertical } from "lucide-react";
 import { Menu } from "@headlessui/react";
 import { Button } from "@/components/ui/button";
@@ -12,146 +12,45 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import DefaultLayout from "../layout/DefaultLayout";
-const allCourses = [
-  {
-    id: 1,
-    title: "TensorFlow for Deep Learning Bootcamp",
-    instructor: "Andrei Neagoie, Daniel Bourke",
-    progress: 40,
-    rating: 0,
-    image:
-      "https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?w=500&q=80",
-  },
-  {
-    id: 2,
-    title: "Master the Coding Interview: Data Structures + Algorithms",
-    instructor: "Andrei Neagoie",
-    progress: 17,
-    rating: 0,
-    image:
-      "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?w=500&q=80",
-  },
-  {
-    id: 3,
-    title: "Angular - The Complete Guide (2024 Edition)",
-    instructor: "Maximilian Schwarzmüller",
-    progress: 99,
-    rating: 5,
-    image:
-      "https://images.unsplash.com/photo-1517694712202-14dd9538aa97?w=500&q=80",
-  },
-  {
-    id: 4,
-    title: "Complete A.I. & Machine Learning, Data Science Bootcamp",
-    instructor: "Andrei Neagoie, Daniel Bourke",
-    progress: 0,
-    rating: 0,
-    image:
-      "https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=500&q=80",
-  },
-  {
-    id: 5,
-    title: "Complete Machine Learning, NLP Bootcamp",
-    instructor: "Krish Naik",
-    progress: 3,
-    rating: 0,
-    image:
-      "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?w=500&q=80",
-  },
-  {
-    id: 6,
-    title: "PyTorch for Deep Learning Bootcamp",
-    instructor: "Andrei Neagoie, Daniel Bourke",
-    progress: 0,
-    rating: 0,
-    image:
-      "https://images.unsplash.com/photo-1515879218367-8466d910aaa4?w=500&q=80",
-  },
-];
-
-const myLists = [
-  {
-    id: 1,
-    title: "Web Development Fundamentals",
-    courses: 5,
-    image:
-      "https://images.unsplash.com/photo-1547658719-da2b51169166?w=500&q=80",
-  },
-  {
-    id: 2,
-    title: "Machine Learning Essentials",
-    courses: 3,
-    image:
-      "https://images.unsplash.com/photo-1509228468518-180dd4864904?w=500&q=80",
-  },
-];
-
-const wishlist = [
-  {
-    id: 1,
-    title: "Advanced React Patterns",
-    instructor: "Kent C. Dodds",
-    price: "$99.99",
-    image:
-      "https://images.unsplash.com/photo-1633356122544-f134324a6cee?w=500&q=80",
-  },
-  {
-    id: 2,
-    title: "GraphQL Masterclass",
-    instructor: "Wes Bos",
-    price: "$129.99",
-    image:
-      "https://images.unsplash.com/photo-1522542550221-31fd19575a2d?w=500&q=80",
-  },
-];
-
-const archived = [
-  {
-    id: 1,
-    title: "JavaScript: Understanding the Weird Parts",
-    instructor: "Anthony Alicea",
-    completedDate: "2023-05-15",
-    image:
-      "https://images.unsplash.com/photo-1579468118864-1b9ea3c0db4a?w=500&q=80",
-  },
-  {
-    id: 2,
-    title: "CSS Grid and Flexbox for Responsive Layouts",
-    instructor: "Jen Kramer",
-    completedDate: "2023-08-22",
-    image:
-      "https://images.unsplash.com/photo-1507721999472-8ed4421c4af2?w=500&q=80",
-  },
-];
+import { useFetchEnrolledCourses } from "../hooks/useEnrollCourse";
 
 const TabOptions = ["All courses", "My Lists", "Wishlist", "Archived"];
 
 export default function LearningDashboard() {
   const [activeTab, setActiveTab] = useState("All courses");
   const [searchTerm, setSearchTerm] = useState("");
+  const { loading, error, courses } = useFetchEnrolledCourses();
 
   const renderContent = () => {
     const cardBgColor = "bg-white dark:bg-gray-800";
     const cardTextColor = "text-gray-900 dark:text-white";
     const secondaryTextColor = "text-gray-500 dark:text-gray-400";
 
+    if (loading) {
+      return <p>Loading courses...</p>;
+    }
+
+    if (error) {
+      return <p>Error: {error}</p>;
+    }
+
     switch (activeTab) {
       case "All courses":
         return (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {allCourses
+            {courses
               .filter((course) =>
-                course.title.toLowerCase().includes(searchTerm.toLowerCase())
+                course.courseId.title.toLowerCase().includes(searchTerm.toLowerCase())
               )
               .map((course) => (
                 <Card
-                  key={course.id}
+                  key={course._id}
                   className={`${cardBgColor} shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-shadow duration-300`}
                 >
                   <CardHeader className="p-0">
                     <img
-                      src={course.image}
-                      alt={course.title}
+                      src="/api/placeholder/400/320"
+                      alt={course.courseId.title}
                       className="w-full h-40 sm:h-48 object-cover"
                     />
                   </CardHeader>
@@ -160,7 +59,7 @@ export default function LearningDashboard() {
                       <CardTitle
                         className={`text-base sm:text-lg font-bold line-clamp-2 ${cardTextColor}`}
                       >
-                        {course.title}
+                        {course.courseId.title}
                       </CardTitle>
                       <Menu as="div" className="relative">
                         <Menu.Button
@@ -188,17 +87,6 @@ export default function LearningDashboard() {
                                   active ? "bg-gray-100 dark:bg-gray-600" : ""
                                 } w-full text-left px-4 py-2 text-sm ${cardTextColor}`}
                               >
-                                Add to wishlist
-                              </button>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  active ? "bg-gray-100 dark:bg-gray-600" : ""
-                                } w-full text-left px-4 py-2 text-sm ${cardTextColor}`}
-                              >
                                 Archive
                               </button>
                             )}
@@ -207,41 +95,38 @@ export default function LearningDashboard() {
                       </Menu>
                     </div>
                     <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                      {course.instructor}
+                      {course.courseId.instructor}
+                    </p>
+                    <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
+                      Enrolled on: {new Date(course.enrollmentDate).toLocaleDateString()}
                     </p>
                     <div className="flex items-center mb-2">
                       <div className="w-full bg-gray-300 dark:bg-gray-600 rounded-full h-2 mr-2">
                         <div
                           className="bg-green-500 h-2 rounded-full"
-                          style={{ width: `${course.progress}%` }}
+                          style={{ width: `0%` }}
                         />
                       </div>
                       <span
                         className={`text-xs sm:text-sm ${secondaryTextColor}`}
                       >
-                        {course.progress}%
+                        0%
                       </span>
                     </div>
                     <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm">
-                      {course.progress === 0
-                        ? "Start course"
-                        : "Continue course"}
+                      Start course
                     </Button>
                     <div className="flex items-center mt-2">
                       {[...Array(5)].map((_, i) => (
                         <Star
                           key={i}
-                          className={`h-3 w-3 sm:h-4 sm:w-4 ${
-                            i < course.rating
-                              ? "text-yellow-400"
-                              : "text-gray-300 dark:text-gray-600"
-                          }`}
+                          className={`h-3 w-3 sm:h-4 sm:w-4 text-gray-300 dark:text-gray-600`}
                         />
                       ))}
                       <span
                         className={`ml-2 text-xs sm:text-sm ${secondaryTextColor}`}
                       >
-                        {course.rating === 0 ? "Leave a rating" : "Your rating"}
+                        Leave a rating
                       </span>
                     </div>
                   </CardContent>
@@ -252,100 +137,19 @@ export default function LearningDashboard() {
       case "My Lists":
         return (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {myLists.map((list) => (
-              <Card
-                key={list.id}
-                className={`${cardBgColor} shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-shadow duration-300`}
-              >
-                <CardHeader className="p-0">
-                  <img
-                    src={list.image}
-                    alt={list.title}
-                    className="w-full h-40 sm:h-48 object-cover"
-                  />
-                </CardHeader>
-                <CardContent className="p-4">
-                  <CardTitle
-                    className={`text-base sm:text-lg font-bold mb-2 ${cardTextColor}`}
-                  >
-                    {list.title}
-                  </CardTitle>
-                  <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500">
-                    {list.courses} courses
-                  </p>
-                </CardContent>
-              </Card>
-            ))}
+            <p>My Lists content (to be implemented)</p>
           </div>
         );
       case "Wishlist":
         return (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {wishlist.map((course) => (
-              <Card
-                key={course.id}
-                className={`${cardBgColor} shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-shadow duration-300`}
-              >
-                <CardHeader className="p-0">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="w-full h-40 sm:h-48 object-cover"
-                  />
-                </CardHeader>
-                <CardContent className="p-4">
-                  <CardTitle
-                    className={`text-base sm:text-lg font-bold mb-2 ${cardTextColor}`}
-                  >
-                    {course.title}
-                  </CardTitle>
-                  <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                    {course.instructor}
-                  </p>
-                  <p className="text-base sm:text-lg font-bold text-blue-400 dark:text-blue-300">
-                    {course.price}
-                  </p>
-                  <Button className="w-full mt-2 bg-green-600 hover:bg-green-700 text-white rounded-md text-sm">
-                    Add to cart
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+            <p>Wishlist content (to be implemented)</p>
           </div>
         );
       case "Archived":
         return (
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {archived.map((course) => (
-              <Card
-                key={course.id}
-                className={`${cardBgColor} shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-shadow duration-300`}
-              >
-                <CardHeader className="p-0">
-                  <img
-                    src={course.image}
-                    alt={course.title}
-                    className="w-full h-40 sm:h-48 object-cover"
-                  />
-                </CardHeader>
-                <CardContent className="p-4">
-                  <CardTitle
-                    className={`text-base sm:text-lg font-bold mb-2 ${cardTextColor}`}
-                  >
-                    {course.title}
-                  </CardTitle>
-                  <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                    {course.instructor}
-                  </p>
-                  <p className={`text-xs sm:text-sm ${secondaryTextColor}`}>
-                    Completed on: {course.completedDate}
-                  </p>
-                  <Button className="w-full mt-2 bg-gray-600 hover:bg-gray-700 text-white rounded-md text-sm">
-                    View certificate
-                  </Button>
-                </CardContent>
-              </Card>
-            ))}
+            <p>Archived content (to be implemented)</p>
           </div>
         );
       default:
