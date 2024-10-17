@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate, Link } from "react-router-dom";
 import {
   ChevronDown,
@@ -19,31 +19,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import DefaultLayout from "@/layout/DefaultLayout";
-import { useFetchCourseByQuery } from "@/hooks/useFetchCourse";
+import { useFetchCourses } from "@/hooks/useFetchCourse";
 import { ShimmerCard1 } from "@/pages/ShimmerCard";
 import { useAutocorrect } from "@/hooks/useAutocorrect";
-
-interface CourseData {
-  _id: string;
-  title: string;
-  description: string;
-  price: string;
-  instructor: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-  };
-  duration: string;
-  level: string;
-  thumbnail: string;
-  category: string;
-  language: string;
-}
-
-interface FilterOption {
-  name: string;
-  options: string[];
-}
 
 type SortOption =
   | "Most Relevant"
@@ -55,6 +33,22 @@ type FilterState = {
   [key: string]: {
     [key: string]: boolean;
   };
+};
+
+type Course = {
+  _id: string;
+  title: string;
+  description: string;
+  price: string;
+  instructor: {
+    firstName: string;
+    lastName: string;
+  };
+  duration: string;
+  level: string;
+  thumbnail: string;
+  category: string;
+  language: string;
 };
 
 const categories = [
@@ -73,7 +67,7 @@ const categories = [
   "Teaching & Academics",
 ];
 
-const filters: FilterOption[] = [
+const filters = [
   {
     name: "Level",
     options: ["All Levels", "Beginner", "Intermediate", "Expert"],
@@ -91,11 +85,13 @@ const filters: FilterOption[] = [
 
 const ITEMS_PER_PAGE = 10;
 
-export default function Component() {
+export default function SearchResult() {
   const location = useLocation();
   const navigate = useNavigate();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const queryParams = new URLSearchParams(location.search);
+  const queryParams = useMemo(
+    () => new URLSearchParams(location.search),
+    [location.search]
+  );
   const initialQuery = queryParams.get("query") || "";
   const [query, setQuery] = useState(initialQuery);
   const { correctedQuery, isCorrected } = useAutocorrect(query);
@@ -109,13 +105,10 @@ export default function Component() {
   });
   const [currentPage, setCurrentPage] = useState(1);
 
-  const {
-    data: courses,
-    error,
-    isLoading,
-  } = useFetchCourseByQuery(correctedQuery);
+  const { data: courses, error, isLoading } = useFetchCourses();
+  const typedCourses = courses as Course[] | undefined;
 
-  const [filteredCourses, setFilteredCourses] = useState<CourseData[]>([]);
+  const [filteredCourses, setFilteredCourses] = useState<Course[]>([]);
 
   useEffect(() => {
     const searchQuery = queryParams.get("query");
@@ -144,47 +137,53 @@ export default function Component() {
   };
 
   useEffect(() => {
-    if (courses) {
-      const newFilteredCourses = courses.filter((course) => {
-        return Object.entries(selectedFilters).every(([category, options]) => {
-          if (Object.values(options).every((v) => !v)) return true;
+    if (typedCourses) {
+      const newFilteredCourses = typedCourses.filter((course) => {
+        const matchesQuery =
+          course.title.toLowerCase().includes(correctedQuery.toLowerCase()) ||
+          course.description
+            .toLowerCase()
+            .includes(correctedQuery.toLowerCase());
 
-          switch (category) {
-            case "Level":
-              return options["All Levels"] || options[course.level];
-            case "Language":
-              return Object.entries(options).some(
-                ([option, isSelected]) =>
-                  !isSelected || course.language === option
-              );
-            case "Category":
-              return Object.entries(options).some(
-                ([option, isSelected]) =>
-                  !isSelected || course.category === option
-              );
-            case "Price":
-              return Object.entries(options).some(
-                ([option, isSelected]) =>
-                  !isSelected ||
-                  (option === "Paid"
-                    ? parseFloat(course.price) > 0
-                    : parseFloat(course.price) === 0)
-              );
-            default:
-              return true;
-          }
-        });
+        return (
+          matchesQuery &&
+          Object.entries(selectedFilters).every(([category, options]) => {
+            if (Object.values(options).every((v) => !v)) return true;
+
+            switch (category) {
+              case "Level":
+                return options["All Levels"] || options[course.level];
+              case "Language":
+                return Object.entries(options).some(
+                  ([option, isSelected]) =>
+                    !isSelected || course.language === option
+                );
+              case "Category":
+                return Object.entries(options).some(
+                  ([option, isSelected]) =>
+                    !isSelected || course.category === option
+                );
+              case "Price":
+                return Object.entries(options).some(
+                  ([option, isSelected]) =>
+                    !isSelected ||
+                    (option === "Paid"
+                      ? parseFloat(course.price) > 0
+                      : parseFloat(course.price) === 0)
+                );
+              default:
+                return true;
+            }
+          })
+        );
       });
 
       setFilteredCourses(newFilteredCourses);
       setCurrentPage(1);
     }
-  }, [selectedFilters, courses]);
+  }, [selectedFilters, typedCourses, correctedQuery]);
 
-  const sortCourses = (
-    courses: CourseData[],
-    sortBy: SortOption
-  ): CourseData[] => {
+  const sortCourses = (courses: Course[], sortBy: SortOption): Course[] => {
     switch (sortBy) {
       case "Price: Low to High":
         return [...courses].sort(
@@ -354,7 +353,7 @@ export default function Component() {
                 </div>
               ) : error ? (
                 <NoCoursesFound />
-              ) : filteredCourses.length === 0 ? (
+              ) : typedCourses?.length === 0 ? (
                 <NoCoursesFound />
               ) : (
                 <div className="space-y-4">
@@ -399,7 +398,7 @@ export default function Component() {
                           {course.category}
                         </span>
                       </CardContent>
-                      <CardFooter className="p-4 flex flex-col items-end justify-between">
+                      <CardFooter className="p-4 flex flex-col items-end  justify-between">
                         <div className="text-2xl font-bold text-gray-900 dark:text-white">
                           {parseFloat(course.price) === 0
                             ? "Free"
@@ -415,7 +414,10 @@ export default function Component() {
               )}
               {totalPages > 1 && (
                 <div className="mt-8 flex justify-center">
-                  <nav className="inline-flex rounded-md shadow">
+                  <nav
+                    className="inline-flex rounded-md shadow"
+                    aria-label="Pagination"
+                  >
                     <Button
                       variant="outline"
                       className="bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300"
@@ -423,6 +425,7 @@ export default function Component() {
                         setCurrentPage((prev) => Math.max(prev - 1, 1))
                       }
                       disabled={currentPage === 1}
+                      aria-label="Previous page"
                     >
                       <ChevronLeft className="h-4 w-4" />
                     </Button>
@@ -438,6 +441,10 @@ export default function Component() {
                             : ""
                         }`}
                         onClick={() => setCurrentPage(index + 1)}
+                        aria-label={`Page ${index + 1}`}
+                        aria-current={
+                          currentPage === index + 1 ? "page" : undefined
+                        }
                       >
                         {index + 1}
                       </Button>
@@ -449,6 +456,7 @@ export default function Component() {
                         setCurrentPage((prev) => Math.min(prev + 1, totalPages))
                       }
                       disabled={currentPage === totalPages}
+                      aria-label="Next page"
                     >
                       <ChevronRight className="h-4 w-4" />
                     </Button>

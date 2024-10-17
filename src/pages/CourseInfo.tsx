@@ -51,7 +51,7 @@ export default function CourseInfo() {
 
   useEffect(() => {
     isCourseInCart(course._id);
-  }, [isCourseInCart]);
+  }, [isCourseInCart, course._id]);
 
   const handleAddToCart = () => {
     if (!isAddedToCart) {
@@ -306,7 +306,9 @@ export default function CourseInfo() {
                 </CardContent>
                 <CardContent className="p-6">
                   <div className="text-3xl sm:text-4xl font-bold mb-4">
-                    ₹{parseFloat(course.price).toFixed(2)}
+                    {parseFloat(course.price) === 0
+                      ? "Free"
+                      : `₹${course.price}`}
                   </div>
 
                   {isAddedToCart ? (
