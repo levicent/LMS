@@ -8,8 +8,7 @@ const router = express_1.default.Router();
 const courseController_1 = require("../controllers/courseController");
 const auth_1 = __importDefault(require("../middleware/auth"));
 const role_1 = __importDefault(require("../middleware/role"));
-const enrollController_1 = require("../controllers/enrollController");
-// import { enrollCourseById, getEnrolledCourses } from "../controllers/enrollController";
+const enrolledCoursesController_1 = require("../controllers/enrolledCoursesController");
 router.post("/courses", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.createCourse);
 router.get("/courses", 
 // authMiddleware,
@@ -19,6 +18,6 @@ router.get("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), cou
 router.put("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.updateCourseById);
 router.delete("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.deleteCourseById);
 router.get("/course/search", courseController_1.searchCourseByQuery);
-router.post('/enroll/:courseId', auth_1.default, enrollController_1.enrollCourseById);
-router.get('/enrolled-courses', auth_1.default, enrollController_1.getEnrolledCourses);
+router.post("/enroll/:courseId", auth_1.default, enrolledCoursesController_1.enrollCourseById);
+router.get("/enrolled-courses", auth_1.default, enrolledCoursesController_1.getEnrolledCourses);
 exports.default = router;
