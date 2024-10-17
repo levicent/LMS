@@ -1,5 +1,6 @@
 import api from "@/services/api";
-import { useQuery } from "react-query";
+import { useMutation } from "react-query";
+
 const clearCart = async () => {
   try {
     const response = await api.get("/cart/clear", {
@@ -10,9 +11,10 @@ const clearCart = async () => {
     return response.data;
   } catch (error) {
     console.error("Error clearing cart", error);
+    throw error;
   }
 };
 
 export const useClearCart = () => {
-  return useQuery("clearCart", clearCart);
+  return useMutation(clearCart);
 };

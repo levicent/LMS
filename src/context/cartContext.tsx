@@ -40,6 +40,7 @@ export function CartProvider({ children }: CartProviderProps) {
 
   const { mutate: addToCartMutate } = useAddToCart();
   const { mutate: removeFromCartMutate } = useRemoveFromCart();
+  const { mutate: clearCartMutate } = useClearCart();
 
   useEffect(() => {
     if (!isLoading && cartData) {
@@ -65,7 +66,7 @@ export function CartProvider({ children }: CartProviderProps) {
     setIsAddedToCart(false);
   };
   const clearCart = () => {
-    useClearCart();
+    clearCartMutate();
   };
 
   return (
