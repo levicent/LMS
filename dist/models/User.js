@@ -16,6 +16,7 @@ const userSchema = new mongoose_1.default.Schema({
     email: {
         type: String,
         required: true,
+        unique: true, // Ensures no duplicate emails
     },
     password: {
         type: String,
@@ -39,6 +40,22 @@ const userSchema = new mongoose_1.default.Schema({
     refreshTokenExp: {
         type: Date,
     },
+    enrolledCourses: [
+        {
+            courseId: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                ref: 'Course',
+                required: true,
+            },
+            enrollmentDate: {
+                type: Date,
+                default: Date.now,
+            },
+        },
+    ],
+    default: [],
+}, {
+    timestamps: true,
 });
 const User = mongoose_1.default.model("User", userSchema);
 exports.default = User;
