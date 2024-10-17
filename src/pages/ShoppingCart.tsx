@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router-dom";
 import { X, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -26,10 +26,6 @@ export default function Component() {
     setProductId(id);
     setDialogOpen(true);
   };
-
-  useEffect(() => {
-    console.log(dialogOpen);
-  }, [dialogOpen]);
 
   return (
     <DefaultLayout>

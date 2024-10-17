@@ -2,6 +2,7 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { useFetchCart } from "@/hooks/useFetchCart";
 import { useAddToCart } from "@/hooks/useAddToCart";
 import { useRemoveFromCart } from "@/hooks/useRemoveFromCart";
+import { useClearCart } from "@/hooks/useClearCart";
 
 interface CartItem {
   productId: string;
@@ -64,8 +65,7 @@ export function CartProvider({ children }: CartProviderProps) {
     setIsAddedToCart(false);
   };
   const clearCart = () => {
-    setCart([]);
-    localStorage.removeItem("cart");
+    useClearCart();
   };
 
   return (
