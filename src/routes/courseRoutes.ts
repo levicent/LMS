@@ -10,6 +10,8 @@ import {
 } from "../controllers/courseController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
+import { enrollCourseById, getEnrolledCourses } from "../controllers/enrollController";
+// import { enrollCourseById, getEnrolledCourses } from "../controllers/enrollController";
 
 router.post("/courses", authMiddleware, checkRole(["teacher"]), createCourse);
 router.get(
@@ -38,5 +40,8 @@ router.delete(
 );
 
 router.get("/course/search", searchCourseByQuery);
+
+router.post('/enroll/:courseId', authMiddleware, enrollCourseById);
+router.get('/enrolled-courses', authMiddleware, getEnrolledCourses);
 
 export default router;

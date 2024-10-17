@@ -133,6 +133,7 @@ export const searchCourseByQuery = async (req: Request, res: Response) => {
     const courses = await Course.find({
       title: { $regex: query, $options: "i" },
     });
+    
 
     if (courses.length === 0) {
       return res.status(404).json({ message: "No courses found" });
