@@ -91,8 +91,8 @@ export default function Component() {
                           </button>
                         </div>
                         <div className="text-sm text-gray-700 dark:text-gray-400 mt-1">
-                          By {item.instructor.firstName}{" "}
-                          {item.instructor.lastName}
+                          By {item.instructor?.firstName}{" "}
+                          {item.instructor?.lastName}
                         </div>
                         <p className="text-gray-900 dark:text-gray-100 font-medium mt-2">
                           Rs {item.price.toFixed(2)}
