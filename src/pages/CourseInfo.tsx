@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { useState, useEffect, useContext } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
@@ -19,6 +19,8 @@ import {
 import DefaultLayout from "@/layout/DefaultLayout";
 import Ratings from "@/components/Ratings/Ratings";
 import { useCart } from "@/context/cartContext";
+import AuthContext from "@/context/authContext";
+import { toast } from "react-toastify";
 
 interface CourseData {
   _id: string;
@@ -46,6 +48,13 @@ export default function CourseInfo() {
   const location = useLocation();
   const course: CourseData = location.state?.course;
   const [activeTab, setActiveTab] = useState("overview");
+  const navigate = useNavigate();
+
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
 
   if (!course) return <div>Course not found</div>;
 
@@ -54,6 +63,11 @@ export default function CourseInfo() {
   }, [isCourseInCart, course._id]);
 
   const handleAddToCart = () => {
+    if (!authContext.isAuthenticated) {
+      navigate("/signin");
+      toast.error("Please sign in to continue");
+      return;
+    }
     if (!isAddedToCart) {
       const cartItem = {
         productId: course._id,

@@ -24,6 +24,7 @@ import CourseSearchResult from "./pages/CourseSearchResult";
 import SearchResults from "./components/SearchBar/SearchResults";
 import ShoppingCart from "./pages/ShoppingCart";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
+import ProtectedRoutes from "./routes/ProtectedRoutes";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -62,7 +63,10 @@ const App: React.FC = () => {
                 />
 
                 {/* Shopping Cart */}
-                <Route path="/cart" element={<ShoppingCart />} />
+                <Route
+                  path="/cart"
+                  element={<ProtectedRoutes element={<ShoppingCart />} />}
+                />
                 {/* Admin Routes */}
                 <Route
                   path="/admin/dashboard"

@@ -1,4 +1,4 @@
-import  { useState } from "react";
+import { useEffect, useState } from "react";
 import { Search, Star, MoreVertical } from "lucide-react";
 import { Menu } from "@headlessui/react";
 import { Button } from "@/components/ui/button";
@@ -21,6 +21,10 @@ export default function LearningDashboard() {
   const [searchTerm, setSearchTerm] = useState("");
   const { loading, error, courses } = useFetchEnrolledCourses();
 
+  useEffect(() => {
+    console.log(courses);
+  }, [courses]);
+
   const renderContent = () => {
     const cardBgColor = "bg-white dark:bg-gray-800";
     const cardTextColor = "text-gray-900 dark:text-white";
@@ -40,7 +44,9 @@ export default function LearningDashboard() {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {courses
               .filter((course) =>
-                course.courseId.title.toLowerCase().includes(searchTerm.toLowerCase())
+                course.courseId.title
+                  .toLowerCase()
+                  .includes(searchTerm.toLowerCase())
               )
               .map((course) => (
                 <Card
@@ -49,7 +55,7 @@ export default function LearningDashboard() {
                 >
                   <CardHeader className="p-0">
                     <img
-                      src="/api/placeholder/400/320"
+                      src={course.courseId.thumbnail}
                       alt={course.courseId.title}
                       className="w-full h-40 sm:h-48 object-cover"
                     />
@@ -95,10 +101,12 @@ export default function LearningDashboard() {
                       </Menu>
                     </div>
                     <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                      {course.courseId.instructor}
+                      {course.courseId.instructor.firstName}{" "}
+                      {course.courseId.instructor.lastName}
                     </p>
                     <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                      Enrolled on: {new Date(course.enrollmentDate).toLocaleDateString()}
+                      Enrolled on:{" "}
+                      {new Date(course.enrollmentDate).toLocaleDateString()}
                     </p>
                     <div className="flex items-center mb-2">
                       <div className="w-full bg-gray-300 dark:bg-gray-600 rounded-full h-2 mr-2">
