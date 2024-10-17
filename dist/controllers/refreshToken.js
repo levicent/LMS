@@ -20,7 +20,7 @@ const generateAccessToken = (user) => {
         id: user.id,
         role: user.role,
     }, process.env.JWT_SECRET_KEY, {
-        expiresIn: "1m",
+        expiresIn: "15m",
     });
 };
 const refreshToken = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
