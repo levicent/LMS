@@ -78,11 +78,10 @@ const HomePage: React.FC = () => {
                     <button
                       key={index}
                       onClick={() => setCurrentCategory(category)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                        currentCategory === category
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${currentCategory === category
                           ? "bg-blue-600 text-white"
                           : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-                      }`}
+                        }`}
                     >
                       {category}
                     </button>
@@ -145,7 +144,9 @@ const HomePage: React.FC = () => {
                             </p>
                             <div className="flex items-center justify-between mb-4">
                               <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                                ${course.price}
+                                {parseFloat(course.price) === 0
+                                  ? "Free"
+                                  : `₹${course.price}`}
                               </span>
                               <div className="flex items-center">
                                 <svg
