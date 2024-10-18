@@ -22,7 +22,7 @@ export const useEnrollCourse = () => {
 export const useFetchEnrolledCourses = () => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [courses, setCourses] = useState<any[]>([]);
+  const [courses, setCourses] = useState<unknown[]>([]);
 
   const fetchEnrolledCourses = async () => {
     try {

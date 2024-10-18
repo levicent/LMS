@@ -1,5 +1,15 @@
-import { useEffect, useState } from "react";
-import { Search, Star, MoreVertical } from "lucide-react";
+import { useEffect, useState, useMemo } from "react";
+import {
+  Search,
+  Star,
+  MoreVertical,
+  Archive,
+  RefreshCw,
+  BookOpen,
+  List,
+  Heart,
+  Box,
+} from "lucide-react";
 import { Menu } from "@headlessui/react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -13,151 +23,297 @@ import {
 } from "@/components/ui/select";
 import DefaultLayout from "../layout/DefaultLayout";
 import { useFetchEnrolledCourses } from "../hooks/useEnrollCourse";
+import { useAutocorrect } from "../hooks/useAutocorrect";
+import ShimmerCard from "./ShimmerCard";
+import { ShimmerHeading } from "./ShimmerCard";
+import { Link } from "react-router-dom";
 
-const TabOptions = ["All courses", "My Lists", "Wishlist", "Archived"];
+interface EnrolledCourse {
+  _id: string;
+  enrollmentDate: string;
+  progress: number;
+  courseId: {
+    _id: string;
+    title: string;
+    thumbnail: string;
+    category: string;
+    instructor: {
+      firstName: string;
+      lastName: string;
+    };
+  };
+}
 
-export default function LearningDashboard() {
+const TabOptions = [
+  { name: "All courses", icon: BookOpen },
+  { name: "My Lists", icon: List },
+  { name: "Wishlist", icon: Heart },
+  { name: "Archived", icon: Box },
+];
+
+export default function Component() {
   const [activeTab, setActiveTab] = useState("All courses");
   const [searchTerm, setSearchTerm] = useState("");
-  const { loading, error, courses } = useFetchEnrolledCourses();
+  const { loading, error, courses } = useFetchEnrolledCourses() as {
+    loading: boolean;
+    error: string | null;
+    courses: EnrolledCourse[];
+  };
+  const [archivedCourses, setArchivedCourses] = useState<EnrolledCourse[]>([]);
+  const { correctedQuery, isCorrected } = useAutocorrect(searchTerm);
+
+  const [sortBy, setSortBy] = useState("recently-accessed");
+  const [categoryFilter, setCategoryFilter] = useState("all-categories");
+  const [progressFilter, setProgressFilter] = useState("all-progress");
+  const [instructorFilter, setInstructorFilter] = useState("all-instructors");
+
+  const resetFilters = () => {
+    setSortBy("recently-accessed");
+    setCategoryFilter("all-categories");
+    setProgressFilter("all-progress");
+    setInstructorFilter("all-instructors");
+    setSearchTerm("");
+  };
 
   useEffect(() => {
     console.log(courses);
   }, [courses]);
 
-  const renderContent = () => {
-    const cardBgColor = "bg-white dark:bg-gray-800";
-    const cardTextColor = "text-gray-900 dark:text-white";
-    const secondaryTextColor = "text-gray-500 dark:text-gray-400";
+  const archiveCourse = (course: EnrolledCourse) => {
+    setArchivedCourses([...archivedCourses, course]);
+  };
 
+  const unarchiveCourse = (course: EnrolledCourse) => {
+    setArchivedCourses(archivedCourses.filter((c) => c._id !== course._id));
+  };
+
+  const filterAndSortCourses = (
+    courses: EnrolledCourse[],
+    isArchived: boolean
+  ) => {
+    let filteredCourses = courses;
+
+    if (searchTerm) {
+      filteredCourses = filteredCourses.filter((course) =>
+        course.courseId.title
+          .toLowerCase()
+          .includes(correctedQuery.toLowerCase())
+      );
+    }
+
+    if (categoryFilter !== "all-categories") {
+      filteredCourses = filteredCourses.filter(
+        (course) => course.courseId.category.toLowerCase() === categoryFilter
+      );
+    }
+
+    if (progressFilter !== "all-progress") {
+      filteredCourses = filteredCourses.filter((course) => {
+        if (progressFilter === "in-progress")
+          return course.progress > 0 && course.progress < 100;
+        if (progressFilter === "completed") return course.progress === 100;
+        return true;
+      });
+    }
+
+    if (instructorFilter !== "all-instructors") {
+      filteredCourses = filteredCourses.filter(
+        (course) =>
+          `${course.courseId.instructor.firstName} ${course.courseId.instructor.lastName}`.toLowerCase() ===
+          instructorFilter
+      );
+    }
+
+    filteredCourses = filteredCourses.filter((course) =>
+      isArchived
+        ? archivedCourses.some((ac) => ac._id === course._id)
+        : !archivedCourses.some((ac) => ac._id === course._id)
+    );
+
+    filteredCourses.sort((a, b) => {
+      if (sortBy === "recently-accessed") {
+        return (
+          new Date(b.enrollmentDate).getTime() -
+          new Date(a.enrollmentDate).getTime()
+        );
+      } else if (sortBy === "title") {
+        return a.courseId.title.localeCompare(b.courseId.title);
+      }
+      return 0;
+    });
+
+    return filteredCourses;
+  };
+
+  const categories = useMemo(() => {
+    const categorySet = new Set(
+      courses.map((course) => course.courseId.category)
+    );
+    return Array.from(categorySet);
+  }, [courses]);
+
+  const instructors = useMemo(() => {
+    const instructorSet = new Set(
+      courses.map(
+        (course) =>
+          `${course.courseId.instructor.firstName} ${course.courseId.instructor.lastName}`
+      )
+    );
+    return Array.from(instructorSet);
+  }, [courses]);
+
+  const renderContent = () => {
     if (loading) {
-      return <p>Loading courses...</p>;
+      return (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+          {[...Array(6)].map((_, index) => (
+            <ShimmerCard key={index} />
+          ))}
+        </div>
+      );
     }
 
     if (error) {
-      return <p>Error: {error}</p>;
+      return <p className="text-red-500 text-center">Error: {error}</p>;
     }
+
+    const renderCourseCard = (course: EnrolledCourse, isArchived: boolean) => (
+      <Card
+        key={course._id}
+        className="bg-white dark:bg-gray-800 shadow-lg hover:shadow-xl rounded-lg overflow-hidden transition-all duration-300 transform hover:-translate-y-1"
+      >
+        <CardHeader className="p-0 relative">
+          <img
+            src={course.courseId.thumbnail}
+            alt={course.courseId.title}
+            className="w-full h-48 object-cover"
+          />
+          <div className="absolute top-2 right-2">
+            <Menu as="div" className="relative">
+              <Menu.Button className="p-1 rounded-full bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none">
+                <MoreVertical className="h-5 w-5" />
+              </Menu.Button>
+              <Menu.Items className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none rounded-md z-10">
+                <Menu.Item>
+                  {({ active }) => (
+                    <button
+                      className={`${
+                        active ? "bg-gray-100 dark:bg-gray-700" : ""
+                      } w-full text-left px-4 py-2 text-sm text-gray-900 dark:text-white`}
+                      onClick={() =>
+                        isArchived
+                          ? unarchiveCourse(course)
+                          : archiveCourse(course)
+                      }
+                    >
+                      {isArchived ? (
+                        <>
+                          <RefreshCw className="inline-block w-4 h-4 mr-2" />
+                          Unarchive
+                        </>
+                      ) : (
+                        <>
+                          <Archive className="inline-block w-4 h-4 mr-2" />
+                          Archive
+                        </>
+                      )}
+                    </button>
+                  )}
+                </Menu.Item>
+              </Menu.Items>
+            </Menu>
+          </div>
+        </CardHeader>
+        <CardContent className="p-4">
+          <CardTitle className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
+            {course.courseId.title}
+          </CardTitle>
+          <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
+            {course.courseId.instructor.firstName}{" "}
+            {course.courseId.instructor.lastName}
+          </p>
+          <p className="text-xs text-gray-500 dark:text-gray-500 mb-3">
+            Enrolled on: {new Date(course.enrollmentDate).toLocaleDateString()}
+          </p>
+          <div className="flex items-center mb-3">
+            <div className="w-full bg-gray-200 dark:bg-gray-700 rounded-full h-2 mr-2">
+              <div
+                className="bg-green-500 h-2 rounded-full transition-all duration-300 ease-in-out"
+                style={{ width: `${course.progress}%` }}
+              />
+            </div>
+            <span className="text-xs font-medium text-gray-600 dark:text-gray-400">
+              {course.progress}%
+            </span>
+          </div>
+          <Link to="/course">
+            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
+              {isArchived ? "Restore course" : "Continue learning"}
+            </Button>
+          </Link>
+
+          <div className="flex items-center justify-between mt-3">
+            <div className="flex">
+              {[...Array(5)].map((_, i) => (
+                <Star
+                  key={i}
+                  className="h-4 w-4 text-yellow-400"
+                  fill={
+                    i < Math.floor(course.progress / 20)
+                      ? "currentColor"
+                      : "none"
+                  }
+                />
+              ))}
+            </div>
+            <span className="text-xs text-gray-600 dark:text-gray-400 hover:text-blue-600 dark:hover:text-blue-400 cursor-pointer transition-colors duration-300">
+              Rate this course
+            </span>
+          </div>
+        </CardContent>
+      </Card>
+    );
+
+    const filteredCourses = filterAndSortCourses(courses, false);
+    const filteredArchivedCourses = filterAndSortCourses(courses, true);
 
     switch (activeTab) {
       case "All courses":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {courses
-              .filter((course) =>
-                course.courseId.title
-                  .toLowerCase()
-                  .includes(searchTerm.toLowerCase())
-              )
-              .map((course) => (
-                <Card
-                  key={course._id}
-                  className={`${cardBgColor} shadow-md hover:shadow-lg rounded-lg overflow-hidden transition-shadow duration-300`}
-                >
-                  <CardHeader className="p-0">
-                    <img
-                      src={course.courseId.thumbnail}
-                      alt={course.courseId.title}
-                      className="w-full h-40 sm:h-48 object-cover"
-                    />
-                  </CardHeader>
-                  <CardContent className="p-4">
-                    <div className="flex justify-between items-start mb-2">
-                      <CardTitle
-                        className={`text-base sm:text-lg font-bold line-clamp-2 ${cardTextColor}`}
-                      >
-                        {course.courseId.title}
-                      </CardTitle>
-                      <Menu as="div" className="relative">
-                        <Menu.Button
-                          className={`${secondaryTextColor} hover:text-gray-700 dark:hover:text-gray-300 hover:bg-transparent`}
-                        >
-                          <MoreVertical className="h-4 w-4" />
-                          <span className="sr-only">More options</span>
-                        </Menu.Button>
-                        <Menu.Items className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-700 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none rounded-md z-10">
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  active ? "bg-gray-100 dark:bg-gray-600" : ""
-                                } w-full text-left px-4 py-2 text-sm ${cardTextColor}`}
-                              >
-                                Mark as completed
-                              </button>
-                            )}
-                          </Menu.Item>
-                          <Menu.Item>
-                            {({ active }) => (
-                              <button
-                                className={`${
-                                  active ? "bg-gray-100 dark:bg-gray-600" : ""
-                                } w-full text-left px-4 py-2 text-sm ${cardTextColor}`}
-                              >
-                                Archive
-                              </button>
-                            )}
-                          </Menu.Item>
-                        </Menu.Items>
-                      </Menu>
-                    </div>
-                    <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                      {course.courseId.instructor.firstName}{" "}
-                      {course.courseId.instructor.lastName}
-                    </p>
-                    <p className="text-xs sm:text-sm text-gray-400 dark:text-gray-500 mb-2">
-                      Enrolled on:{" "}
-                      {new Date(course.enrollmentDate).toLocaleDateString()}
-                    </p>
-                    <div className="flex items-center mb-2">
-                      <div className="w-full bg-gray-300 dark:bg-gray-600 rounded-full h-2 mr-2">
-                        <div
-                          className="bg-green-500 h-2 rounded-full"
-                          style={{ width: `0%` }}
-                        />
-                      </div>
-                      <span
-                        className={`text-xs sm:text-sm ${secondaryTextColor}`}
-                      >
-                        0%
-                      </span>
-                    </div>
-                    <Button className="w-full mt-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md text-sm">
-                      Start course
-                    </Button>
-                    <div className="flex items-center mt-2">
-                      {[...Array(5)].map((_, i) => (
-                        <Star
-                          key={i}
-                          className={`h-3 w-3 sm:h-4 sm:w-4 text-gray-300 dark:text-gray-600`}
-                        />
-                      ))}
-                      <span
-                        className={`ml-2 text-xs sm:text-sm ${secondaryTextColor}`}
-                      >
-                        Leave a rating
-                      </span>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredCourses.map((course) => renderCourseCard(course, false))}
           </div>
         );
       case "My Lists":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <p>My Lists content (to be implemented)</p>
+          <div className="text-center py-12">
+            <List className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              My Lists
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              This feature is coming soon!
+            </p>
           </div>
         );
       case "Wishlist":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <p>Wishlist content (to be implemented)</p>
+          <div className="text-center py-12">
+            <Heart className="mx-auto h-16 w-16 text-gray-400 mb-4" />
+            <h3 className="text-xl font-semibold text-gray-700 dark:text-gray-300 mb-2">
+              Wishlist
+            </h3>
+            <p className="text-gray-500 dark:text-gray-400">
+              Your wishlist is empty. Start adding courses!
+            </p>
           </div>
         );
       case "Archived":
         return (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            <p>Archived content (to be implemented)</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+            {filteredArchivedCourses.map((course) =>
+              renderCourseCard(course, true)
+            )}
           </div>
         );
       default:
@@ -167,155 +323,123 @@ export default function LearningDashboard() {
 
   return (
     <DefaultLayout>
-      <main className="flex flex-col min-h-screen bg-gray-100 dark:bg-gray-900 text-gray-900 dark:text-white">
-        <header className="bg-gray-900 text-white py-4">
-          <div className="container mx-auto px-4">
-            <h1 className="text-2xl sm:text-3xl font-bold">My learning</h1>
-            <nav className="mt-4 overflow-x-auto">
-              <ul className="flex space-x-2 sm:space-x-4 whitespace-nowrap">
-                {TabOptions.map((tab) => (
-                  <li key={tab}>
-                    <button
-                      onClick={() => setActiveTab(tab)}
-                      className={`px-2 sm:px-3 py-1 sm:py-2 rounded-md text-xs sm:text-sm font-medium ${
-                        activeTab === tab
-                          ? "bg-gray-800 text-white"
-                          : "text-gray-300 hover:bg-gray-700 hover:text-white"
-                      }`}
-                    >
-                      {tab}
-                    </button>
-                  </li>
-                ))}
-              </ul>
+      <main className="flex flex-col min-h-screen bg-gray-50 dark:bg-gray-900 dark:text-white">
+        <header className="bg-white dark:bg-gray-800 shadow-md">
+          <div className="container mx-auto px-4 py-6">
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">
+              My Learning
+            </h1>
+            <nav className="flex space-x-1 overflow-x-auto">
+              {TabOptions.map((tab) => (
+                <button
+                  key={tab.name}
+                  onClick={() => setActiveTab(tab.name)}
+                  className={`flex items-center px-4 py-2 rounded-md text-sm font-medium transition-colors duration-300 ${
+                    activeTab === tab.name
+                      ? "bg-blue-600 text-white"
+                      : "text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700"
+                  }`}
+                >
+                  <tab.icon className="h-5 w-5 mr-2" />
+                  {tab.name}
+                </button>
+              ))}
             </nav>
           </div>
         </header>
-        <div className="flex-grow">
-          <div className="container mx-auto px-4 py-6 sm:py-8">
-            <div className="flex flex-col space-y-4 mb-6">
-              <div className="flex flex-wrap gap-2">
-                <Select defaultValue="recently-accessed">
-                  <SelectTrigger className="w-full sm:w-[180px] bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600">
-                    <SelectValue placeholder="Sort by" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600">
-                    <SelectItem
-                      value="recently-accessed"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      Recently Accessed
+        <div className="flex-grow container mx-auto px-4 py-8">
+          <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-6 mb-8">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-6">
+              <Select value={sortBy} onValueChange={setSortBy}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Sort by" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="recently-accessed">
+                    Recently Accessed
+                  </SelectItem>
+                  <SelectItem value="title">Title</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select value={categoryFilter} onValueChange={setCategoryFilter}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Categories" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all-categories">All Categories</SelectItem>
+                  {categories.map((category) => (
+                    <SelectItem key={category} value={category.toLowerCase()}>
+                      {category}
                     </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+              <Select value={progressFilter} onValueChange={setProgressFilter}>
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Progress" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all-progress">All Progress</SelectItem>
+                  <SelectItem value="in-progress">In Progress</SelectItem>
+                  <SelectItem value="completed">Completed</SelectItem>
+                </SelectContent>
+              </Select>
+              <Select
+                value={instructorFilter}
+                onValueChange={setInstructorFilter}
+              >
+                <SelectTrigger className="w-full">
+                  <SelectValue placeholder="Instructor" />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value="all-instructors">
+                    All Instructors
+                  </SelectItem>
+                  {instructors.map((instructor) => (
                     <SelectItem
-                      value="title"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
+                      key={instructor}
+                      value={instructor.toLowerCase()}
                     >
-                      Title
+                      {instructor}
                     </SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select defaultValue="all-categories">
-                  <SelectTrigger className="w-full sm:w-[180px] bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600">
-                    <SelectValue placeholder="Categories" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600">
-                    <SelectItem
-                      value="all-categories"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      All Categories
-                    </SelectItem>
-                    <SelectItem
-                      value="programming"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      Programming
-                    </SelectItem>
-                    <SelectItem
-                      value="data-science"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      Data Science
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select defaultValue="all-progress">
-                  <SelectTrigger className="w-full sm:w-[180px] bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600">
-                    <SelectValue placeholder="Progress" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600">
-                    <SelectItem
-                      value="all-progress"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      All Progress
-                    </SelectItem>
-                    <SelectItem
-                      value="in-progress"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      In Progress
-                    </SelectItem>
-                    <SelectItem
-                      value="completed"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      Completed
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <Select defaultValue="all-instructors">
-                  <SelectTrigger className="w-full sm:w-[180px] bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600">
-                    <SelectValue placeholder="Instructor" />
-                  </SelectTrigger>
-                  <SelectContent className="bg-white dark:bg-gray-800 text-gray-900 dark:text-white border border-gray-300 dark:border-gray-600">
-                    <SelectItem
-                      value="all-instructors"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      All Instructors
-                    </SelectItem>
-                    <SelectItem
-                      value="andrei-neagoie"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      Andrei Neagoie
-                    </SelectItem>
-                    <SelectItem
-                      value="daniel-bourke"
-                      className="hover:bg-gray-100 dark:hover:bg-gray-700"
-                    >
-                      Daniel Bourke
-                    </SelectItem>
-                  </SelectContent>
-                </Select>
-                <Button
-                  variant="outline"
-                  className="w-full sm:w-auto bg-white dark:bg-gray-800 text-gray-900 dark:text-white hover:bg-gray-100 dark:hover:bg-gray-700 border-gray-300 dark:border-gray-600"
-                >
-                  Reset
-                </Button>
-              </div>
-              <div className="flex items-center space-x-2">
+                  ))}
+                </SelectContent>
+              </Select>
+              <Button
+                variant="outline"
+                className="w-full sm:w-auto"
+                onClick={resetFilters}
+              >
+                Reset Filters
+              </Button>
+            </div>
+            <div className="flex items-center space-x-2">
+              <div className="relative flex-grow">
                 <Input
                   type="text"
                   placeholder="Search my courses"
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
-                  className="w-full bg-white dark:bg-gray-800 text-gray-900 dark:text-white border-gray-300 dark:border-gray-600"
+                  className="w-full pl-10"
                 />
-                <Button
-                  type="submit"
-                  size="icon"
-                  className="p-2 bg-black dark:bg-white text-white dark:text-black rounded-md hover:bg-gray-800 dark:hover:bg-gray-200 active:bg-gray-900 dark:active:bg-gray-300 transition duration-300 ease-in-out"
-                >
-                  <Search className="h-4 w-4" />
-                  <span className="sr-only">Search</span>
-                </Button>
+                <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
               </div>
+              <Button
+                type="submit"
+                size="icon"
+                className="bg-blue-600 hover:bg-blue-700"
+              >
+                <Search className="h-4 w-4" />
+                <span className="sr-only">Search</span>
+              </Button>
             </div>
-            {renderContent()}
+            {isCorrected && searchTerm && (
+              <p className="text-sm text-gray-600 dark:text-gray-400 mt-2">
+                Showing results for "{correctedQuery}"
+              </p>
+            )}
           </div>
+          {loading ? <ShimmerHeading /> : renderContent()}
         </div>
       </main>
     </DefaultLayout>
