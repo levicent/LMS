@@ -371,9 +371,15 @@ export default function CourseInfo() {
                     </Button>
                   )}
 
-                  <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
-                    30-Day Money-Back Guarantee
-                  </p>
+                  {isEnrolled ? (
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
+                      Happy Learning!
+                    </p>
+                  ) : (
+                    <p className="text-sm text-gray-600 dark:text-gray-400 text-center mb-4">
+                      30-Day Money-Back Guarantee
+                    </p>
+                  )}
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <Clock className="mr-2 h-4 w-4" />
