@@ -20,7 +20,7 @@ import PrivateRoutes from "./routes/PrivateRoutes";
 import CreateUsersTablePage from "./pages/Dashboard/Tables/CreateUsersTablePage";
 import CourseDashboard from "./pages/Dashboard/CourseDashboard";
 import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
-import CourseSearchResult from "./pages/CourseSearchResult";
+import CourseLearningPage from "./pages/CourseLearningPage";
 import SearchResults from "./components/SearchBar/SearchResults";
 import ShoppingCart from "./pages/ShoppingCart";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
@@ -45,10 +45,7 @@ const App: React.FC = () => {
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/search" element={<SearchResults />} />
-                <Route
-                  path="/course-search-result"
-                  element={<CourseSearchResult />}
-                />
+                <Route path="/course" element={<CourseLearningPage />} />
                 <Route
                   path="/instructor/dashboard"
                   element={<InstructorDashboard />}

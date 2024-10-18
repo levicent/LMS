@@ -9,7 +9,7 @@ const commonWords = [
     'server', 'client', 'cloud', 'devops', 'agile', 'scrum', 'git', 'github',
     'docker', 'kubernetes', 'aws', 'azure', 'google', 'machine', 'learning',
     'artificial', 'intelligence', 'data', 'science', 'analytics', 'blockchain',
-    'cybersecurity', 'networking', 'operating', 'system', 'algorithm', 'structure'
+    'cybersecurity', 'networking', 'operating', 'system', 'algorithm', 'structure', 'dsa'
 ];
 
 function levenshteinDistance(a: string, b: string): number {

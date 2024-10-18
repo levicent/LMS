@@ -15,12 +15,14 @@ import {
   FileText,
   Download,
   Check,
+  BookOpen,
 } from "lucide-react";
 import DefaultLayout from "@/layout/DefaultLayout";
 import Ratings from "@/components/Ratings/Ratings";
 import { useCart } from "@/context/cartContext";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
+import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
 
 interface CourseData {
   _id: string;
@@ -43,12 +45,23 @@ interface CourseData {
   prerequisites?: string[];
 }
 
+interface EnrolledCourse {
+  courseId: {
+    _id: string;
+  };
+}
+
+interface LocationState {
+  course: CourseData;
+}
+
 export default function CourseInfo() {
   const { addToCart, isCourseInCart, isAddedToCart } = useCart();
   const location = useLocation();
-  const course: CourseData = location.state?.course;
-  const [activeTab, setActiveTab] = useState("overview");
   const navigate = useNavigate();
+  const { courses: enrolledCourses } = useFetchEnrolledCourses();
+  const [activeTab, setActiveTab] = useState("overview");
+  const [course, setCourse] = useState<CourseData | null>(null);
 
   const authContext = useContext(AuthContext);
 
@@ -56,14 +69,24 @@ export default function CourseInfo() {
     throw new Error("useAuth must be used within an AuthProvider");
   }
 
-  if (!course) return <div>Course not found</div>;
+  const { isAuthenticated } = authContext;
 
   useEffect(() => {
-    isCourseInCart(course._id);
-  }, [isCourseInCart, course._id]);
+    const state = location.state as LocationState | null;
+    if (state && state.course) {
+      setCourse(state.course);
+      isCourseInCart(state.course._id);
+    }
+  }, [location.state, isCourseInCart]);
+
+  if (!course) return <div>Course not found</div>;
+
+  const isEnrolled = (enrolledCourses as EnrolledCourse[]).some(
+    (enrolledCourse) => enrolledCourse.courseId._id === course._id
+  );
 
   const handleAddToCart = () => {
-    if (!authContext.isAuthenticated) {
+    if (!isAuthenticated) {
       navigate("/signin");
       toast.error("Please sign in to continue");
       return;
@@ -116,6 +139,7 @@ export default function CourseInfo() {
       <div className="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <div className="flex flex-col lg:flex-row gap-8">
+            {/* Main content */}
             <div className="w-full lg:w-2/3">
               <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold mb-4">
                 {course.title}
@@ -306,6 +330,7 @@ export default function CourseInfo() {
                 </TabsContent>
               </Tabs>
             </div>
+            {/* Sidebar */}
             <div className="w-full lg:w-1/3 mt-8 lg:mt-0">
               <Card className="sticky top-8 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
                 <CardContent className="p-0">
@@ -325,9 +350,15 @@ export default function CourseInfo() {
                       : `₹${course.price}`}
                   </div>
 
-                  {isAddedToCart ? (
+                  {isEnrolled ? (
+                    <Link to={`/course`}>
+                      <Button className="w-full mb-4 bg-green-600 hover:bg-green-700 text-white">
+                        <BookOpen className="mr-2 h-4 w-4" /> Go to My Course
+                      </Button>
+                    </Link>
+                  ) : isAddedToCart ? (
                     <Link to="/cart">
-                      <Button className="w-full mb-4 bg-blue-700 hover:bg-blue-700 text-white">
+                      <Button className="w-full mb-4 bg-blue-700 hover:bg-blue-800 text-white">
                         <ShoppingCart className="mr-2 h-4 w-4" /> Go to Cart
                       </Button>
                     </Link>
