@@ -67,6 +67,7 @@ export function CartProvider({ children }: CartProviderProps) {
   };
   const clearCart = () => {
     clearCartMutate();
+    setCart([]);
   };
 
   return (
