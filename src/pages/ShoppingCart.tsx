@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Link } from "react-router-dom";
 import { X, ShoppingCart, ChevronRight } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import {
@@ -14,52 +14,19 @@ import { ScrollArea } from "@/components/ui/scroll-area";
 import DefaultLayout from "@/layout/DefaultLayout";
 import { useCart } from "@/context/cartContext";
 import RemoveDialog from "@/components/DialogBox/RemoveDialog";
-import { toast } from "react-toastify";
-import { useEnrollCourse } from "../hooks/useEnrollCourse";
+import { useCheckout } from "@/hooks/ueCheckout";
 
 export default function Component() {
-  const { cart, clearCart } = useCart();
+  const { cart } = useCart();
   const [isHovered, setIsHovered] = useState<string | null>(null);
   const [dialogOpen, setDialogOpen] = useState(false);
   const [productId, setProductId] = useState<string | null>(null);
   const totalPrice = cart.reduce((acc, item) => acc + item.price, 0);
-  const navigate = useNavigate();
 
-  const { enrollCourse } = useEnrollCourse();
-
-  useEffect(() => {
-    console.log("Dialog open state changed:", dialogOpen);
-  }, [dialogOpen]);
-
+  const { handleCheckout } = useCheckout();
   const handleRemoveFromCart = (id: string | null) => {
     setProductId(id);
     setDialogOpen(true);
-  };
-
-  const handleCheckout = async () => {
-    try {
-      console.log("Cart Items:", cart);
-      for (const item of cart) {
-        console.log("Enrolling course:", item.productId);
-        await enrollCourse(item.productId);
-        console.log("Enrolled successfully:", item.productId);
-      }
-
-      toast.success("You have been successfully enrolled in your courses!", {
-        position: "top-right",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-
-      clearCart();
-      navigate("/my-courses");
-    } catch (error) {
-      console.error("Enrollment failed:", error);
-      toast.error("An error occurred during enrollment.");
-    }
   };
 
   return (
@@ -151,7 +118,12 @@ export default function Component() {
                 <Button
                   size="lg"
                   className="w-full bg-blue-600 hover:bg-blue-700 text-white dark:bg-blue-700 dark:hover:bg-blue-600"
-                  onClick={handleCheckout}
+                  onClick={() =>
+                    handleCheckout({
+                      name: cart.map((item) => item.name).join(", "),
+                      description: cart.map((item) => item.name).join(", "),
+                    })
+                  }
                 >
                   Proceed to Checkout
                   <ChevronRight className="ml-2 w-4 h-4" />

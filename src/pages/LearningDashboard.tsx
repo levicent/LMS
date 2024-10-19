@@ -1,4 +1,4 @@
-import { useEffect, useState, useMemo } from "react";
+import { useState, useMemo } from "react";
 import {
   Search,
   Star,
@@ -74,10 +74,6 @@ export default function Component() {
     setInstructorFilter("all-instructors");
     setSearchTerm("");
   };
-
-  useEffect(() => {
-    console.log(courses);
-  }, [courses]);
 
   const archiveCourse = (course: EnrolledCourse) => {
     setArchivedCourses([...archivedCourses, course]);
