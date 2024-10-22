@@ -11,6 +11,17 @@ export const useCheckout = () => {
 
   const handleCheckout = async ({ name, description }: any) => {
     try {
+
+      const totalAmount = cart.reduce((total, item) => total + item.price, 0);
+      if (totalAmount === 0) {
+        for (const item of cart) {
+          await enrollCourse(item.productId);
+        }
+        toast.success("Free courses enrolled successfully!");
+        clearCart();
+        navigate("/my-courses");
+        return;
+      }
       const orderResponse = await api.post("/payment/create-order", {
         amount: cart.reduce((total, item) => total + item.price, 0),
         currency: "INR",
