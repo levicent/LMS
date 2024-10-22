@@ -13,15 +13,18 @@ export const useCheckout = () => {
     try {
 
       const totalAmount = cart.reduce((total, item) => total + item.price, 0);
+
+      
       if (totalAmount === 0) {
         for (const item of cart) {
           await enrollCourse(item.productId);
         }
-        toast.success("Free courses enrolled successfully!");
+        toast.success(`Course ${name} enrolled successfully`);
         clearCart();
         navigate("/my-courses");
         return;
       }
+
       const orderResponse = await api.post("/payment/create-order", {
         amount: cart.reduce((total, item) => total + item.price, 0),
         currency: "INR",
@@ -56,7 +59,7 @@ export const useCheckout = () => {
             for (const item of cart) {
               await enrollCourse(item.productId);
             }
-            toast.success("Courses enrolled successfully");
+            toast.success(`Course ${name} enrolled successfully`);
             clearCart();
             navigate("/my-courses");
           } else {
