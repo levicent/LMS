@@ -25,6 +25,7 @@ import SearchResults from "./components/SearchBar/SearchResults";
 import ShoppingCart from "./pages/ShoppingCart";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
+import NoPath from "./pages/NoPathThere";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -46,6 +47,7 @@ const App: React.FC = () => {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/course" element={<CourseLearningPage />} />
+                <Route path="*" element={<NoPath/>} />
                 <Route
                   path="/instructor/dashboard"
                   element={<InstructorDashboard />}
