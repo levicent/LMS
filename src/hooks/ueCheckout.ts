@@ -26,7 +26,7 @@ export const useCheckout = () => {
       }
 
       const orderResponse = await api.post("/payment/create-order", {
-        amount: cart.reduce((total, item) => total + item.price, 0),
+        amount: totalAmount,
         currency: "INR",
         receipt: "order_rcptid_11",
       });
