@@ -53,9 +53,9 @@ const addToCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 exports.addToCart = addToCart;
 // Get user's cart
 const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _b;
     try {
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        const userId = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized: User not found" });
         }
@@ -72,9 +72,9 @@ const getCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
 });
 exports.getCart = getCart;
 const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _c;
     try {
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
         const { productId } = req.params;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized: User not found" });
@@ -99,9 +99,9 @@ const removeFromCart = (req, res) => __awaiter(void 0, void 0, void 0, function*
 exports.removeFromCart = removeFromCart;
 // Clear cart
 const clearCart = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _a;
+    var _d;
     try {
-        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
+        const userId = (_d = req.user) === null || _d === void 0 ? void 0 : _d.id;
         if (!userId) {
             return res.status(401).json({ message: "Unauthorized: User not found" });
         }

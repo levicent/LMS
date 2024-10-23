@@ -36,12 +36,10 @@ const createOrder = (req, res) => __awaiter(void 0, void 0, void 0, function* ()
 exports.createOrder = createOrder;
 const verifyPayment = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { order_id, payment_id, razorpay_signature } = req.body;
-    console.log("req.body", req.body);
     const generatedSignature = crypto_1.default
         .createHmac("sha256", process.env.RAZORPAY_KEY_SECRET)
         .update(`${order_id}|${payment_id}`)
         .digest("hex");
-    console.log(generatedSignature, razorpay_signature);
     if (generatedSignature !== razorpay_signature) {
         return res.status(400).json({ message: "Invalid signature" });
     }

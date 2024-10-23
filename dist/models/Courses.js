@@ -93,6 +93,41 @@ const courseSchema = new mongoose_1.default.Schema({
         type: String,
         required: true,
     },
+    sections: [
+        {
+            sectionId: {
+                type: mongoose_1.default.Schema.Types.ObjectId,
+                default: new mongoose_1.default.Types.ObjectId(),
+            },
+            title: {
+                type: String,
+                required: true,
+            },
+            videos: [
+                {
+                    videoId: {
+                        type: mongoose_1.default.Schema.Types.ObjectId,
+                        default: new mongoose_1.default.Types.ObjectId(),
+                    },
+                    title: {
+                        type: String,
+                        required: true,
+                    },
+                    url: {
+                        type: String,
+                        required: true,
+                    },
+                    publicId: {
+                        type: String,
+                        required: true,
+                    },
+                    duration: {
+                        type: String,
+                    },
+                },
+            ],
+        },
+    ],
     createdAt: {
         type: Date,
         default: Date.now,

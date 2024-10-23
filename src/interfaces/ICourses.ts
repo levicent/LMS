@@ -13,6 +13,19 @@ export interface IQuiz {
   answer: string;
 }
 
+export interface ISection {
+  sectionId: Types.ObjectId;
+  title: string;
+  videos: IVideo[];
+}
+
+export interface IVideo {
+  videoId: Types.ObjectId;
+  title: string;
+  url: string;
+  duration?: string;
+}
+
 export interface ICourse {
   title: string;
   description: string;
@@ -40,6 +53,7 @@ export interface ICourse {
   reviews?: { user: Types.ObjectId }[];
   language: string;
   tags?: string[];
+  sections: ISection[];
 
   createdAt: Date;
   updatedAt: Date;
