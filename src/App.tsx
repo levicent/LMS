@@ -26,6 +26,7 @@ import ShoppingCart from "./pages/ShoppingCart";
 import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import NoPath from "./pages/NoPathThere";
+import { Stats } from "./pages/Dashboard/InstructorDashboard";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -56,6 +57,11 @@ const App: React.FC = () => {
                   path="/instructor/dashboard/videoDashboard"
                   element={<VideoUploadDashboard />}
                 />
+                 <Route
+                  path="/instructor/dashboard/stats"
+                  element={<Stats/>}
+                />
+                
                 <Route
                   path="/instructor/dashboard/courses"
                   element={<CourseDashboard />}

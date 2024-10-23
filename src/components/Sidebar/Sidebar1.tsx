@@ -11,7 +11,6 @@ interface SidebarProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }
-
 const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
   const location = useLocation();
   const { pathname } = location;
@@ -131,7 +130,7 @@ const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
               <li>
                 <NavLink
-                  to="/teachers"
+                  to="/instructor/dashboard/stats"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
                     pathname.includes("teachers") &&
                     "bg-graydark dark:bg-meta-4"
