@@ -13,7 +13,7 @@ import AccountSettings from "./pages/AccountSettings";
 import CourseInfo from "./pages/CourseInfo";
 import { CartProvider } from "./context/cartContext";
 import BillingInfo from "./pages/BillingInfo";
-import AdminDashboard from "./pages/Dashboard/AdminDashboard";
+import AdminDashboard, { UsersTable } from "./pages/Dashboard/AdminDashboard";
 import LearningDashboard from "./pages/LearningDashboard";
 import ContactPage from "./pages/ContactPage";
 import PrivateRoutes from "./routes/PrivateRoutes";
@@ -76,6 +76,10 @@ const App: React.FC = () => {
                 <Route
                   path="/admin/dashboard"
                   element={<PrivateRoutes element={<AdminDashboard />} />}
+                />
+                 <Route
+                  path="/admin/student"
+                  element={<PrivateRoutes element={<UsersTable/>} />}
                 />
                 <Route
                   path="/admin/dashboard/user/create"

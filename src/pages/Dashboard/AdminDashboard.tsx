@@ -6,9 +6,11 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Clock, GraduationCap, Users } from "lucide-react";
 const AdminDashboard = () => {
   return (
-    <AdminLayout>
-      <div className="col-span-12 xl:col-span-8"><UsersTable/></div>
-    </AdminLayout>
+   
+      <div className="col-span-12 xl:col-span-8">
+        <UsersTable/>
+      </div>
+    
   );
 };
 
@@ -83,6 +85,7 @@ export const UsersTable = () => {
   };
 
   return (
+    <AdminLayout>
     <Card className="w-full">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
@@ -146,6 +149,7 @@ export const UsersTable = () => {
         </div>
       </CardContent>
     </Card>
+    </AdminLayout>
   );
 };
 
