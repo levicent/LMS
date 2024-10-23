@@ -156,13 +156,13 @@ const Sidebar: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
 
               <li>
                 <NavLink
-                  to="/admin"
+                  to="/admin/dashboard/user/create"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
                     pathname.includes("admin") && "bg-graydark dark:bg-meta-4"
                   }`}
                 >
                   <FontAwesomeIcon icon={faUserShield} className="text-white" />
-                  Admin Table
+                  Create User
                 </NavLink>
               </li>
 
