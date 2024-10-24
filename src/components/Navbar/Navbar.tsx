@@ -204,15 +204,6 @@ export default function Navbar() {
               </Popover>
 
               {/* Other navigation links */}
-              <Link
-                to="/features"
-                className={`text-sm font-medium ${theme === "dark"
-                    ? "text-gray-300 hover:text-white"
-                    : "text-gray-700 hover:text-gray-800"
-                  }`}
-              >
-                Features
-              </Link>
               {(role === 'admin' || role === 'teacher') ? (
                 <>
                   {role === 'admin' && (
