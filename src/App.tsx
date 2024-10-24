@@ -27,6 +27,9 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import NoPath from "./pages/NoPathThere";
 import { Stats } from "./pages/Dashboard/InstructorDashboard";
+import CreateCourseTable from "./components/Tables/CourseTable/CreateCourseTable";
+import DonorPage from "./pages/DonorPage.tsx";
+import InstructorsPage from "./pages/InstructorsPage.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -48,7 +51,9 @@ const App: React.FC = () => {
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/search" element={<SearchResults />} />
                 <Route path="/course" element={<CourseLearningPage />} />
-                <Route path="*" element={<NoPath/>} />
+                <Route path="/donors" element={<DonorPage />} />
+                <Route path="/instructors" element={<InstructorsPage />} />
+                <Route path="*" element={<NoPath />} />
                 <Route
                   path="/instructor/dashboard"
                   element={<InstructorDashboard />}
@@ -57,11 +62,8 @@ const App: React.FC = () => {
                   path="/instructor/dashboard/videoDashboard"
                   element={<VideoUploadDashboard />}
                 />
-                 <Route
-                  path="/instructor/dashboard/stats"
-                  element={<Stats/>}
-                />
-                
+                <Route path="/instructor/dashboard/stats" element={<Stats />} />
+
                 <Route
                   path="/instructor/dashboard/courses"
                   element={<CourseDashboard />}
@@ -77,9 +79,9 @@ const App: React.FC = () => {
                   path="/admin/dashboard"
                   element={<PrivateRoutes element={<AdminDashboard />} />}
                 />
-                 <Route
+                <Route
                   path="/admin/student"
-                  element={<PrivateRoutes element={<UsersTable/>} />}
+                  element={<PrivateRoutes element={<UsersTable />} />}
                 />
                 <Route
                   path="/admin/dashboard/user/create"
