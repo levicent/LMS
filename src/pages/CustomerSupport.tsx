@@ -8,7 +8,6 @@ export const ChatBot = ({ isOpen, onClose }:any) => {
       return () => clearTimeout(timer);
     }
   }, [isOpen]);
-
   if (!isOpen) return null;
 
   return (
