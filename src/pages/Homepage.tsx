@@ -5,9 +5,10 @@ import Footer from "../components/Footer/Footer";
 import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
 import { useTheme } from "../context/themeContext";
 import AuthContext from "../context/authContext";
-import { Star, Users, Clock, Award, BookOpen, Globe, Zap } from "lucide-react";
+import { Star, Users, Clock, Award, BookOpen, Globe, Zap, MessageCircle, X } from "lucide-react";
 import { useFetchCourses } from "@/hooks/useFetchCourse";
 import ShimmerCard from "./ShimmerCard";
+import {ChatBot} from "./CustomerSupport";
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
@@ -15,6 +16,7 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [currentCategory, setCurrentCategory] = useState("All");
   const [loading, setIsLoading] = useState(true);
+  const [isChatBotOpen, setIsChatBotOpen] = useState(false);
 
   if (!authContext) {
     navigate("/login");
@@ -31,11 +33,13 @@ const HomePage: React.FC = () => {
   const { isAuthenticated } = authContext;
 
   const { data: courses } = useFetchCourses();
+  const toggleChatBot = () => {
+    setIsChatBotOpen(prev => !prev);
+  };
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
       <ParticlesComponent id="particles" />
-
       <Navbar />
 
       <main className="flex-grow bg-gray-100 dark:bg-gray-900">
@@ -335,7 +339,20 @@ const HomePage: React.FC = () => {
         </div>
       </main>
 
-      <Footer />
+      <Footer/>
+      <button
+        onClick={toggleChatBot}
+        className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 
+          text-white p-3 rounded-full shadow-lg transition-all duration-300 
+          transform hover:scale-105 z-[60] focus:outline-none focus:ring-2 
+          focus:ring-blue-500 focus:ring-offset-2 active:scale-95"
+      >
+        {isChatBotOpen ? <X size={24} /> : <MessageCircle size={24} />}
+      </button>
+      <ChatBot 
+        isOpen={isChatBotOpen} 
+        onClose={() => setIsChatBotOpen(false)}
+      />
     </div>
   );
 };
