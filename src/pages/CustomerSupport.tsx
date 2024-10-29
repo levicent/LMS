@@ -1,5 +1,3 @@
-
-
 export const ChatBot = ({ isOpen, onClose }: any) => {
   if (!isOpen) return null;
   return (
