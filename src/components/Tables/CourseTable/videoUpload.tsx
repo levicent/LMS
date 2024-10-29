@@ -79,8 +79,8 @@ export default function UploadVideosPage() {
 
     try {
       // Replace with the actual course ID and API endpoint
-      const courseId = "someCourseId";
-      await axios.post(`/api/courses/${courseId}/videos`, formData, {
+      const courseId = '66e015267b9c9032cdc5e598';
+      await axios.post(`api/courses/${courseId}/videos`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       toast.success("Videos uploaded successfully");

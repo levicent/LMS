@@ -30,6 +30,8 @@ import { Stats } from "./pages/Dashboard/InstructorDashboard";
 import CreateCourseTable from "./components/Tables/CourseTable/CreateCourseTable";
 import DonorPage from "./pages/DonorPage.tsx";
 import InstructorsPage from "./pages/InstructorsPage.tsx";
+import AddSectionForm from "./components/Tables/CourseTable/CreateSection.tsx";
+import CourseView from "./pages/CourseView.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -68,6 +70,11 @@ const App: React.FC = () => {
                   path="/instructor/dashboard/courses"
                   element={<CourseDashboard />}
                 />
+                <Route
+                  path="/add-section/:courseId"
+                  element={<AddSectionForm />}
+                />
+                 <Route path="instructor/dashboard/course/:courseId" element={<CourseView/>} />
 
                 {/* Shopping Cart */}
                 <Route

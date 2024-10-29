@@ -32,6 +32,7 @@ const fetchCourseByQuery = async (query: string): Promise<CourseData[]> => {
   return response.data.courses;
 };
 
+
 export const useFetchCourses = () => {
   return useQuery<CourseData[]>("courses", fetchCourses);
 };
