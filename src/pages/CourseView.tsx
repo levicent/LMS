@@ -6,9 +6,9 @@ import { Button } from "@/components/ui/button";
 
 const CourseView: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
-  console.log("Course ID from params:", courseId);
 
   const { data: course, isLoading, error } = useFetchCourseById(courseId || '');
+  console.log("Fetched Course:", course);
 
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error loading course:</div>;
@@ -19,7 +19,6 @@ const CourseView: React.FC = () => {
     <div className="min-h-screen p-8 text-white">
       <img
         src={course.thumbnail}
-        alt={course.title}
         className="w-full h-60 object-cover mb-4"
       />
       <h1 className="text-3xl font-bold mb-4">{course.title}</h1>
