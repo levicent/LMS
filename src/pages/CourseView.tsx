@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { useParams, Link } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useParams, Link, useNavigate } from "react-router-dom";
 import useFetchCourseById from "@/hooks/useFetchCourseById";
 import useUpdateCourse from "@/hooks/useCourseUpdateById";
 import { Button } from "@/components/ui/button";
@@ -13,13 +13,15 @@ import {
   Star,
   BookOpen,
   Edit3,
+  Edit,
+  Trash,
 } from "lucide-react";
 import TeacherLayout from "@/layout/TeacherLayout";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Modal from "@/components/Model";
 import { useQueryClient } from "react-query";
-
+import { useDeleteSection } from "@/hooks/useDeleteSection";
 
 interface Video {
   title: string;
@@ -35,6 +37,11 @@ interface Section {
 interface Review {
   _id: string;
   rating: number;
+}
+
+interface DeleteSection {
+  courseId: string;
+  sectionId: string;
 }
 
 interface Course {
@@ -58,6 +65,8 @@ interface Course {
 }
 
 export default function CourseView() {
+  const navigate = useNavigate();
+
   const { courseId = "" } = useParams<{ courseId: string }>();
   const { data, isLoading, error } = useFetchCourseById(courseId) as {
     data: { course: Course } | undefined;
@@ -66,6 +75,8 @@ export default function CourseView() {
   };
   const queryClient = useQueryClient();
   const updateCourseMutation = useUpdateCourse();
+
+  const { mutate: deleteSection } = useDeleteSection();
 
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
@@ -78,8 +89,33 @@ export default function CourseView() {
     }
   }, [data]);
 
+  const handleAddSection = () => {
+    navigate(`/add-section/${courseId}`);
+  };
+
   const handleEditClick = () => {
     setIsEditing(true);
+  };
+
+  const handleDeleteSection = ({ courseId, sectionId }: DeleteSection) => {
+    try {
+      deleteSection(
+        { courseId, sectionId },
+        {
+          onSuccess: () => {
+            toast.success("Section deleted successfully.");
+            queryClient.invalidateQueries(["course", courseId]);
+            queryClient.invalidateQueries("sections");
+          },
+          onError: (error: any) => {
+            console.error("Error deleting section: ", error);
+            toast.error("Error deleting section.");
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error deleting section: ", error);
+    }
   };
 
   const handleSaveClick = () => {
@@ -91,11 +127,9 @@ export default function CourseView() {
       { id: courseId, data: updatedCourse },
       {
         onSuccess: () => {
-          
           toast.success("Course updated successfully!");
           setIsEditing(false);
-          queryClient.invalidateQueries(['course', courseId]);
-          
+          queryClient.invalidateQueries(["course", courseId]);
         },
         onError: () => {
           toast.error("Failed to update course.");
@@ -212,7 +246,9 @@ export default function CourseView() {
                 </div>
                 <div className="flex items-center text-gray-600">
                   <Users className="h-5 w-5 mr-2 text-gray-400" />
-                  <span>{course.studentsEnrolled.length} students enrolled</span>
+                  <span>
+                    {course.studentsEnrolled.length} students enrolled
+                  </span>
                 </div>
               </div>
             </div>
@@ -231,7 +267,15 @@ export default function CourseView() {
                   lectures
                 </span>
               </div>
-
+              <div className="flex justify-end m-2">
+                <Button
+                  onClick={handleAddSection}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg gap-2"
+                >
+                  <Edit3 className="h-5 w-5" />
+                  Add Section
+                </Button>
+              </div>
               {course.sections && course.sections.length > 0 ? (
                 <div className="space-y-4">
                   {course.sections.map((section, index) => (
@@ -251,6 +295,18 @@ export default function CourseView() {
                         <span className="text-sm text-gray-500">
                           {section.videos.length} lectures
                         </span>
+                        <div className="flex gap-3  ">
+                          <Edit className="h-5 w-5 text-gray-500" />
+                          <Trash
+                            onClick={() =>
+                              handleDeleteSection({
+                                courseId,
+                                sectionId: section.sectionId,
+                              })
+                            }
+                            className="h-5 w-5 text-gray-500"
+                          />
+                        </div>
                       </div>
                       {section.videos && section.videos.length > 0 && (
                         <ul className="divide-y divide-gray-200">
@@ -326,7 +382,9 @@ export default function CourseView() {
         <div>
           <h2 className="text-xl font-bold mb-4">Edit Course</h2>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Course Title</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Course Title
+            </label>
             <input
               type="text"
               value={editedTitle}
@@ -335,7 +393,9 @@ export default function CourseView() {
             />
           </div>
           <div className="mb-4">
-            <label className="block text-sm font-medium text-gray-700">Course Description</label>
+            <label className="block text-sm font-medium text-gray-700">
+              Course Description
+            </label>
             <textarea
               value={editedDescription}
               onChange={(e) => setEditedDescription(e.target.value)}
@@ -343,10 +403,16 @@ export default function CourseView() {
             />
           </div>
           <div className="flex justify-end space-x-4">
-            <Button onClick={() => setIsEditing(false)} className="bg-gray-300 hover:bg-gray-400">
+            <Button
+              onClick={() => setIsEditing(false)}
+              className="bg-gray-300 hover:bg-gray-400"
+            >
               Cancel
             </Button>
-            <Button onClick={handleSaveClick} className="bg-blue-500 hover:bg-blue-600">
+            <Button
+              onClick={handleSaveClick}
+              className="bg-blue-500 hover:bg-blue-600"
+            >
               Save
             </Button>
           </div>
