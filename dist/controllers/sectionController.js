@@ -40,7 +40,11 @@ const addSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         if (!course) {
             return res.status(404).json({ message: "Course not found" });
         }
-        res.status(201).json({ message: "Section added successfully", course });
+        res.status(201).json({
+            message: "Section added successfully",
+            sectionId: section.sectionId,
+            course
+        });
     }
     catch (error) {
         console.error("Error adding video to section: ", error);

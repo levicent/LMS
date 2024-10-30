@@ -27,7 +27,7 @@ router.get(
 );
 
 router.put(
-  "/courses/:courseId/sections",
+  "/courses/:courseId/sections/:sectionId",
   authMiddleware,
   checkRole(["teacher"]),
   updateSection
