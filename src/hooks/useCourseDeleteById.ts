@@ -8,7 +8,7 @@ const useDeleteCourse = () => {
     (id: string) => deleteCourseById(id),
     {
       onSuccess: () => {
-        queryClient.invalidateQueries('courses'); // Invalidate courses query to refetch updated data
+        queryClient.invalidateQueries('courses');
       },
     }
   );

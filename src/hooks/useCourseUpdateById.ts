@@ -7,7 +7,7 @@ const  useUpdateCourse =()=>{
         ({ id, data }: { id: string; data: any }) => updateCourseById(id, data),
         {
           onSuccess: () => {
-            queryclient.invalidateQueries('courses'); // Invalidate courses query to refetch updated data
+            queryclient.invalidateQueries('courses'); 
           },
         }
       );

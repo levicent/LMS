@@ -99,23 +99,23 @@ export default function CourseDisplay() {
                 <h3 className="text-xl font-semibold mb-2">{course.title}</h3>
                 
                 <Button 
-                className="w-full mb-2 bg-blue-500 hover:bg-blue-600"
+                className="w-full mb-2 bg-gray-600 hover:bg-blue-600 dark:bg-gray-300"
                    onClick={() => navigateToViewSection(course._id)}>
                   View Course
                 </Button>
                 <Button
-                 className="w-full mb-2 bg-blue-300 hover:bg-blue-400"
+                 className="w-full mb-2 dark:bg-blue-300 hover:bg-blue-400 bg-blue-500 "
                  onClick={() => navigateToAddSection(course._id)}
                  >
                   Add a Section
                 </Button>
-                <Button
+                {/* <Button
                   className="w-full mb-2 bg-blue-500 hover:bg-blue-600"
                   onClick={() => handleUpdateCourse(course._id)}
                 >
                   Update Course
-                </Button>
-                <Button className="w-full mb-2 bg-blue-100 hover:bg-blue-200"
+                </Button> */}
+                <Button className="w-full mb-2 bg-red-400 hover:bg-red-500 "
                 onClick={() => handleDeleteCourse(course._id)}
                 >
                   Delete Course
