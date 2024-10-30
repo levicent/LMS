@@ -12,6 +12,7 @@ import {
   BookOpen,
   Edit3,
 } from "lucide-react";
+import TeacherLayout from "@/layout/TeacherLayout";
 
 interface Video {
   title: string;
@@ -90,6 +91,7 @@ export default function CourseView() {
     course.reviews.length;
 
   return (
+    <TeacherLayout>
     <div className="min-h-screen bg-gray-50">
       <div className="max-w-7xl mx-auto p-6 space-y-8">
         <Link
@@ -270,5 +272,6 @@ export default function CourseView() {
         )}
       </div>
     </div>
+  </TeacherLayout>
   );
 }

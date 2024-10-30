@@ -7,6 +7,7 @@ import { Card, CardHeader, CardTitle, CardContent, CardFooter } from "@/componen
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { ArrowLeft, Loader2 } from "lucide-react";
+import TeacherLayout from "@/layout/TeacherLayout";
 
 const AddSectionPage: React.FC = () => {
   const { courseId } = useParams<{ courseId: string }>();
@@ -34,6 +35,7 @@ const AddSectionPage: React.FC = () => {
   };
 
   return (
+    <TeacherLayout>
     <div className="min-h-screen p-4 md:p-8 max-w-2xl mx-auto">
       <Button 
         variant="ghost" 
@@ -90,6 +92,7 @@ const AddSectionPage: React.FC = () => {
         </CardFooter>
       </Card>
     </div>
+  </TeacherLayout>
   );
 };
 
