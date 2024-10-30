@@ -1,6 +1,8 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
+import DarkLogo from "@/assets/DARK_LOGO.png"; // Adjust the path as needed
+import LightLogo from "@/assets/LIGHT_LOGO.png"; 
 import {
   Bars3Icon,
   XMarkIcon,
@@ -92,7 +94,7 @@ export default function Navbar() {
     setMobileMenuOpen(!mobileMenuOpen);
     document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
   };
-
+ 
   return (
     <header
       className={`z-50 sticky top-0 shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
@@ -120,13 +122,18 @@ export default function Navbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <Link to="/" className="flex items-center space-x-2">
-              <img src="" alt="LMS" className="h-8 w-auto" />
-              <span
+              <img
+                src={theme === "dark" ? LightLogo : DarkLogo}
+                alt="LMS"
+                className="max-h-14 w-18" // Adjust the size of the logo here
+              />
+              
+              {/* <span
                 className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-blue-600"
                   }`}
               >
                 LMS
-              </span>
+              </span> */}
             </Link>
           </div>
 
