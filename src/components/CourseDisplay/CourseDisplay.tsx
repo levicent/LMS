@@ -5,12 +5,19 @@ import { useState } from "react";
 import { useFetchCourses } from "@/hooks/useFetchCourse";
 import useAddSection from "@/hooks/useAddSection";
 import { useNavigate } from "react-router-dom";
+import useUpdateCourse from '@/hooks/useCourseUpdateById'
+import useDeleteCourse from '@/hooks/useCourseDeleteById';
+import { ConfirmationDialog } from "../DialogBox/RemoveDialog";
 
 export default function CourseDisplay() {
-  const { data: courses } = useFetchCourses();
+  const { data: courses , isLoading, isError} = useFetchCourses();
   const [category, setCategory] = useState("");
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
   const addSectionMutation = useAddSection();
   const navigate = useNavigate();
+  const updateCourseMutation = useUpdateCourse();
+  const deleteCourseMutation = useDeleteCourse();
   
 
   const handleCategoryChange = (
@@ -24,6 +31,31 @@ export default function CourseDisplay() {
   const navigateToViewSection =(courseId :string)=>{
      navigate(`/instructor/dashboard/course/${courseId}`)
   }
+  const handleUpdateCourse = (id: string) => {
+    const updatedData = { title: 'Updated Course Title' };
+    updateCourseMutation.mutate({ id, data: updatedData });
+  };
+
+  const handleDeleteCourse = (id: string) => {
+    setCourseToDelete(id);
+    setIsDialogOpen(true);
+  };
+  const confirmDeleteCourse = () => {
+    if (courseToDelete) {
+      deleteCourseMutation.mutate(courseToDelete);
+      setIsDialogOpen(false);
+      setCourseToDelete(null);
+    }
+  };
+
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
+
+  if (isError) {
+    return <div>Error loading courses</div>;
+  }
+
 
   return (
     <div className="min-h-screen text-white p-8 shadow-lg">
@@ -77,7 +109,15 @@ export default function CourseDisplay() {
                  >
                   Add a Section
                 </Button>
-                <Button className="w-full mb-2 bg-blue-100 hover:bg-blue-200">
+                <Button
+                  className="w-full mb-2 bg-blue-500 hover:bg-blue-600"
+                  onClick={() => handleUpdateCourse(course._id)}
+                >
+                  Update Course
+                </Button>
+                <Button className="w-full mb-2 bg-blue-100 hover:bg-blue-200"
+                onClick={() => handleDeleteCourse(course._id)}
+                >
                   Delete Course
                 </Button>
               </div>
@@ -89,6 +129,13 @@ export default function CourseDisplay() {
           </div>
         )}
       </div>
+      <ConfirmationDialog
+        isOpen={isDialogOpen}
+        onClose={() => setIsDialogOpen(false)}
+        onConfirm={confirmDeleteCourse}
+        title="Delete Course"
+        message="Are you sure you want to delete this course? This action cannot be undone."
+      />
     </div>
   );
 }
