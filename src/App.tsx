@@ -27,7 +27,6 @@ import ScrollToTop from "./components/ScrollToTop/ScrollToTop";
 import ProtectedRoutes from "./routes/ProtectedRoutes";
 import NoPath from "./pages/NoPathThere";
 import { Stats } from "./pages/Dashboard/InstructorDashboard";
-import CreateCourseTable from "./components/Tables/CourseTable/CreateCourseTable";
 import DonorPage from "./pages/DonorPage.tsx";
 import InstructorsPage from "./pages/InstructorsPage.tsx";
 import AddSectionForm from "./components/Tables/CourseTable/CreateSection.tsx";
@@ -74,7 +73,14 @@ const App: React.FC = () => {
                   path="/add-section/:courseId"
                   element={<AddSectionForm />}
                 />
-                 <Route path="instructor/dashboard/course/:courseId" element={<CourseView/>} />
+                <Route
+                  path="/edit-section/:courseId/sections/:sectionId"
+                  element={<AddSectionForm />}
+                />
+                <Route
+                  path="instructor/dashboard/course/:courseId"
+                  element={<CourseView />}
+                />
 
                 {/* Shopping Cart */}
                 <Route

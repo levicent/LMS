@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
 import useAddSection from "@/hooks/useAddSection";
 import { Button } from "@/components/ui/button";
 import {
@@ -17,10 +17,13 @@ import { toast } from "react-toastify";
 
 const AddSectionPage: React.FC = () => {
   const navigate = useNavigate();
+  const location = useLocation();
   const { courseId } = useParams<{ courseId: string }>();
-  const [title, setTitle] = useState<string>("");
   const addSectionMutation = useAddSection();
 
+  const { sectionId, title: initialTitle } = location.state || {};
+
+  const [title, setTitle] = useState<string>(initialTitle || "");
   const handleAddSection = async () => {
     if (!title.trim()) {
       toast.error("Section title is required");

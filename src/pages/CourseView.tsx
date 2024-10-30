@@ -22,7 +22,6 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "@/components/Model";
 import { useQueryClient } from "react-query";
 import { useDeleteSection } from "@/hooks/useDeleteSection";
-
 interface Video {
   title: string;
 }
@@ -97,6 +96,33 @@ export default function CourseView() {
     setIsEditing(true);
   };
 
+  // const handleEditSection = ({ courseId, sectionId, title }: UpdateSection) => {
+  //   try {
+  //     updateSection(
+  //       { courseId, sectionId, title },
+  //       {
+  //         onSuccess: () => {
+  //           toast.success("Section updated successfully.");
+  //           queryClient.invalidateQueries(["course", courseId]);
+  //           queryClient.invalidateQueries("sections");
+  //         },
+  //         onError: (error: any) => {
+  //           console.error("Error updating section: ", error);
+  //           toast.error("Error updating section.");
+  //         },
+  //       }
+  //     );
+  //   } catch (error) {
+  //     console.error("Error updating section: ", error);
+  //     toast.error("Error updating section.");
+  //   }
+  // };
+
+  const handleEditSection = (sectionId: string, title: string) => {
+    navigate(`/edit-section/${courseId}/sections/${sectionId}`, {
+      state: { courseId, sectionId, title },
+    });
+  };
   const handleDeleteSection = ({ courseId, sectionId }: DeleteSection) => {
     try {
       deleteSection(
@@ -296,7 +322,15 @@ export default function CourseView() {
                           {section.videos.length} lectures
                         </span>
                         <div className="flex gap-3  ">
-                          <Edit className="h-5 w-5 text-gray-500" />
+                          <Edit
+                            onClick={() =>
+                              handleEditSection(
+                                section.sectionId,
+                                section.title
+                              )
+                            }
+                            className="h-5 w-5 text-gray-500"
+                          />
                           <Trash
                             onClick={() =>
                               handleDeleteSection({
