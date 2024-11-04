@@ -130,9 +130,9 @@ const deleteUserById = (req, res) => __awaiter(void 0, void 0, void 0, function*
 });
 exports.deleteUserById = deleteUserById;
 const getUserProfile = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    var _b;
+    var _a;
     try {
-        const userId = (_b = req.user) === null || _b === void 0 ? void 0 : _b.id;
+        const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
         if (!userId) {
             return res.status(400).json({ message: "User ID not provided" });
         }
@@ -160,9 +160,9 @@ exports.getUserProfile = getUserProfile;
 exports.updateUserProfile = [
     upload.single("profilePicture"),
     (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        var _c;
+        var _a;
         try {
-            const userId = (_c = req.user) === null || _c === void 0 ? void 0 : _c.id;
+            const userId = (_a = req.user) === null || _a === void 0 ? void 0 : _a.id;
             if (!userId) {
                 return res.status(400).json({ message: "User ID not provided" });
             }
