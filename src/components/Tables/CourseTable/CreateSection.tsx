@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useQueryClient } from "react-query";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import useAddSection from "@/hooks/useAddSection";
 import { Button } from "@/components/ui/button";
@@ -11,9 +12,17 @@ import {
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { ArrowLeft, Loader2 } from "lucide-react";
+import { ArrowLeft } from "lucide-react";
 import TeacherLayout from "@/layout/TeacherLayout";
 import { toast } from "react-toastify";
+
+import { useUpdateSection } from "@/hooks/useUpdateSection";
+
+interface UpdateSection {
+  courseId: string;
+  sectionId: string;
+  title: string;
+}
 
 const AddSectionPage: React.FC = () => {
   const navigate = useNavigate();
@@ -22,6 +31,8 @@ const AddSectionPage: React.FC = () => {
   const addSectionMutation = useAddSection();
 
   const { sectionId, title: initialTitle } = location.state || {};
+  const { mutate: updateSection } = useUpdateSection();
+  const queryClient = useQueryClient();
 
   const [title, setTitle] = useState<string>(initialTitle || "");
   const handleAddSection = async () => {
@@ -40,6 +51,42 @@ const AddSectionPage: React.FC = () => {
       navigate(`/instructor/dashboard/course/${courseId}`);
     } catch (error) {
       console.error("Error creating section:", error);
+    }
+  };
+
+  const handleEditSection = ({ courseId, sectionId, title }: UpdateSection) => {
+    try {
+      updateSection(
+        { courseId, sectionId, title },
+        {
+          onSuccess: () => {
+            toast.success("Section updated successfully.");
+            queryClient.invalidateQueries(["course", courseId]);
+            queryClient.invalidateQueries("sections");
+            navigate(`/instructor/dashboard/course/${courseId}`);
+          },
+          onError: (error: any) => {
+            console.error("Error updating section: ", error);
+            toast.error("Error updating section.");
+          },
+        }
+      );
+    } catch (error) {
+      console.error("Error updating section: ", error);
+      toast.error("Error updating section.");
+    }
+  };
+
+  const handleSubmit = async () => {
+    if (!courseId) {
+      toast.error("Course ID is required");
+      return;
+    }
+
+    if (sectionId) {
+      handleEditSection({ courseId, sectionId, title });
+    } else {
+      await handleAddSection();
     }
   };
 
@@ -97,17 +144,10 @@ const AddSectionPage: React.FC = () => {
           <CardFooter className="flex flex-col sm:flex-row gap-4">
             <Button
               className="w-full sm:w-auto bg-blue-600 hover:bg-blue-700 text-white"
-              onClick={handleAddSection}
+              onClick={handleSubmit}
               disabled={addSectionMutation.isLoading || !title.trim()}
             >
-              {addSectionMutation.isLoading ? (
-                <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                  Creating...
-                </>
-              ) : (
-                "Add Section"
-              )}
+              {sectionId ? "Update Section" : "Add Section"}
             </Button>
           </CardFooter>
         </Card>

@@ -8,11 +8,18 @@ interface Section {
 }
 
 export const useUpdateSection = () => {
-  return useMutation(async ({ courseId, sectionId, title }: Section) => {
-    const { data } = await api.put(
-      `/courses/${courseId}/sections/${sectionId}`,
-      { title }
-    );
-    return data;
-  });
+  return useMutation(
+    async ({ courseId, sectionId, title }: Section) => {
+      const { data } = await api.put(
+        `/courses/${courseId}/sections/update/${sectionId}`,
+        { title }
+      );
+      return data;
+    },
+    {
+      onSuccess: (data) => {
+        console.log(data);
+      },
+    }
+  );
 };

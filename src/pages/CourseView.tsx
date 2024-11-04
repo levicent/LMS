@@ -96,29 +96,11 @@ export default function CourseView() {
     setIsEditing(true);
   };
 
-  // const handleEditSection = ({ courseId, sectionId, title }: UpdateSection) => {
-  //   try {
-  //     updateSection(
-  //       { courseId, sectionId, title },
-  //       {
-  //         onSuccess: () => {
-  //           toast.success("Section updated successfully.");
-  //           queryClient.invalidateQueries(["course", courseId]);
-  //           queryClient.invalidateQueries("sections");
-  //         },
-  //         onError: (error: any) => {
-  //           console.error("Error updating section: ", error);
-  //           toast.error("Error updating section.");
-  //         },
-  //       }
-  //     );
-  //   } catch (error) {
-  //     console.error("Error updating section: ", error);
-  //     toast.error("Error updating section.");
-  //   }
-  // };
-
-  const handleEditSection = (sectionId: string, title: string) => {
+  const handleEditSection = (
+    courseId: string,
+    sectionId: string,
+    title: string
+  ) => {
     navigate(`/edit-section/${courseId}/sections/${sectionId}`, {
       state: { courseId, sectionId, title },
     });
@@ -325,6 +307,7 @@ export default function CourseView() {
                           <Edit
                             onClick={() =>
                               handleEditSection(
+                                courseId,
                                 section.sectionId,
                                 section.title
                               )
