@@ -26,6 +26,7 @@ import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
 
 interface CourseData {
   _id: string;
+  id: string;
   title: string;
   description: string;
   price: string;
@@ -48,6 +49,7 @@ interface CourseData {
 interface EnrolledCourse {
   courseId: {
     _id: string;
+    id:string;
   };
 }
 
@@ -82,7 +84,7 @@ export default function CourseInfo() {
   if (!course) return <div>Course not found</div>;
 
   const isEnrolled = (enrolledCourses as EnrolledCourse[]).some(
-    (enrolledCourse) => enrolledCourse.courseId._id === course._id
+    (enrolledCourse) => enrolledCourse.courseId.id === course.id
   );
 
   const handleAddToCart = () => {
