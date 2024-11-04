@@ -74,7 +74,7 @@ export const getAllVideos = async (req: Request, res: Response) => {
       (item) => item.sectionId.toString() === sectionId
     );
 
-    if (!sectionId) {
+    if (!section) {
       return res.status(404).json({ message: "Section not found" });
     }
 
@@ -85,13 +85,100 @@ export const getAllVideos = async (req: Request, res: Response) => {
   }
 };
 
-// export const getVideoById = async (req: Request, res: Response) => {
-//   try {
-//     const { courseId, sectionId } = req.params;
+export const getVideoById = async (req: Request, res: Response) => {
+  try {
+    const { courseId, sectionId, videoId } = req.params;
 
-//     const course = await Course.findById(courseId);
-//   } catch (error) {
-//     console.error("Error getting video by id", error);
-//     res.status(500).json({ message: "Internal server error" });
-//   }
-// };
+    const course = await Course.findById(courseId);
+
+    if (!course) {
+      return res.status(404).json({ message: "No course found" });
+    }
+
+    const section = course.sections.find(
+      (item) => item.sectionId.toString() === sectionId
+    );
+
+    if (!section) {
+      return res.status(404).json({ message: "Section not found" });
+    }
+
+    const video = section.videos.find(
+      (item) => item.videoId.toString() === videoId
+    );
+
+    if (!video) {
+      return res.status(404).json({ message: "Video not found" });
+    }
+    res.status(200).json(video);
+  } catch (error) {
+    console.error("Error getting video by id", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const updateSectionById = async (req: Request, res: Response) => {
+  try {
+    const { courseId, sectionId, videoId } = req.params;
+    const { title, duration } = req.body;
+
+    const course = await Course.findByIdAndUpdate(
+      {
+        _id: courseId,
+        "sections.sectionId": sectionId,
+        "sections.videos.videoId": videoId,
+      },
+      {
+        $set: {
+          "sections.$[sectionFilter].videos.$[videoFilter].title": title,
+
+          "sections.$[sectionFilter].videos.$[videoFilter].duration": duration,
+        },
+      },
+      {
+        arrayFilters: [
+          { "sectionFilter.sectionId": sectionId },
+          { "videoFilter.videoId": videoId },
+        ],
+        new: true,
+      }
+    );
+    if (!course) {
+      return res
+        .status(404)
+        .json({ message: "Course, section, or video not found" });
+    }
+
+    res.status(200).json({ message: "Video updated successfully", course });
+  } catch (error) {
+    console.error("Error updating course", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteVideo = async (req: Request, res: Response) => {
+  try {
+    const { courseId, sectionId, videoId } = req.params;
+
+    const course = await Course.findByIdAndUpdate(
+      {
+        _id: courseId,
+        "sections.sectionId": sectionId,
+      },
+      {
+        $pull: {
+          "sections.$.videos": { videoId },
+        },
+      },
+      { new: true }
+    );
+    if (!course) {
+      return res.status(404).json({ message: "Course or section not found" });
+    }
+
+    res.status(200).json({ message: "Video deleted successfully", course });
+  } catch (error) {
+    console.error("Error deleting video from section", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};

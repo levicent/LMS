@@ -9,11 +9,16 @@ import razorpayRoutes from "./routes/razorpayRoutes";
 import sectionRoutes from "./routes/sectionRoutes";
 const app = express();
 
+const allowedOrigins = [
+  "https://lms-1-0v55.onrender.com",
+  "https://localhost:3000",
+];
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
-    origin: true,
+    origin: allowedOrigins,
     credentials: true,
   })
 );
