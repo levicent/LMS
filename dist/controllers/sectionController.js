@@ -12,19 +12,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.addVideoToSection = exports.deleteSection = exports.updateSection = exports.getSectionById = exports.getAllSection = exports.addSection = void 0;
+exports.deleteSection = exports.updateSection = exports.getSectionById = exports.getAllSection = exports.addSection = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
-const multer_1 = __importDefault(require("multer"));
-const cloudinary_1 = require("cloudinary");
 const Courses_1 = __importDefault(require("../models/Courses"));
-const dotenv_1 = __importDefault(require("dotenv"));
-dotenv_1.default.config();
-cloudinary_1.v2.config({
-    cloud_name: process.env.CLOUD_NAME,
-    api_key: process.env.API_KEY,
-    api_secret: process.env.API_SECRET,
-});
-const upload = (0, multer_1.default)({ dest: "uploads/" });
 const addSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { courseId } = req.params;
@@ -59,7 +49,7 @@ const getAllSection = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         if (!course) {
             return res.status(404).json({ message: "Course not found" });
         }
-        res.status(200).json(course.sections);
+        res.status(200).json(course === null || course === void 0 ? void 0 : course.sections);
     }
     catch (error) {
         console.error("Error getting section: ", error);
@@ -126,38 +116,3 @@ const deleteSection = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.deleteSection = deleteSection;
-exports.addVideoToSection = [
-    upload.single("video"),
-    (req, res) => __awaiter(void 0, void 0, void 0, function* () {
-        try {
-            const { courseId, sectionId } = req.params;
-            const { title, duration } = req.body;
-            if (!req.file) {
-                return res.status(400).json({ message: "No video file uploaded" });
-            }
-            const uploadFile = yield cloudinary_1.v2.uploader.upload(req.file.path, {
-                resource_type: "video",
-                folder: "course_videos",
-            });
-            const { secure_url, public_id } = uploadFile;
-            const video = {
-                videoId: new mongoose_1.default.Types.ObjectId(),
-                title: title || "Untitled Video",
-                url: secure_url,
-                publicId: public_id,
-                duration,
-            };
-            const course = yield Courses_1.default.findOneAndUpdate({ _id: courseId, "sections.sectionId": sectionId }, { $push: { "sections.$.videos": video } }, { new: true });
-            if (!course) {
-                return res
-                    .status(404)
-                    .json({ message: "Course or section doesnot exists" });
-            }
-            res.status(201).json(course);
-        }
-        catch (error) {
-            console.error("Error add videos to section", error);
-            res.status(500).json({ message: "Internal server error" });
-        }
-    }),
-];

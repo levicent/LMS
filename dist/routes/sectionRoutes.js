@@ -13,5 +13,4 @@ router.get("/courses/:courseId/sections", auth_1.default, sectionController_1.ge
 router.get("/courses/:courseId/sections/:sectionId", auth_1.default, sectionController_1.getSectionById);
 router.put("/courses/:courseId/sections/update/:sectionId", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.updateSection);
 router.delete("/courses/:courseId/sections/:sectionId", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.deleteSection);
-router.post("/courses/:courseId/sections/:sectionId/videos", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.addVideoToSection);
 exports.default = router;

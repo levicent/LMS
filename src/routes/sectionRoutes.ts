@@ -5,7 +5,6 @@ import {
   getSectionById,
   updateSection,
   deleteSection,
-  addVideoToSection,
 } from "../controllers/sectionController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -38,11 +37,4 @@ router.delete(
   checkRole(["teacher"]),
   deleteSection
 );
-router.post(
-  "/courses/:courseId/sections/:sectionId/videos",
-  authMiddleware,
-  checkRole(["teacher"]),
-  addVideoToSection
-);
-
 export default router;
