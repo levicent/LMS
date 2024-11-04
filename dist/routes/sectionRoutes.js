@@ -11,7 +11,7 @@ const router = express_1.default.Router();
 router.post("/courses/:courseId/sections", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.addSection);
 router.get("/courses/:courseId/sections", auth_1.default, sectionController_1.getAllSection);
 router.get("/courses/:courseId/sections/:sectionId", auth_1.default, sectionController_1.getSectionById);
-router.put("/courses/:courseId/sections/:sectionId", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.updateSection);
+router.put("/courses/:courseId/sections/update/:sectionId", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.updateSection);
 router.delete("/courses/:courseId/sections/:sectionId", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.deleteSection);
 router.post("/courses/:courseId/sections/:sectionId/videos", auth_1.default, (0, role_1.default)(["teacher"]), sectionController_1.addVideoToSection);
 exports.default = router;

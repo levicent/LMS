@@ -43,7 +43,7 @@ const addSection = (req, res) => __awaiter(void 0, void 0, void 0, function* () 
         res.status(201).json({
             message: "Section added successfully",
             sectionId: section.sectionId,
-            course
+            course,
         });
     }
     catch (error) {
@@ -93,7 +93,7 @@ const updateSection = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const course = yield Courses_1.default.findOneAndUpdate({
             _id: courseId,
             "sections.sectionId": sectionId,
-        }, { $set: { "sections.$title": title } }, { new: true });
+        }, { $set: { "sections.$.title": title } }, { new: true });
         if (!course) {
             return res.status(404).json({ message: "Course not found" });
         }

@@ -28,21 +28,20 @@ export const addSection = async (req: Request, res: Response) => {
 
     const course = await Course.findByIdAndUpdate(courseId, {
       $push: { sections: section },
-    },);
+    });
     if (!course) {
       return res.status(404).json({ message: "Course not found" });
     }
-    res.status(201).json({ 
+    res.status(201).json({
       message: "Section added successfully",
-      sectionId: section.sectionId ,
-      course
-      });
+      sectionId: section.sectionId,
+      course,
+    });
   } catch (error) {
     console.error("Error adding video to section: ", error);
     res.status(500).json({ message: "Internal server error" });
   }
 };
-
 
 export const getAllSection = async (req: Request, res: Response) => {
   try {
@@ -95,7 +94,7 @@ export const updateSection = async (req: Request, res: Response) => {
         _id: courseId,
         "sections.sectionId": sectionId,
       },
-      { $set: { "sections.$title": title } },
+      { $set: { "sections.$.title": title } },
       { new: true }
     );
     if (!course) {
