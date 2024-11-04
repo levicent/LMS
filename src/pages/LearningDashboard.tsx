@@ -36,11 +36,11 @@ interface EnrolledCourse {
     _id: string;
     title: string;
     thumbnail: string;
-    category: string;
+    category: string | null;
     instructor: {
       firstName: string;
       lastName: string;
-    };
+    } | null;
   };
 }
 
@@ -89,17 +89,19 @@ export default function Component() {
   ) => {
     let filteredCourses = courses;
 
+    // Filter out courses that are not present in the database
+    filteredCourses = filteredCourses.filter((course) => course.courseId);
     if (searchTerm) {
       filteredCourses = filteredCourses.filter((course) =>
-        course.courseId.title
+        course.courseId?.title
           .toLowerCase()
-          .includes(correctedQuery.toLowerCase())
+          .includes(searchTerm.toLowerCase())
       );
     }
 
     if (categoryFilter !== "all-categories") {
       filteredCourses = filteredCourses.filter(
-        (course) => course.courseId.category.toLowerCase() === categoryFilter
+        (course) => course.courseId?.category?.toLowerCase() === categoryFilter
       );
     }
 
@@ -115,7 +117,7 @@ export default function Component() {
     if (instructorFilter !== "all-instructors") {
       filteredCourses = filteredCourses.filter(
         (course) =>
-          `${course.courseId.instructor.firstName} ${course.courseId.instructor.lastName}`.toLowerCase() ===
+          `${course.courseId?.instructor?.firstName} ${course.courseId?.instructor?.lastName}`.toLowerCase() ===
           instructorFilter
       );
     }
@@ -133,7 +135,7 @@ export default function Component() {
           new Date(a.enrollmentDate).getTime()
         );
       } else if (sortBy === "title") {
-        return a.courseId.title.localeCompare(b.courseId.title);
+        return a.courseId?.title.localeCompare(b.courseId?.title);
       }
       return 0;
     });
@@ -143,7 +145,7 @@ export default function Component() {
 
   const categories = useMemo(() => {
     const categorySet = new Set(
-      courses.map((course) => course.courseId.category)
+      courses.map((course) => course.courseId?.category)
     );
     return Array.from(categorySet);
   }, [courses]);
@@ -152,7 +154,7 @@ export default function Component() {
     const instructorSet = new Set(
       courses.map(
         (course) =>
-          `${course.courseId.instructor.firstName} ${course.courseId.instructor.lastName}`
+          `${course.courseId?.instructor?.firstName} ${course.courseId?.instructor?.lastName}`
       )
     );
     return Array.from(instructorSet);
@@ -180,8 +182,8 @@ export default function Component() {
       >
         <CardHeader className="p-0 relative">
           <img
-            src={course.courseId.thumbnail}
-            alt={course.courseId.title}
+            src={course.courseId?.thumbnail}
+            alt={course.courseId?.title}
             className="w-full h-48 object-cover"
           />
           <div className="absolute top-2 right-2">
@@ -222,11 +224,11 @@ export default function Component() {
         </CardHeader>
         <CardContent className="p-4">
           <CardTitle className="text-lg font-bold text-gray-900 dark:text-white mb-2 line-clamp-2">
-            {course.courseId.title}
+            {course.courseId?.title}
           </CardTitle>
           <p className="text-sm text-gray-600 dark:text-gray-400 mb-2">
-            {course.courseId.instructor.firstName}{" "}
-            {course.courseId.instructor.lastName}
+            {course.courseId?.instructor?.firstName}{" "}
+            {course.courseId?.instructor?.lastName}
           </p>
           <p className="text-xs text-gray-500 dark:text-gray-500 mb-3">
             Enrolled on: {new Date(course.enrollmentDate).toLocaleDateString()}
@@ -363,8 +365,8 @@ export default function Component() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all-categories">All Categories</SelectItem>
-                  {categories.map((category) => (
-                    <SelectItem key={category} value={category.toLowerCase()}>
+                  {categories.map((category:any,index:number) => (
+                    <SelectItem key={index} value={category?.toLowerCase()}>
                       {category}
                     </SelectItem>
                   ))}
@@ -394,7 +396,7 @@ export default function Component() {
                   {instructors.map((instructor) => (
                     <SelectItem
                       key={instructor}
-                      value={instructor.toLowerCase()}
+                      value={instructor?.toLowerCase()}
                     >
                       {instructor}
                     </SelectItem>
