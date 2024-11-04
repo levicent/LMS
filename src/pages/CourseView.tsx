@@ -275,13 +275,20 @@ export default function CourseView() {
                   lectures
                 </span>
               </div>
-              <div className="flex justify-end m-2">
+              <div className="flex justify-end mb-4 gap-2">
                 <Button
                   onClick={handleAddSection}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg gap-2"
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg gap-2"
                 >
                   <Edit3 className="h-5 w-5" />
                   Add Section
+                </Button>
+                <Button
+                  onClick={handleEditClick}
+                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-2 rounded-lg flex items-center gap-2"
+                >
+                  <Edit3 className="h-5 w-5" />
+                  Edit Course
                 </Button>
               </div>
               {course.sections && course.sections.length > 0 ? (
@@ -366,13 +373,6 @@ export default function CourseView() {
                     {Number(course.price) * course.studentsEnrolled.length}
                   </h3>
                 </div>
-                <Button
-                  onClick={handleEditClick}
-                  className="bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded-lg flex items-center gap-2"
-                >
-                  <Edit3 className="h-5 w-5" />
-                  Edit Course
-                </Button>
               </div>
             </div>
           </div>
