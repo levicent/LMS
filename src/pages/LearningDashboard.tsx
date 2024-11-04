@@ -89,11 +89,13 @@ export default function Component() {
   ) => {
     let filteredCourses = courses;
 
+    // Filter out courses that are not present in the database
+    filteredCourses = filteredCourses.filter((course) => course.courseId);
     if (searchTerm) {
       filteredCourses = filteredCourses.filter((course) =>
         course.courseId?.title
           .toLowerCase()
-          .includes(correctedQuery.toLowerCase())
+          .includes(searchTerm.toLowerCase())
       );
     }
 
