@@ -117,7 +117,7 @@ export const getVideoById = async (req: Request, res: Response) => {
   }
 };
 
-export const updateSectionById = async (req: Request, res: Response) => {
+export const updateVideoById = async (req: Request, res: Response) => {
   try {
     const { courseId, sectionId, videoId } = req.params;
     const { title, duration } = req.body;
@@ -160,19 +160,21 @@ export const deleteVideo = async (req: Request, res: Response) => {
   try {
     const { courseId, sectionId, videoId } = req.params;
 
-    const course = await Course.findByIdAndUpdate(
+    const course = await Course.updateOne(
       {
         _id: courseId,
-        "sections.sectionId": sectionId,
       },
       {
         $pull: {
-          "sections.$.videos": { videoId },
+          "sections.$[sectionFilter].videos": { videoId: videoId },
         },
       },
-      { new: true }
+      {
+        arrayFilters: [{ "sectionFilter.sectionId": sectionId }],
+        new: true,
+      }
     );
-    if (!course) {
+    if (course.matchedCount === 0) {
       return res.status(404).json({ message: "Course or section not found" });
     }
 

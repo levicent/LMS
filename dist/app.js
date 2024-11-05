@@ -12,11 +12,16 @@ const courseRoutes_1 = __importDefault(require("./routes/courseRoutes"));
 const cartRoutes_1 = __importDefault(require("./routes/cartRoutes"));
 const razorpayRoutes_1 = __importDefault(require("./routes/razorpayRoutes"));
 const sectionRoutes_1 = __importDefault(require("./routes/sectionRoutes"));
+const videoRoutes_1 = __importDefault(require("./routes/videoRoutes"));
 const app = (0, express_1.default)();
+const allowedOrigins = [
+    "https://lms-1-0v55.onrender.com",
+    "https://localhost:3000",
+];
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
 app.use((0, cors_1.default)({
-    origin: true,
+    origin: allowedOrigins,
     credentials: true,
 }));
 app.use((0, cookie_parser_1.default)());
@@ -25,6 +30,7 @@ app.use("/api", userRoutes_1.default);
 app.use("/api", courseRoutes_1.default);
 app.use("/api", cartRoutes_1.default);
 app.use("/api", sectionRoutes_1.default);
+app.use("/api", videoRoutes_1.default);
 app.use("/api/payment", razorpayRoutes_1.default);
 app.use("/uploads", express_1.default.static("uploads"));
 exports.default = app;

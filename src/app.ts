@@ -7,6 +7,7 @@ import courseRoutes from "./routes/courseRoutes";
 import cartRoutes from "./routes/cartRoutes";
 import razorpayRoutes from "./routes/razorpayRoutes";
 import sectionRoutes from "./routes/sectionRoutes";
+import videoRoutes from "./routes/videoRoutes";
 const app = express();
 
 const allowedOrigins = [
@@ -29,6 +30,7 @@ app.use("/api", userRoutes);
 app.use("/api", courseRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", sectionRoutes);
+app.use("/api", videoRoutes);
 app.use("/api/payment", razorpayRoutes);
 app.use("/uploads", express.static("uploads"));
 export default app;
