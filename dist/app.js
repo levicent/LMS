@@ -16,7 +16,7 @@ const videoRoutes_1 = __importDefault(require("./routes/videoRoutes"));
 const app = (0, express_1.default)();
 const allowedOrigins = [
     "https://lms-1-0v55.onrender.com",
-    "https://localhost:3000",
+    "http://localhost:5173",
 ];
 app.use(express_1.default.json());
 app.use(express_1.default.urlencoded({ extended: true }));
