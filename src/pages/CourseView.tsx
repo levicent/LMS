@@ -28,6 +28,7 @@ import "react-toastify/dist/ReactToastify.css";
 import Modal from "@/components/Model";
 import { useQueryClient } from "react-query";
 import { useDeleteSection } from "@/hooks/useDeleteSection";
+import Video from "@/components/Video/Video";
 interface Video {
   title: string;
 }
@@ -150,6 +151,10 @@ export default function CourseView() {
         },
       }
     );
+  };
+
+  const handleAddVideo = () => {
+    //navigate to video page
   };
 
   const formatDate = (dateString: string) => {
@@ -317,7 +322,7 @@ export default function CourseView() {
                               <div className="flex gap-3">
                                 <Edit
                                   onClick={(e) => {
-                                    e.stopPropagation(); // Prevents the accordion from toggling when clicking on icons
+                                    e.stopPropagation();
                                     handleEditSection(
                                       courseId,
                                       section.sectionId,
@@ -328,7 +333,7 @@ export default function CourseView() {
                                 />
                                 <Trash
                                   onClick={(e) => {
-                                    e.stopPropagation(); // Prevents the accordion from toggling when clicking on icons
+                                    e.stopPropagation();
                                     handleDeleteSection({
                                       courseId,
                                       sectionId: section.sectionId,
@@ -339,33 +344,23 @@ export default function CourseView() {
                               </div>
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent></AccordionContent>
+                          <AccordionContent>
+                            <div className="flex justify-end px-2">
+                              <Button
+                                onClick={handleAddVideo}
+                                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-2 rounded-lg text-sm"
+                              >
+                                <Edit3 className="h-4 w-4" />
+                                <span className="text-sm">Add Video</span>
+                              </Button>
+                            </div>
+                            <Video
+                              courseId={courseId}
+                              sectionId={section.sectionId}
+                            />
+                          </AccordionContent>
                         </AccordionItem>
                       </Accordion>
-
-                      {section.videos && section.videos.length > 0 && (
-                        <ul className="divide-y divide-gray-200">
-                          {section.videos.map((video, videoIndex) => (
-                            <li
-                              key={videoIndex}
-                              className="p-4 hover:bg-gray-50 transition-colors duration-150"
-                            >
-                              <div className="flex items-center">
-                                <div className="flex-shrink-0 mr-3">
-                                  <div className="w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center">
-                                    <BookOpen className="h-4 w-4 text-blue-600" />
-                                  </div>
-                                </div>
-                                <div className="min-w-0 flex-1">
-                                  <p className="text-sm font-medium text-gray-900 truncate">
-                                    {video.title}
-                                  </p>
-                                </div>
-                              </div>
-                            </li>
-                          ))}
-                        </ul>
-                      )}
                     </div>
                   ))}
                 </div>
