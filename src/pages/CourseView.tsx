@@ -16,6 +16,12 @@ import {
   Edit,
   Trash,
 } from "lucide-react";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
 import TeacherLayout from "@/layout/TeacherLayout";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -298,40 +304,45 @@ export default function CourseView() {
                       key={section.sectionId}
                       className="border border-gray-200 rounded-lg overflow-hidden"
                     >
-                      <div
-                        className="flex justify-between items-center p-4 bg-gray-50 cursor-pointer"
-                        onClick={() => {
-                          // Toggle section visibility logic here
-                        }}
-                      >
-                        <h3 className="font-medium text-gray-900">
-                          Section {index + 1}: {section.title}
-                        </h3>
-                        <span className="text-sm text-gray-500">
-                          {section.videos.length} lectures
-                        </span>
-                        <div className="flex gap-3  ">
-                          <Edit
-                            onClick={() =>
-                              handleEditSection(
-                                courseId,
-                                section.sectionId,
-                                section.title
-                              )
-                            }
-                            className="h-5 w-5 text-gray-500"
-                          />
-                          <Trash
-                            onClick={() =>
-                              handleDeleteSection({
-                                courseId,
-                                sectionId: section.sectionId,
-                              })
-                            }
-                            className="h-5 w-5 text-gray-500"
-                          />
-                        </div>
-                      </div>
+                      <Accordion type="single" collapsible>
+                        <AccordionItem value={`item-${index}`}>
+                          <AccordionTrigger className="w-full">
+                            <div className="flex justify-between w-full items-center p-4 bg-gray-50 cursor-pointer">
+                              <h3 className="font-medium text-gray-900">
+                                Section {index + 1}: {section.title}
+                              </h3>
+                              <span className="text-sm text-gray-500">
+                                {section.videos.length} lectures
+                              </span>
+                              <div className="flex gap-3">
+                                <Edit
+                                  onClick={(e) => {
+                                    e.stopPropagation(); // Prevents the accordion from toggling when clicking on icons
+                                    handleEditSection(
+                                      courseId,
+                                      section.sectionId,
+                                      section.title
+                                    );
+                                  }}
+                                  className="h-5 w-5 text-gray-500"
+                                />
+                                <Trash
+                                  onClick={(e) => {
+                                    e.stopPropagation(); // Prevents the accordion from toggling when clicking on icons
+                                    handleDeleteSection({
+                                      courseId,
+                                      sectionId: section.sectionId,
+                                    });
+                                  }}
+                                  className="h-5 w-5 text-gray-500"
+                                />
+                              </div>
+                            </div>
+                          </AccordionTrigger>
+                          <AccordionContent></AccordionContent>
+                        </AccordionItem>
+                      </Accordion>
+
                       {section.videos && section.videos.length > 0 && (
                         <ul className="divide-y divide-gray-200">
                           {section.videos.map((video, videoIndex) => (
