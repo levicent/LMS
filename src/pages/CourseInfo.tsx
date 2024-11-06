@@ -84,7 +84,7 @@ export default function CourseInfo() {
   if (!course) return <div>Course not found</div>;
 
   const isEnrolled = (enrolledCourses as EnrolledCourse[]).some(
-    (enrolledCourse) => enrolledCourse.courseId.id === course.id
+    (enrolledCourse) => enrolledCourse.courseId?._id === course?._id
   );
 
   const handleAddToCart = () => {
