@@ -6,7 +6,7 @@ interface VideoProps {
   courseId: string;
   sectionId: string;
 }
-const Video = memo(({ key, courseId, sectionId }: VideoProps) => {
+const Video = memo(({ courseId, sectionId }: VideoProps) => {
   const { data: videos } = useFetchVideos(courseId, sectionId);
   return (
     <div>
@@ -14,7 +14,7 @@ const Video = memo(({ key, courseId, sectionId }: VideoProps) => {
         {Array.isArray(videos) && videos.length > 0 ? (
           videos.map((video) => (
             <li
-              key={key}
+              key={video.videoId}
               className="p-4 hover:bg-gray-50 transition-colors duration-150"
             >
               <div className="flex items-center">
