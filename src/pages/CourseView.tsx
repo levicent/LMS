@@ -350,14 +350,8 @@ export default function CourseView() {
                             <div className="flex justify-end px-2 pr-6">
                             <Upload
                             
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                handleEditSection(
-                                  courseId,
-                                  section.sectionId,
-                                  section.title
-                                );
-                              }}
+                              
+                              
                               className="h-5 w-5 text-gray-500 cursor-pointer"
                               />
                             </div>
