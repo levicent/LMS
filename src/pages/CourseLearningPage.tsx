@@ -4,6 +4,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Badge } from "@/components/ui/badge";
 import DefaultLayout from "../layout/DefaultLayout";
+import useFetchCourseById from "@/hooks/useFetchCourseById";
 
 export default function CourseOverview() {
   const course = {

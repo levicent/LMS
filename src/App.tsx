@@ -52,7 +52,10 @@ const App: React.FC = () => {
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="/course" element={<CourseLearningPage />} />
+                <Route
+                  path="/course/enrolled/:courseId"
+                  element={<CourseLearningPage />}
+                />
                 <Route path="/donors" element={<DonorPage />} />
                 <Route path="/instructors" element={<InstructorsPage />} />
                 <Route path="*" element={<NoPath />} />
@@ -82,7 +85,10 @@ const App: React.FC = () => {
                   path="instructor/dashboard/course/:courseId"
                   element={<CourseView />}
                 />
-                 <Route path="/courses/:courseId/sections/:sectionId/upload" element={<VideoUploadPage />} />
+                <Route
+                  path="/courses/:courseId/sections/:sectionId/upload"
+                  element={<VideoUploadPage />}
+                />
 
                 {/* Shopping Cart */}
                 <Route

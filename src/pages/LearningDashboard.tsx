@@ -1,4 +1,4 @@
-import { useState, useMemo } from "react";
+import { useState, useMemo, useEffect } from "react";
 import {
   Search,
   Star,
@@ -26,7 +26,7 @@ import { useFetchEnrolledCourses } from "../hooks/useEnrollCourse";
 import { useAutocorrect } from "../hooks/useAutocorrect";
 import ShimmerCard from "./ShimmerCard";
 import { ShimmerHeading } from "./ShimmerCard";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface EnrolledCourse {
   _id: string;
@@ -52,6 +52,7 @@ const TabOptions = [
 ];
 
 export default function Component() {
+  const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState("All courses");
   const [searchTerm, setSearchTerm] = useState("");
   const { loading, error, courses } = useFetchEnrolledCourses() as {
@@ -66,6 +67,10 @@ export default function Component() {
   const [categoryFilter, setCategoryFilter] = useState("all-categories");
   const [progressFilter, setProgressFilter] = useState("all-progress");
   const [instructorFilter, setInstructorFilter] = useState("all-instructors");
+
+  const handleClick = (courseId: string) => {
+    navigate(`/course/enrolled/${courseId}`);
+  };
 
   const resetFilters = () => {
     setSortBy("recently-accessed");
@@ -93,9 +98,7 @@ export default function Component() {
     filteredCourses = filteredCourses.filter((course) => course.courseId);
     if (searchTerm) {
       filteredCourses = filteredCourses.filter((course) =>
-        course.courseId?.title
-          .toLowerCase()
-          .includes(searchTerm.toLowerCase())
+        course.courseId?.title.toLowerCase().includes(searchTerm.toLowerCase())
       );
     }
 
@@ -160,6 +163,9 @@ export default function Component() {
     return Array.from(instructorSet);
   }, [courses]);
 
+  useEffect(() => {
+    console.log("Courses", courses);
+  }, [courses]);
   const renderContent = () => {
     if (loading) {
       return (
@@ -244,11 +250,13 @@ export default function Component() {
               {course.progress}%
             </span>
           </div>
-          <Link to="/course">
-            <Button className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md">
-              {isArchived ? "Restore course" : "Continue learning"}
-            </Button>
-          </Link>
+
+          <Button
+            onClick={() => handleClick(course.courseId._id)}
+            className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-2 px-4 rounded-md"
+          >
+            {isArchived ? "Restore course" : "Continue learning"}
+          </Button>
 
           <div className="flex items-center justify-between mt-3">
             <div className="flex">
@@ -365,7 +373,7 @@ export default function Component() {
                 </SelectTrigger>
                 <SelectContent>
                   <SelectItem value="all-categories">All Categories</SelectItem>
-                  {categories.map((category:any,index:number) => (
+                  {categories.map((category: any, index: number) => (
                     <SelectItem key={index} value={category?.toLowerCase()}>
                       {category}
                     </SelectItem>

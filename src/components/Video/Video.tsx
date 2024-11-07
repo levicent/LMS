@@ -1,18 +1,28 @@
 import { useState } from "react";
 import { memo } from "react";
-import { BookOpen } from "lucide-react";
+import { useQueryClient } from "react-query";
+import { BookOpen, Trash } from "lucide-react";
 import { useFetchVideos } from "@/hooks/useFetchVideos";
+import { useDeleteVideo } from "@/hooks/useDeleteVideo";
 import VideoPlayer from "./VideoPlayer";
+import { toast } from "react-toastify";
 
 interface VideoProps {
-  key: string;
   courseId: any;
   sectionId: any;
 }
 
+interface DeleteVideoProps {
+  courseId: string;
+  sectionId: string;
+  videoId: string;
+}
+
 const Video = memo(({ courseId, sectionId }: VideoProps) => {
   const { data: videos } = useFetchVideos(courseId, sectionId);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { mutate: deleteVideo } = useDeleteVideo();
+
+  const queryClient = useQueryClient();
   const [selectedVideo, setSelectedVideo] = useState<{
     url: string;
     title: string;
@@ -20,12 +30,34 @@ const Video = memo(({ courseId, sectionId }: VideoProps) => {
 
   const handleVideoClick = (video: { url: string; title: string }) => {
     setSelectedVideo(video);
-    setIsModalOpen(true);
   };
 
   const closeModal = () => {
-    setIsModalOpen(false);
     setSelectedVideo(null);
+  };
+
+  const handleDeleteVideo = ({
+    courseId,
+    sectionId,
+    videoId,
+  }: DeleteVideoProps) => {
+    deleteVideo(
+      {
+        courseId,
+        sectionId,
+        videoId,
+      },
+      {
+        onSuccess: () => {
+          toast.success("Video deleted successfully");
+          queryClient.invalidateQueries(["videos"]);
+        },
+        onError: (error: any) => {
+          console.log("Error deleting video", error);
+          toast.error("Error deleting video");
+        },
+      }
+    );
   };
 
   return (
@@ -49,15 +81,28 @@ const Video = memo(({ courseId, sectionId }: VideoProps) => {
                   </div>
                 </div>
                 <div className="min-w-0 flex-1">
-                  <p className="text-sm font-medium text-gray-900 truncate cursor-pointer">
-                    {video.title}
-                  </p>
+                  <div className="flex justify-between">
+                    <p className="text-sm font-medium text-gray-900 truncate cursor-pointer">
+                      {video.title}
+                    </p>
+                    <Trash
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleDeleteVideo({
+                          courseId,
+                          sectionId,
+                          videoId: video.videoId,
+                        });
+                      }}
+                      className="w-12 text-gray-500 cursor-pointer "
+                    />
+                  </div>
                 </div>
               </div>
             </li>
           ))
         ) : (
-          <p>No video available</p>
+          <p className="p-2">No video available</p>
         )}
       </ul>
 

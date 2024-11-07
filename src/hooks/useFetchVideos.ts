@@ -1,20 +1,20 @@
-import { useQuery } from 'react-query';
-import { fetchVideos} from '@/services/videoApi';
+import { useQuery } from "react-query";
+import { fetchVideos } from "@/services/videoApi";
 
 interface Video {
   _id: string;
   title: string;
   url: string;
-  description: string;
+  videoId: string;
 }
 
 export const useFetchVideos = (courseId: number, sectionId: number) => {
   return useQuery<Video[]>(
-    ['videos', courseId, sectionId],
+    ["videos", courseId, sectionId],
     () => fetchVideos(courseId, sectionId),
     {
       enabled: !!courseId && !!sectionId,
-      staleTime: 1000 * 60 * 5, 
+      staleTime: 1000 * 60 * 5,
     }
   );
 };

@@ -352,14 +352,17 @@ export default function CourseView() {
                             </div>
                           </AccordionTrigger>
                           <AccordionContent>
-                            <div className="flex justify-end px-2 pr-6">
-                              <Upload
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  handleAddVideo(section.sectionId);
-                                }}
-                                className="h-5 w-5 text-gray-500 cursor-pointer"
-                              />
+                            <div
+                              className="flex justify-end px-2 pr-6 gap-2"
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleAddVideo(section.sectionId);
+                              }}
+                            >
+                              <Upload className="h-5 w-5 text-gray-500 cursor-pointer" />
+                              <p className="text-sm text-gray-500 cursor-pointer">
+                                Upload
+                              </p>
                             </div>
                             <Video
                               key={section.sectionId}
