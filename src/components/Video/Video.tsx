@@ -3,8 +3,8 @@ import { BookOpen } from "lucide-react";
 import { useFetchVideos } from "@/hooks/useFetchVideos";
 interface VideoProps {
   key: string;
-  courseId: string;
-  sectionId: string;
+  courseId: any;
+  sectionId: any;
 }
 const Video = memo(({ key, courseId, sectionId }: VideoProps) => {
   const { data: videos } = useFetchVideos(courseId, sectionId);
