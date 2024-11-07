@@ -1,123 +1,109 @@
-"use client"
-
-import React, { useState, useRef } from 'react'
-import { Upload, X, Play } from 'lucide-react'
-
-interface VideoFile extends File {
-  preview: string
+import React, { useState } from 'react';
+import { useUploadVideo } from '@/hooks/useUploadVideo';
+import { toast } from 'react-toastify';
+interface VideoUploadFormProps {
+  courseId: string;
+  sectionId: string;
+  onSuccess?: () => void;
 }
+const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
+  courseId,
+  sectionId,
+  onSuccess,
+}) => {
+  const [title, setTitle] = useState('');
+  const [description, setDescription] = useState('');
+  const [videoFile, setVideoFile] = useState<File | null>(null);
 
-export default function VideoUploader() {
-  const [videos, setVideos] = useState<VideoFile[]>([])
-  const [dragActive, setDragActive] = useState(false)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const mutation = useUploadVideo();
 
-  const handleFiles = (files: FileList) => {
-    const newVideos = Array.from(files).filter(file => file.type.startsWith('video/')).map(file => 
-      Object.assign(file, { preview: URL.createObjectURL(file) })
-    ) as VideoFile[]
-    setVideos(prev => [...prev, ...newVideos])
-  }
-
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    if (e.type === "dragenter" || e.type === "dragover") {
-      setDragActive(true)
-    } else if (e.type === "dragleave") {
-      setDragActive(false)
-    }
-  }
-
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault()
-    e.stopPropagation()
-    setDragActive(false)
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      handleFiles(e.dataTransfer.files)
-    }
-  }
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    e.preventDefault()
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      handleFiles(e.target.files)
+      setVideoFile(e.target.files[0]);
     }
-  }
+  };
 
-  const onButtonClick = () => {
-    inputRef.current?.click()
-  }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
 
-  const removeVideo = (index: number) => {
-    setVideos(prev => prev.filter((_, i) => i !== index))
-  }
+    if (!videoFile) {
+      toast.error('Please select a video file to upload.');
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append('title', title);
+    formData.append('description', description);
+    formData.append('video', videoFile);
+
+    try {
+      await mutation.mutateAsync({
+        courseId,
+        sectionId,
+        formData,
+      });
+      toast.success('Video uploaded successfully!');
+      if (onSuccess) onSuccess();
+    } catch (error: any) {
+      console.error('Upload error:', error);
+      toast.error('Failed to upload video.');
+    }
+  };
 
   return (
-    <div className="p-8 max-w-4xl mx-auto">
-      <h2 className="text-2xl font-bold mb-4 text-center">Upload Your Video</h2>
-      <form
-        className={`relative border-2 border-dashed rounded-lg p-12 text-center ${
-          dragActive ? "border-blue-400 bg-blue-50" : "border-gray-400"
-        }`}
-        onDragEnter={handleDrag}
-        onSubmit={(e) => e.preventDefault()}
-      >
+    <form onSubmit={handleSubmit} className="space-y-4">
+      <h2 className="text-xl font-semibold">Upload New Video</h2>
+      
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Video Title</label>
         <input
-          ref={inputRef}
-          type="file"
-          multiple
-          onChange={handleChange}
-          accept="video/*"
-          className="hidden"
+          type="text"
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          required
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          placeholder="Enter video title"
         />
-        <Upload className="mx-auto h-12 w-12 text-gray-400" />
-        <p className="mt-2 text-sm text-gray-600">Drag and drop your videos here, or click to select files</p>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Description</label>
+        <textarea
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+          className="mt-1 block w-full border border-gray-300 rounded-md p-2"
+          placeholder="Enter video description"
+          rows={4}
+        ></textarea>
+      </div>
+      
+      <div>
+        <label className="block text-sm font-medium text-gray-700">Select Video</label>
+        <input
+          type="file"
+          accept="video/*"
+          onChange={handleFileChange}
+          required
+          className="mt-1 block w-full"
+        />
+      </div>
+      
+      <div className="flex justify-end">
         <button
-          className="mt-2 px-4 py-2 text-sm font-medium text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-          onClick={onButtonClick}
+          type="submit"
+          disabled={mutation.isLoading}
+          className={`px-4 py-2 rounded ${
+            mutation.isLoading
+              ? 'bg-blue-300 cursor-not-allowed'
+              : 'bg-blue-500 hover:bg-blue-600'
+          } text-white`}
         >
-          Select Files
+          {mutation.isLoading ? 'Uploading...' : 'Upload Video'}
         </button>
-        {dragActive && (
-          <div
-            className="absolute inset-0 rounded-lg"
-            onDragEnter={handleDrag}
-            onDragLeave={handleDrag}
-            onDragOver={handleDrag}
-            onDrop={handleDrop}
-          ></div>
-        )}
-      </form>
-      {videos.length > 0 && (
-        <div className="mt-8 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {videos.map((video, index) => (
-            <div key={index} className="relative group">
-              <video className="w-full h-48 object-cover rounded-lg">
-                <source src={video.preview} type={video.type} />
-                Your browser does not support the video tag.
-              </video>
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black bg-opacity-50 rounded-lg">
-                <button
-                  className="p-2 text-white bg-blue-500 rounded-full hover:bg-blue-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500"
-                  onClick={() => window.open(video.preview, '_blank')}
-                  aria-label="Play video"
-                >
-                  <Play className="h-6 w-6" />
-                </button>
-              </div>
-              <button
-                className="absolute top-2 right-2 p-1 text-white bg-red-500 rounded-full hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
-                onClick={() => removeVideo(index)}
-                aria-label="Remove video"
-              >
-                <X className="h-4 w-4" />
-              </button>
-              <p className="mt-2 text-sm text-gray-600 truncate">{video.name}</p>
-            </div>
-          ))}
-        </div>
-      )}
-    </div>
-  )
-}
+      </div>
+    </form>
+  );
+};
+
+export default VideoUploadForm;

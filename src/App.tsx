@@ -31,6 +31,7 @@ import DonorPage from "./pages/DonorPage.tsx";
 import InstructorsPage from "./pages/InstructorsPage.tsx";
 import AddSectionForm from "./components/Tables/CourseTable/CreateSection.tsx";
 import CourseView from "./pages/CourseView.tsx";
+import VideoUploadPage from "./pages/VideoUploadPage.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -81,6 +82,7 @@ const App: React.FC = () => {
                   path="instructor/dashboard/course/:courseId"
                   element={<CourseView />}
                 />
+                 <Route path="/courses/:courseId/sections/:sectionId/upload" element={<VideoUploadPage />} />
 
                 {/* Shopping Cart */}
                 <Route

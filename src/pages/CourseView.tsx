@@ -16,7 +16,6 @@ import {
   Edit,
   Trash,
   Upload, 
-  Pointer
 } from "lucide-react";
 import {
   Accordion,
@@ -155,9 +154,10 @@ export default function CourseView() {
     );
   };
 
-  const handleAddVideo = () => {
-    //navigate to video page 
+  const handleAddVideo = (sectionId: string) => {
+    navigate(`/courses/${courseId}/sections/${sectionId}/upload`);
   };
+
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
@@ -349,8 +349,10 @@ export default function CourseView() {
                           <AccordionContent>
                             <div className="flex justify-end px-2 pr-6">
                             <Upload
-                            
-                              
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              handleAddVideo(section.sectionId);
+                            }}
                               
                               className="h-5 w-5 text-gray-500 cursor-pointer"
                               />
