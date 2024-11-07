@@ -1,18 +1,20 @@
+import { memo } from "react";
 import { BookOpen } from "lucide-react";
 import { useFetchVideos } from "@/hooks/useFetchVideos";
 interface VideoProps {
+  key: string;
   courseId: string;
   sectionId: string;
 }
-function Video({ courseId, sectionId }: VideoProps) {
+const Video = memo(({ key, courseId, sectionId }: VideoProps) => {
   const { data: videos } = useFetchVideos(courseId, sectionId);
   return (
     <div>
       <ul className="divide-y divide-gray-200">
         {Array.isArray(videos) && videos.length > 0 ? (
-          videos.map((video, index) => (
+          videos.map((video) => (
             <li
-              key={index}
+              key={key}
               className="p-4 hover:bg-gray-50 transition-colors duration-150"
             >
               <div className="flex items-center">
@@ -41,6 +43,6 @@ function Video({ courseId, sectionId }: VideoProps) {
       </ul>
     </div>
   );
-}
+});
 
 export default Video;

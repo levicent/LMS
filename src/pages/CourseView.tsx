@@ -15,7 +15,7 @@ import {
   Edit3,
   Edit,
   Trash,
-  Upload, 
+  Upload,
 } from "lucide-react";
 import {
   Accordion,
@@ -88,6 +88,7 @@ export default function CourseView() {
   const [isEditing, setIsEditing] = useState(false);
   const [editedTitle, setEditedTitle] = useState("");
   const [editedDescription, setEditedDescription] = useState("");
+  const [openItem, setOpenItem] = useState<string | undefined>("");
 
   useEffect(() => {
     if (data?.course) {
@@ -157,7 +158,6 @@ export default function CourseView() {
   const handleAddVideo = (sectionId: string) => {
     navigate(`/courses/${courseId}/sections/${sectionId}/upload`);
   };
-
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString("en-IN", {
@@ -311,8 +311,13 @@ export default function CourseView() {
                       key={section.sectionId}
                       className="border border-gray-200 rounded-lg overflow-hidden"
                     >
-                      <Accordion type="single" collapsible>
-                        <AccordionItem value={`item-${index}`}>
+                      <Accordion
+                        type="single"
+                        collapsible
+                        value={openItem}
+                        onValueChange={(value) => setOpenItem(value)}
+                      >
+                        <AccordionItem value={`item-${section.sectionId}`}>
                           <AccordionTrigger className="w-full">
                             <div className="flex justify-between w-full items-center p-4 bg-gray-50 cursor-pointer">
                               <h3 className="font-medium text-gray-900">
@@ -348,16 +353,16 @@ export default function CourseView() {
                           </AccordionTrigger>
                           <AccordionContent>
                             <div className="flex justify-end px-2 pr-6">
-                            <Upload
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              handleAddVideo(section.sectionId);
-                            }}
-                              
-                              className="h-5 w-5 text-gray-500 cursor-pointer"
+                              <Upload
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  handleAddVideo(section.sectionId);
+                                }}
+                                className="h-5 w-5 text-gray-500 cursor-pointer"
                               />
                             </div>
                             <Video
+                              key={section.sectionId}
                               courseId={courseId}
                               sectionId={section.sectionId}
                             />
