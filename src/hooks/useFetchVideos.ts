@@ -1,36 +1,20 @@
-import { useQuery } from "react-query";
-import api from "@/services/api";
+import { useQuery } from 'react-query';
+import { fetchVideos} from '@/services/videoApi';
 
 interface Video {
-  videoId: string;
+  _id: string;
   title: string;
   url: string;
-  publicId: string;
+  description: string;
 }
 
-const fetchVideos = async (
-  courseId: string,
-  sectionId: string
-): Promise<Video[]> => {
-  try {
-    const { data } = await api.get(
-      `/courses/${courseId}/sections/${sectionId}/videos`
-    );
-    console.log("videos", data);
-    return data;
-  } catch (error) {
-    console.error("Error getting videos", error);
-    throw error;
-  }
-};
-
-export const useFetchVideos = (courseId: string, sectionId: string) => {
+export const useFetchVideos = (courseId: number, sectionId: number) => {
   return useQuery<Video[]>(
-    "videos",
+    ['videos', courseId, sectionId],
     () => fetchVideos(courseId, sectionId),
-
     {
       enabled: !!courseId && !!sectionId,
+      staleTime: 1000 * 60 * 5, 
     }
   );
 };
