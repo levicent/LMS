@@ -15,6 +15,8 @@ import {
   Edit3,
   Edit,
   Trash,
+  Upload, 
+  Pointer
 } from "lucide-react";
 import {
   Accordion,
@@ -154,7 +156,7 @@ export default function CourseView() {
   };
 
   const handleAddVideo = () => {
-    //navigate to video page
+    //navigate to video page 
   };
 
   const formatDate = (dateString: string) => {
@@ -345,14 +347,19 @@ export default function CourseView() {
                             </div>
                           </AccordionTrigger>
                           <AccordionContent>
-                            <div className="flex justify-end px-2">
-                              <Button
-                                onClick={handleAddVideo}
-                                className="bg-blue-600 hover:bg-blue-700 text-white py-2 px-2 rounded-lg text-sm"
-                              >
-                                <Edit3 className="h-4 w-4" />
-                                <span className="text-sm">Add Video</span>
-                              </Button>
+                            <div className="flex justify-end px-2 pr-6">
+                            <Upload
+                            
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                handleEditSection(
+                                  courseId,
+                                  section.sectionId,
+                                  section.title
+                                );
+                              }}
+                              className="h-5 w-5 text-gray-500 cursor-pointer"
+                              />
                             </div>
                             <Video
                               courseId={courseId}
