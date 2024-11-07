@@ -1,6 +1,9 @@
 import React, { useState } from 'react';
 import { useUploadVideo } from '@/hooks/useUploadVideo';
 import { toast } from 'react-toastify';
+import { ArrowLeft } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
+
 interface VideoUploadFormProps {
   courseId: string;
   sectionId: string;
@@ -22,6 +25,7 @@ const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
       setVideoFile(e.target.files[0]);
     }
   };
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -51,7 +55,9 @@ const VideoUploadForm: React.FC<VideoUploadFormProps> = ({
   };
 
   return (
+    
     <form onSubmit={handleSubmit} className="space-y-4">
+      <ArrowLeft onClick={() => navigate(-1)} className='cursor-pointer text-blue-600'/>
       <h2 className="text-xl font-semibold">Upload New Video</h2>
       
       <div>
