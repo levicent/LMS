@@ -3,7 +3,7 @@ import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faUserGraduate,
-  faVideo,
+  // faVideo,
   faSquarePollVertical,
   faPenToSquare
   
@@ -161,7 +161,7 @@ const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                 </NavLink>
               </li>
 
-              <li>
+              {/* <li>
                 <NavLink
                   to="/instructor/dashboard/videoDashboard"
                   className={`group relative flex items-center gap-2.5 rounded-sm py-2 px-4 font-medium text-bodydark1 duration-300 ease-in-out hover:bg-graydark dark:hover:bg-meta-4 text-white ${
@@ -171,7 +171,7 @@ const Sidebar1: React.FC<SidebarProps> = ({ sidebarOpen, setSidebarOpen }) => {
                   <FontAwesomeIcon icon={faVideo} className="text-white" />
                   Upload Video
                 </NavLink>
-              </li>
+              </li> */}
 
               {/* <!-- End Menu Items --> */}
             </ul>

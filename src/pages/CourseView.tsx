@@ -3,6 +3,7 @@ import { useParams, Link, useNavigate } from "react-router-dom";
 import useFetchCourseById from "@/hooks/useFetchCourseById";
 import useUpdateCourse from "@/hooks/useCourseUpdateById";
 import { Button } from "@/components/ui/button";
+
 import {
   Clock,
   BarChart,
@@ -115,10 +116,14 @@ export default function CourseView() {
     });
   };
   const handleDeleteSection = ({ courseId, sectionId }: DeleteSection) => {
+    
     try {
       deleteSection(
+        
         { courseId, sectionId },
+        
         {
+          
           onSuccess: () => {
             toast.success("Section deleted successfully.");
             queryClient.invalidateQueries(["course", courseId]);
