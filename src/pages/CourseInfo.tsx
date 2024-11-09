@@ -5,6 +5,8 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
+import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+
 import {
   ShoppingCart,
   Clock,
@@ -44,12 +46,21 @@ interface CourseData {
   language: string;
   topics?: string[];
   prerequisites?: string[];
+  sections?: {
+    sectionId: string;
+    title: string;
+    videos: {
+      _id: string;
+      title: string;
+    }[];
+  }[];
 }
+
 
 interface EnrolledCourse {
   courseId: {
     _id: string;
-    id:string;
+    id: string;
   };
 }
 
@@ -282,16 +293,37 @@ export default function CourseInfo() {
                       <CardTitle>Course Curriculum</CardTitle>
                     </CardHeader>
                     <CardContent>
-                      {staticData.curriculum.map((section, index) => (
-                        <div key={index} className="mb-4">
-                          <h3 className="font-semibold text-lg mb-2">
-                            {section.title}
-                          </h3>
-                          <p className="text-sm text-gray-600 dark:text-gray-400">
-                            {section.lectures} lectures • {section.duration}
-                          </p>
-                        </div>
-                      ))}
+                      <Accordion type="single" collapsible className="w-full">
+                        {(course.sections || []).map((section, index) => (
+                          <AccordionItem key={section.sectionId || index} value={`section-${index}`}>
+                            <AccordionTrigger>
+                              <h3 className="font-semibold text-lg">{section.title}</h3>
+                              {/* <p className="text-sm text-gray-600 dark:text-gray-400">
+                                {section.videos.length} {section.videos.length === 1 ? "video" : "videos"}
+                              </p> */}
+                            </AccordionTrigger>
+                            <AccordionContent>
+                              <ul className="space-y-3 pl-6">
+                                {section.videos.map((video) => (
+                                  <li
+                                    key={video._id}
+                                    className="flex items-center justify-between p-3 bg-white dark:bg-gray-800 border-b rounded-lg shadow-sm hover:shadow-md transition-all duration-200 ease-in-out"
+                                  >
+                                    <div className="flex items-center space-x-4">
+                                      <div className="w-6 h-6 flex items-center justify-center bg-blue-300 text-gray-900 rounded-full text-md font-semibold">
+                                        <span>{section.videos.indexOf(video) + 1}</span>
+                                      </div>
+                                      <span className="text-medium font-sans text-gray-800 dark:text-gray-100">
+                                        {video.title || "Untitled Video"}
+                                      </span>
+                                    </div>
+                                  </li>
+                                ))}
+                              </ul>
+                            </AccordionContent>
+                          </AccordionItem>
+                        ))}
+                      </Accordion>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -409,3 +441,50 @@ export default function CourseInfo() {
     </DefaultLayout>
   );
 }
+
+// function Video({ video}:any) {
+//   return (
+//     <div>
+//       <Thumbnail video={video} />
+//       <a href={video.url}>
+//         <h3>{video.title}</h3>
+//         <p>{video.description}</p>
+//       </a>
+//       <LikeButton video={video} />
+//     </div>
+//   );
+// }
+
+
+// const Thumbnail = ({ video }:any) => {
+//   return (
+//     <div className="w-48 h-28 rounded-lg overflow-hidden shadow-md hover:scale-105 transition-transform duration-200">
+//       <a href={video.url}>
+//         <img
+//           src={video.thumbnailUrl}
+//           alt={video.title}
+//           className="w-full h-full object-cover"
+//         />
+//       </a>
+//     </div>
+//   );
+// };
+
+
+// const LikeButton = ({ video }:any) => {
+//   const [likes, setLikes] = useState(video.likes || 0);
+
+//   const handleLike = () => {
+//     setLikes(likes + 1);
+//   };
+
+//   return (
+//     <button
+//       onClick={handleLike}
+//       className="flex items-center mt-2 px-3 py-1 bg-blue-500 text-white rounded-md hover:bg-blue-600 transition duration-200"
+//     >
+//       👍 <span className="ml-2">{likes}</span>
+//     </button>
+//   );
+// };
+
