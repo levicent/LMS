@@ -6,6 +6,7 @@ import { useFetchVideos } from "@/hooks/useFetchVideos";
 import { useDeleteVideo } from "@/hooks/useDeleteVideo";
 import VideoPlayer from "./VideoPlayer";
 import { toast } from "react-toastify";
+import useRole from "@/hooks/useRole";
 
 interface VideoProps {
   courseId: any;
@@ -27,6 +28,8 @@ const Video = memo(({ courseId, sectionId }: VideoProps) => {
     url: string;
     title: string;
   } | null>(null);
+
+  const { role } = useRole();
 
   const handleVideoClick = (video: { url: string; title: string }) => {
     setSelectedVideo(video);
@@ -67,7 +70,7 @@ const Video = memo(({ courseId, sectionId }: VideoProps) => {
           videos.map((video) => (
             <li
               key={video._id}
-              className="p-4 hover:bg-gray-50 transition-colors duration-150"
+              className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700 transition-colors duration-150"
               onClick={() =>
                 handleVideoClick({ url: video.url, title: video.title })
               }
@@ -82,20 +85,22 @@ const Video = memo(({ courseId, sectionId }: VideoProps) => {
                 </div>
                 <div className="min-w-0 flex-1">
                   <div className="flex justify-between">
-                    <p className="text-sm font-medium text-gray-900 truncate cursor-pointer">
+                    <p className="text-sm font-medium text-gray-900 truncate cursor-pointer dark:text-white">
                       {video.title}
                     </p>
-                    <Trash
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleDeleteVideo({
-                          courseId,
-                          sectionId,
-                          videoId: video.videoId,
-                        });
-                      }}
-                      className="w-12 text-gray-500 cursor-pointer "
-                    />
+                    {role === "teacher" && (
+                      <Trash
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          handleDeleteVideo({
+                            courseId,
+                            sectionId,
+                            videoId: video.videoId,
+                          });
+                        }}
+                        className="w-12 text-gray-500 cursor-pointer "
+                      />
+                    )}
                   </div>
                 </div>
               </div>
