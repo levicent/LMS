@@ -79,7 +79,7 @@ exports.getAllCourses = getAllCourses;
 const getCourseById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const { id } = req.params;
-        const course = yield Courses_1.default.findById(id);
+        const course = yield Courses_1.default.findById(id).populate("instructor", "firstName lastName");
         if (!course) {
             return res.status(404).json({ message: "No course found" });
         }

@@ -11,7 +11,7 @@ const role_1 = __importDefault(require("../middleware/role"));
 const enrolledCoursesController_1 = require("../controllers/enrolledCoursesController");
 router.post("/courses", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.createCourse);
 router.get("/courses", courseController_1.getAllCourses);
-router.get("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.getCourseById);
+router.get("/courses/:id", auth_1.default, (0, role_1.default)(["teacher", "student"]), courseController_1.getCourseById);
 router.put("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.updateCourseById);
 router.delete("/courses/:id", auth_1.default, (0, role_1.default)(["teacher"]), courseController_1.deleteCourseById);
 router.get("/course/search", courseController_1.searchCourseByQuery);

@@ -74,7 +74,10 @@ export const getAllCourses = async (req: Request, res: Response) => {
 export const getCourseById = async (req: Request, res: Response) => {
   try {
     const { id } = req.params;
-    const course = await Course.findById(id);
+    const course = await Course.findById(id).populate(
+      "instructor",
+      "firstName lastName"
+    );
     if (!course) {
       return res.status(404).json({ message: "No course found" });
     }
@@ -133,7 +136,6 @@ export const searchCourseByQuery = async (req: Request, res: Response) => {
     const courses = await Course.find({
       title: { $regex: query, $options: "i" },
     });
-    
 
     if (courses.length === 0) {
       return res.status(404).json({ message: "No courses found" });
