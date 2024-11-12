@@ -321,14 +321,15 @@ export default function CourseView() {
                         collapsible
                         value={openItem}
                         onValueChange={(value) => setOpenItem(value)}
+                        className='dark: bg-gray-800'
                       >
                         <AccordionItem value={`item-${section.sectionId}`}>
-                          <AccordionTrigger className="w-full">
-                            <div className="flex justify-between w-full items-center p-4 bg-gray-50 cursor-pointer">
-                              <h3 className="font-medium text-gray-900">
+                          <AccordionTrigger className="w-full ">
+                            <div className="flex justify-between w-full items-center p-4 bg-gray-50 cursor-pointer dark:bg-gray-800 ">
+                              <h3 className="font-medium text-gray-900 dark:text-gray-100">
                                 Section {index + 1}: {section.title}
                               </h3>
-                              <span className="text-sm text-gray-500">
+                              <span className="text-sm text-gray-500 dark:text-white ">
                                 {section.videos.length} lectures
                               </span>
                               <div className="flex gap-3">
@@ -341,7 +342,7 @@ export default function CourseView() {
                                       section.title
                                     );
                                   }}
-                                  className="h-5 w-5 text-gray-500"
+                                  className="h-5 w-5 text-gray-500 dark:text-white"
                                 />
                                 <Trash
                                   onClick={(e) => {
@@ -351,21 +352,21 @@ export default function CourseView() {
                                       sectionId: section.sectionId,
                                     });
                                   }}
-                                  className="h-5 w-5 text-gray-500"
+                                  className="h-5 w-5 text-gray-500 dark:text-white"
                                 />
                               </div>
                             </div>
                           </AccordionTrigger>
-                          <AccordionContent>
+                          <AccordionContent >
                             <div
-                              className="flex justify-end px-2 pr-6 gap-2"
+                              className="flex justify-end px-2 pr-6 gap-2 "
                               onClick={(e) => {
                                 e.stopPropagation();
                                 handleAddVideo(section.sectionId);
                               }}
                             >
-                              <Upload className="h-5 w-5 text-gray-500 cursor-pointer" />
-                              <p className="text-sm text-gray-500 cursor-pointer">
+                              <Upload className="h-5 w-5 text-gray-500 cursor-pointer dark:text-white" />
+                              <p className="text-sm text-gray-500 cursor-pointer dark:text-white">
                                 Upload
                               </p>
                             </div>
@@ -381,7 +382,7 @@ export default function CourseView() {
                   ))}
                 </div>
               ) : (
-                <p className="text-gray-500 p-4 bg-gray-50 rounded-lg">
+                <p className="text-gray-500 p-4 bg-gray-50 rounded-lg dark:text-white">
                   No sections available for this course yet
                 </p>
               )}
