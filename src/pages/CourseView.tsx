@@ -310,11 +310,11 @@ export default function CourseView() {
                 </Button>
               </div>
               {course.sections && course.sections.length > 0 ? (
-                <div className="space-y-4">
+                <div className="space-y-4 ">
                   {course.sections.map((section, index) => (
                     <div
                       key={section.sectionId}
-                      className="border border-gray-200 rounded-lg overflow-hidden"
+                      className="border border-gray-200 rounded-lg overflow-hidden  "
                     >
                       <Accordion
                         type="single"
@@ -323,9 +323,9 @@ export default function CourseView() {
                         onValueChange={(value) => setOpenItem(value)}
                         className='dark: bg-gray-800'
                       >
-                        <AccordionItem value={`item-${section.sectionId}`}>
+                        <AccordionItem value={`item-${section.sectionId}`}  className="dark:bg-gray-800 bg-gray-100">
                           <AccordionTrigger className="w-full ">
-                            <div className="flex justify-between w-full items-center p-4 bg-gray-50 cursor-pointer dark:bg-gray-800 ">
+                            <div className="flex justify-between w-full items-center p-4 bg-gray-100 cursor-pointer dark:bg-gray-800 ">
                               <h3 className="font-medium text-gray-900 dark:text-gray-100">
                                 Section {index + 1}: {section.title}
                               </h3>
@@ -352,7 +352,7 @@ export default function CourseView() {
                                       sectionId: section.sectionId,
                                     });
                                   }}
-                                  className="h-5 w-5 text-gray-500 dark:text-white"
+                                  className="h-5 w-5  text-gray-500 dark:text-white"
                                 />
                               </div>
                             </div>
