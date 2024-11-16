@@ -272,7 +272,7 @@ export default function Navbar() {
                     }`}
                 >
                   <ShoppingCartIcon className="h-6 w-6" />
-                  <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4">
+                  <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1">
                     {cart.length}
                   </p>
                 </button>
