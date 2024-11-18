@@ -7,6 +7,7 @@ import { useCart } from "./cartContext";
 import axios from "axios";
 interface AuthContextType {
   isAuthenticated: boolean;
+  setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
   login: (data: { email: string; password: string }) => void;
   logout: () => void;
   role: string | null;
@@ -91,6 +92,7 @@ export const AuthProvider = ({ children }: AuthProviderProps) => {
     <AuthContext.Provider
       value={{
         isAuthenticated,
+        setIsAuthenticated,
         login,
         logout,
         role,

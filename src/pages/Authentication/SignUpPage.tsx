@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { useForm } from "react-hook-form";
+import { AxiosError } from "axios";
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
+import AuthContext from "@/context/authContext";
 import { useSignupMutation } from "../../hooks/useSignupMutation";
 import { toast } from "react-toastify";
 
@@ -12,6 +14,10 @@ interface FormData {
   phone: string;
   password: string;
   confirmPassword?: string;
+}
+interface ApiErrorResponse {
+  message: string;
+  errors?: Record<string, string[]>;
 }
 
 const SignupPage: React.FC = () => {
@@ -24,9 +30,19 @@ const SignupPage: React.FC = () => {
     watch,
   } = useForm<FormData>();
 
-  const { mutate } = useSignupMutation({
+  const authContext = useContext(AuthContext);
+
+  if (!authContext) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
+
+  const { setIsAuthenticated } = authContext;
+
+  const { mutateAsync: SignupMutation } = useSignupMutation({
     onSuccess: (data) => {
+      console.log("Data", data);
       localStorage.setItem("token", data.token);
+      setIsAuthenticated(true);
       navigate("/");
     },
     onError: (error) => {
@@ -39,23 +55,24 @@ const SignupPage: React.FC = () => {
 
     if (password !== confirmPassword) {
       toast.error("Passwords do not match.");
+      return;
     }
 
-    await toast.promise(
-      new Promise<void>((resolve, reject) => {
-        try {
-          mutate({ ...rest, password });
-          resolve(); // resolve the promise after mutate
-        } catch (error) {
-          reject(error); // reject if there is an error
-        }
-      }),
-      {
-        pending: "Signing up",
-        success: "Signed up successfully",
-        error: "Invalid credentials",
-      }
-    );
+    await toast.promise(SignupMutation({ ...rest, password }), {
+      pending: "Signing up",
+      success: "Signed up successfully",
+      error: {
+        render({ data }: { data: AxiosError<ApiErrorResponse> | Error }) {
+          if (data instanceof Error) {
+            if ("response" in data) {
+              return data.response?.data?.message || "Signup failed";
+            }
+            return data.message || "Signup failed";
+          }
+          return "An unexpected error occurred";
+        },
+      },
+    });
   };
 
   const password = watch("password", "");

@@ -129,17 +129,6 @@ export default function CourseOverview() {
                     <CardTitle>Course Content</CardTitle>
                   </CardHeader>
                   <CardContent>
-                    {/* <ul className="space-y-2">
-                      {course.sections.map((section: any) => (
-                        <li
-                          key={section.sectionId}
-                          className="flex justify-between items-center p-2 hover:bg-gray-100 dark:hover:bg-gray-700 rounded"
-                        >
-                          <span>{section.title}</span>
-                          <Badge variant="secondary">{section.duration}</Badge>
-                        </li>
-                      ))}
-                    </ul> */}
                     {course.sections && course.sections.length > 0 ? (
                       <div className="space-y-4">
                         {course.sections.map((section: any, index: any) => (

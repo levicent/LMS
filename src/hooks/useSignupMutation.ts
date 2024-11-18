@@ -1,4 +1,4 @@
-import api from "@/services/api";
+import axios from "axios";
 import { useMutation } from "react-query";
 export const useSignupMutation = (options: {
   onSuccess: (data: { token: string }) => void;
@@ -12,7 +12,13 @@ export const useSignupMutation = (options: {
       phone: string;
       password: string;
     }) => {
-      const response = await api.post(`/register`, data);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/register`,
+        data,
+        {
+          withCredentials: true,
+        }
+      );
       return response.data;
     },
     {

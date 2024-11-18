@@ -32,6 +32,7 @@ import InstructorsPage from "./pages/InstructorsPage.tsx";
 import AddSectionForm from "./components/Tables/CourseTable/CreateSection.tsx";
 import CourseView from "./pages/CourseView.tsx";
 import VideoUploadPage from "./pages/VideoUploadPage.tsx";
+import VideoPage from "./pages/VideoPage.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -56,6 +57,7 @@ const App: React.FC = () => {
                   path="/course/enrolled/:courseId"
                   element={<CourseLearningPage />}
                 />
+                <Route path="/course/:courseId/learn" element={<VideoPage />} />
                 <Route path="/donors" element={<DonorPage />} />
                 <Route path="/instructors" element={<InstructorsPage />} />
                 <Route path="*" element={<NoPath />} />
