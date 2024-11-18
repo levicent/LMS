@@ -25,6 +25,7 @@ const userSchema = new mongoose_1.default.Schema({
     phone: {
         type: String,
         required: true,
+        unique: true,
     },
     image: {
         type: String,
@@ -44,7 +45,7 @@ const userSchema = new mongoose_1.default.Schema({
         {
             courseId: {
                 type: mongoose_1.default.Schema.Types.ObjectId,
-                ref: 'Course',
+                ref: "Course",
                 required: true,
             },
             enrollmentDate: {

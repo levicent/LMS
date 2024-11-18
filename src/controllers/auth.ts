@@ -34,9 +34,16 @@ export const register = async (req: Request, res: Response) => {
         .status(400)
         .json({ message: "validation failed", errors: parsed.error.errors });
     }
-    const existingUser = await User.findOne({ email });
-    if (existingUser) {
-      return res.status(400).json({ message: "User already exists" });
+    const existingEmail = await User.findOne({ email });
+    if (existingEmail) {
+      return res.status(400).json({ message: "Email already registered" });
+    }
+
+    const existingPhone = await User.findOne({ phone });
+    if (existingPhone) {
+      return res
+        .status(400)
+        .json({ message: "Phone number already registered" });
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);

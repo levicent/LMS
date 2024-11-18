@@ -36,9 +36,15 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
                 .status(400)
                 .json({ message: "validation failed", errors: parsed.error.errors });
         }
-        const existingUser = yield User_1.default.findOne({ email });
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
+        const existingEmail = yield User_1.default.findOne({ email });
+        if (existingEmail) {
+            return res.status(400).json({ message: "Email already registered" });
+        }
+        const existingPhone = yield User_1.default.findOne({ phone });
+        if (existingPhone) {
+            return res
+                .status(400)
+                .json({ message: "Phone number already registered" });
         }
         const hashedPassword = yield bcrypt_1.default.hash(password, 10);
         const user = new User_1.default({
