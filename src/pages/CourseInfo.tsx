@@ -391,7 +391,7 @@ export default function CourseInfo() {
                   </div>
 
                   {isEnrolled ? (
-                    <Link to={`/course`}>
+                    <Link to={`/course/enrolled/${course._id}`}>
                       <Button className="w-full mb-4 bg-green-600 hover:bg-green-700 text-white">
                         <BookOpen className="mr-2 h-4 w-4" /> Go to My Course
                       </Button>
