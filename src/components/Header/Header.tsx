@@ -2,13 +2,19 @@ import React, { useState, useEffect, useRef, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthContext from "../../context/authContext";
-
+import DarkLogo from "@/assets/DARK_LOGO.png"; // Adjust the path as needed
+import LightLogo from "@/assets/LIGHT_LOGO.png";
+import { useTheme } from "@/context/themeContext";
 interface HeaderProps {
   sidebarOpen: boolean;
   setSidebarOpen: (open: boolean) => void;
 }
 
 const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
+  const themeContext = useTheme();
+
+  const { theme } = themeContext;
+
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
@@ -59,13 +65,22 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
               <Bars3Icon className="w-6 h-6 text-white" />
             )}
           </button>
-          <Link to="/" className="text-xl font-semibold flex items-center">
-            <img
-              src="/path-to-your-logo.png"
-              alt="Logo"
-              className="h-8 w-auto mr-2"
-            />
-          </Link>
+          <div className="flex-shrink-0 flex items-center">
+            <Link to="/" className="flex items-center space-x-2">
+              <img
+                src={theme === "dark" ? LightLogo : DarkLogo}
+                alt="LMS"
+                className="max-h-14 w-18" // Adjust the size of the logo here
+              />
+
+              {/* <span
+                className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-blue-600"
+                  }`}
+              >
+                LMS
+              </span> */}
+            </Link>
+          </div>
         </div>
 
         <nav className="hidden lg:flex items-center gap-6">
