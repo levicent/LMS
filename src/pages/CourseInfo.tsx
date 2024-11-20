@@ -39,6 +39,17 @@ interface CourseData {
     avatar?: string;
     bio?: string;
   };
+  rating: number;
+  numReviews: number;
+  reviews: Array<{
+    user: {
+      _id: string;
+      firstName: string;
+      lastName: string;
+    };
+    rating: number;
+    review: string;
+  }>;
   duration: string;
   level: string;
   thumbnail: string;
@@ -56,7 +67,6 @@ interface CourseData {
   }[];
 }
 
-
 interface EnrolledCourse {
   courseId: {
     _id: string;
@@ -67,6 +77,7 @@ interface EnrolledCourse {
 interface LocationState {
   course: CourseData;
 }
+
 
 export default function CourseInfo() {
   const { addToCart, isCourseInCart, isAddedToCart } = useCart();
@@ -188,9 +199,8 @@ export default function CourseInfo() {
                 </div>
               </div>
               <div className="mb-6">
-                <Ratings />
                 <span className="ml-2 text-gray-600 dark:text-gray-400">
-                  4.95 out of 5
+                <Ratings value={course.rating} />
                 </span>
               </div>
               <Tabs defaultValue="overview" className="space-y-4">
@@ -281,6 +291,52 @@ export default function CourseInfo() {
                           <li>No specific prerequisites</li>
                         )}
                       </ul>
+                    </CardContent>
+                  </Card>
+                  <Card className="mt-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                    <CardHeader className="border-b border-gray-200 dark:border-gray-700">
+                      <CardTitle className="text-xl font-semibold flex items-center gap-2">
+                        <span>Reviews</span>
+                        {course.reviews?.length > 0 && (
+                          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
+                            ({course.reviews.length})
+                          </span>
+                        )}
+                      </CardTitle>
+                    </CardHeader>
+                    <CardContent className="pt-4">
+                      {course.reviews && course.reviews.length > 0 ? (
+                        <div className="space-y-4">
+                          {course.reviews.map((review, index) => (
+                            <div
+                              key={index}
+                              className={`p-4 rounded-lg ${index % 2 === 0
+                                  ? 'bg-gray-50 dark:bg-gray-900/50'
+                                  : 'bg-white dark:bg-gray-800'
+                                }`}
+                            >
+                              <div className="flex items-center gap-3 mb-2"> 
+                              
+                                <Ratings value={review.rating} />
+                                
+                                <div>
+                                  <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                                    {review.user.firstName} {review.user.lastName}
+                                  </h4>
+                                </div>
+                              </div>
+                              <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                {review.review}
+                              </p>
+                            </div>
+                          ))}
+                        </div>
+                      ) : (
+                        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
+                          <p>No reviews yet</p>
+                          <p className="text-sm mt-1">Be the first to review this course!</p>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
