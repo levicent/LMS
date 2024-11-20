@@ -26,6 +26,9 @@ import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
 import { useAddReview } from "@/hooks/useAddReview";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
+
 interface CourseData {
   _id: string;
   id: string;
@@ -199,11 +202,7 @@ export default function CourseInfo() {
                   </p>
                 </div>
               </div>
-              <div className="mb-6">
-                <span className="ml-2 text-gray-600 dark:text-gray-400">
-                  <Ratings value={course.rating} />
-                </span>
-              </div>
+              
               <Tabs defaultValue="overview" className="space-y-4">
                 <TabsList className="bg-white dark:bg-gray-800 overflow-x-auto flex whitespace-nowrap">
                   <TabsTrigger
@@ -479,6 +478,7 @@ export default function CourseInfo() {
                       <Clock className="mr-2 h-4 w-4" />
                       <span>{course.duration}</span>
                     </div>
+                    
                     <div className="flex items-center">
                       <BarChart className="mr-2 h-4 w-4" />
                       <span>{course.level} level</span>
@@ -487,10 +487,24 @@ export default function CourseInfo() {
                       <Globe className="mr-2 h-4 w-4" />
                       <span>{course.language}</span>
                     </div>
+                   
                     <div className="flex items-center">
                       <Award className="mr-2 h-4 w-4" />
                       <span>Certificate of completion</span>
                     </div>
+                    <div className="flex items-center mr-2 h-4 w-4">
+                    <FontAwesomeIcon icon={faStar} style={{color: "#FFD43B",}} />
+                      <span className="m-2">
+                        {course.rating.toFixed(1)}
+                      </span>
+                    </div>
+                    <div className="flex items-center ">
+                    <FontAwesomeIcon icon={faFeatherPointed} style={{color: "#908e8e",}} />
+
+                        <span className="ml-2 " >
+                        {course.numReviews} reviews
+                        </span>
+                      </div>
                   </div>
                 </CardContent>
               </Card>
