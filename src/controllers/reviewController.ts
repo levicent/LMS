@@ -5,7 +5,7 @@ export const addReview = async (req: Request, res: Response) => {
     try {
         const { rating, review } = req.body;
         const courseId = req.params.id;
-        const userId = req.user?.id; // Assuming authMiddleware adds user info to req
+        const userId = req.user?.id; 
 
         if (!rating || !review) {
             return res.status(400).json({ message: 'Rating and review are required' });
