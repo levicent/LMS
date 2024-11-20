@@ -5,10 +5,11 @@ export interface IEnrolledCourse {
   enrollmentDate: Date;               // The date of enrollment
 }
 export interface IUser {
-  firstName: String;
-  lastName: String;
-  email: String;
-  password: String;
+ 
+  firstName: string;
+  lastName: string;
+  email: string;
+  password: string;
   phone: Number;
   image: String;
   role: "student" | "teacher" | "admin";

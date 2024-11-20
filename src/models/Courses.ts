@@ -1,8 +1,25 @@
-import mongoose from "mongoose";
+import mongoose, { Schema, Types } from "mongoose";
 import { ICourse } from "../interfaces/ICourses";
 
 interface ICourseModel extends ICourse, mongoose.Document {}
 
+const reviewSchema = new Schema({
+  user: {
+    type: Types.ObjectId,
+    ref: 'User',
+    required: true,
+  },
+  rating: {
+    type: Number,
+    required: true,
+    min: 1,
+    max: 5,
+  },
+  review: {
+    type: String,
+    required: true,
+  },
+});
 const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
   title: {
     type: String,
@@ -77,19 +94,17 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
       },
     },
   ],
-  reviews: [
-    {
-      user: {
-        type: mongoose.Schema.Types.ObjectId,
-        ref: "User",
-      },
-      rating: {
-        type: Number,
-        min: 1,
-        max: 5,
-      },
-    },
-  ],
+  rating: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  numReviews: {
+    type: Number,
+    required: true,
+    default: 0,
+  },
+  reviews: [reviewSchema],
   language: {
     type: String,
     required: true,

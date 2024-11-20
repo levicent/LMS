@@ -7,6 +7,7 @@ export interface IModule {
   quizzes?: IQuiz[]; // Optional array of quiz objects
 }
 
+
 export interface IQuiz {
   question: string;
   options: string[];
@@ -50,10 +51,16 @@ export interface ICourse {
     | "Music"
     | "Teaching & Academics";
   studentsEnrolled: { user: Types.ObjectId }[];
-  reviews?: { user: Types.ObjectId }[];
   language: string;
   tags?: string[];
   sections: ISection[];
+  rating: number;
+  numReviews: number;
+  reviews: Array<{
+    user: Types.ObjectId;
+    rating: number;
+    review: string;
+  }>;
 
   createdAt: Date;
   updatedAt: Date;
