@@ -28,6 +28,7 @@ export const useFetchEnrolledCourses = () => {
     try {
       const response = await api.get('enrolled-courses');
       setCourses(response.data.enrolledCourses);
+      return response.data.enrolledCourses;
     } catch (err) {
       console.error('Error enrolling in course:', err);
       setError('Error fetching enrolled courses');
@@ -40,5 +41,5 @@ export const useFetchEnrolledCourses = () => {
     fetchEnrolledCourses();
   }, []);
 
-  return { loading, error, courses, fetchEnrolledCourses };
+  return { loading, error, courses, fetchEnrolledCourses};
 };
