@@ -25,7 +25,7 @@ import { useCart } from "@/context/cartContext";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
-
+import { useAddReview } from "@/hooks/useAddReview";
 interface CourseData {
   _id: string;
   id: string;
@@ -49,6 +49,7 @@ interface CourseData {
     };
     rating: number;
     review: string;
+    _id: string;
   }>;
   duration: string;
   level: string;
@@ -200,7 +201,7 @@ export default function CourseInfo() {
               </div>
               <div className="mb-6">
                 <span className="ml-2 text-gray-600 dark:text-gray-400">
-                <Ratings value={course.rating} />
+                  <Ratings value={course.rating} />
                 </span>
               </div>
               <Tabs defaultValue="overview" className="space-y-4">
@@ -307,21 +308,18 @@ export default function CourseInfo() {
                     <CardContent className="pt-4">
                       {course.reviews && course.reviews.length > 0 ? (
                         <div className="space-y-4">
-                          {course.reviews.map((review, index) => (
+                          {course.reviews.map((review) => (
                             <div
-                              key={index}
-                              className={`p-4 rounded-lg ${index % 2 === 0
-                                  ? 'bg-gray-50 dark:bg-gray-900/50'
-                                  : 'bg-white dark:bg-gray-800'
-                                }`}
+                              key={ review._id} 
+                              className={`p-4 rounded-lg ${course.reviews.indexOf(review) % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900/50' : 'bg-white dark:bg-gray-800'}`}
                             >
-                              <div className="flex items-center gap-3 mb-2"> 
-                              
+                              <div className="flex items-center gap-3 mb-2">
+                               
                                 <Ratings value={review.rating} />
-                                
+
                                 <div>
                                   <h4 className="font-medium text-gray-900 dark:text-gray-100">
-                                    {review.user.firstName} {review.user.lastName}
+                                    {review.user ? `${review.user.firstName}` : 'Anonymous'}
                                   </h4>
                                 </div>
                               </div>
