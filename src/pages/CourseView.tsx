@@ -198,7 +198,7 @@ export default function CourseView() {
 
   return (
     <TeacherLayout>
-      <div className="min-h-screen bg-gray-50">
+      <div className="min-h-screen bg-gray-100 dark:bg-gray-300 rounded-sm">
         <div className="max-w-7xl mx-auto p-6 space-y-8">
           <Link
             to="/instructor/dashboard/courses"
@@ -208,7 +208,7 @@ export default function CourseView() {
             Back to Courses
           </Link>
 
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden">
+          <div className="bg-white rounded-2xl shadow-xl overflow-hidden dark:bg-gray100">
             <div className="md:flex">
               <div className="md:flex-shrink-0">
                 {course.thumbnail ? (
