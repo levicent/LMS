@@ -27,8 +27,8 @@ import { toast } from "react-toastify";
 import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
 import { useAddReview } from "@/hooks/useAddReview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faComments, faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
-import { FaComments } from "react-icons/fa";
+import { faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
+
 interface CourseData {
   _id: string;
   id: string;
@@ -495,12 +495,13 @@ export default function CourseInfo() {
                     <div className="flex items-center mr-2 h-4 w-4">
                     <FontAwesomeIcon icon={faStar} style={{color: "#FFD43B",}} />
                       <span className="m-2">
-                        {course.rating}
+                        {course.rating.toFixed(1)}
                       </span>
                     </div>
                     <div className="flex items-center ">
                     <FontAwesomeIcon icon={faFeatherPointed} style={{color: "#908e8e",}} />
-                        <span className="ml-2 ">
+
+                        <span className="ml-2 " >
                         {course.numReviews} reviews
                         </span>
                       </div>
