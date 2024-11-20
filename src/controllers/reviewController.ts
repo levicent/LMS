@@ -31,7 +31,13 @@ export const addReview = async (req: Request, res: Response) => {
             course.reviews.reduce((acc: number, item: any) => item.rating + acc, 0) /
             course.reviews.length;
         await course.save();
-        const addedReview = course.reviews[course.reviews.length - 1];
+        const updatedCourse = await Course.findById(courseId)
+        .select('reviews')
+        .populate({
+            path: 'reviews.user',
+            select: 'firstName lastName',
+        });
+        const addedReview = updatedCourse?.reviews[updatedCourse?.reviews.length - 1];
         res.status(201).json({ message: 'Review added', addedReview});
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
