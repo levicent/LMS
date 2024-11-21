@@ -1,12 +1,16 @@
 import { useMutation, useQueryClient } from 'react-query';
 import api from '@/services/api';
 
-const addReview = async ({ courseId, review }:any) => {
-  const response = await api.post(`/courses/${courseId}/reviews`, review, {
-    headers: {
-      Authorization: `Bearer ${localStorage.getItem('token')}`,
-    },
-  });
+interface ReviewData {
+  userId: string;
+  rating: number;
+  review: string;
+  courseId: string;
+}
+
+const addReview = async (reviewData: ReviewData) => {
+  const { courseId, ...data } = reviewData;
+  const response = await api.post(`courses/${courseId}/reviews`, data);
   return response.data;
 };
 
@@ -15,7 +19,10 @@ export const useAddReview = () => {
 
   return useMutation(addReview, {
     onSuccess: () => {
-      queryClient.invalidateQueries('course');
+      queryClient.invalidateQueries('courseReviews');
+    },
+    onError: (error: any) => {
+      console.error('Error adding review:', error);
     },
   });
 };

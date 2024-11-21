@@ -25,9 +25,9 @@ import { useCart } from "@/context/cartContext";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
-import { useAddReview } from "@/hooks/useAddReview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
+import AddReviewComponent from "@/components/Ratings/Review";
 
 interface CourseData {
   _id: string;
@@ -334,6 +334,7 @@ export default function CourseInfo() {
                           <p className="text-sm mt-1">Be the first to review this course!</p>
                         </div>
                       )}
+                      <AddReviewComponent courseId={course._id} />
                     </CardContent>
                   </Card>
                 </TabsContent>
