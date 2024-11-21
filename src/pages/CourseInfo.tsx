@@ -202,7 +202,7 @@ export default function CourseInfo() {
                   </p>
                 </div>
               </div>
-              
+
               <Tabs defaultValue="overview" className="space-y-4">
                 <TabsList className="bg-white dark:bg-gray-800 overflow-x-auto flex whitespace-nowrap">
                   <TabsTrigger
@@ -309,11 +309,11 @@ export default function CourseInfo() {
                         <div className="space-y-4">
                           {course.reviews.map((review) => (
                             <div
-                              key={ review._id} 
+                              key={review._id}
                               className={`p-4 rounded-lg ${course.reviews.indexOf(review) % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900/50' : 'bg-white dark:bg-gray-800'}`}
                             >
                               <div className="flex items-center gap-3 mb-2">
-                               
+
                                 <Ratings value={review.rating} />
 
                                 <div>
@@ -334,7 +334,13 @@ export default function CourseInfo() {
                           <p className="text-sm mt-1">Be the first to review this course!</p>
                         </div>
                       )}
-                      <AddReviewComponent courseId={course._id} />
+                      {isEnrolled ? (
+                        <AddReviewComponent courseId={course._id} />
+                      ) : (
+                        <div className="text-center p-4 text-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <p> course reviews </p>
+                        </div>
+                      )}
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -479,7 +485,7 @@ export default function CourseInfo() {
                       <Clock className="mr-2 h-4 w-4" />
                       <span>{course.duration}</span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <BarChart className="mr-2 h-4 w-4" />
                       <span>{course.level} level</span>
@@ -488,24 +494,24 @@ export default function CourseInfo() {
                       <Globe className="mr-2 h-4 w-4" />
                       <span>{course.language}</span>
                     </div>
-                   
+
                     <div className="flex items-center">
                       <Award className="mr-2 h-4 w-4" />
                       <span>Certificate of completion</span>
                     </div>
                     <div className="flex items-center mr-2 h-4 w-4">
-                    <FontAwesomeIcon icon={faStar} style={{color: "#FFD43B",}} />
+                      <FontAwesomeIcon icon={faStar} style={{ color: "#FFD43B", }} />
                       <span className="m-2">
                         {course.rating.toFixed(1)}
                       </span>
                     </div>
                     <div className="flex items-center ">
-                    <FontAwesomeIcon icon={faFeatherPointed} style={{color: "#908e8e",}} />
+                      <FontAwesomeIcon icon={faFeatherPointed} style={{ color: "#908e8e", }} />
 
-                        <span className="ml-2 " >
+                      <span className="ml-2 " >
                         {course.numReviews} reviews
-                        </span>
-                      </div>
+                      </span>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
