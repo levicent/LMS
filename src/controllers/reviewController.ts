@@ -1,3 +1,4 @@
+
 import { Request, Response } from 'express';
 import Course from '../models/Courses';
 
@@ -39,6 +40,7 @@ export const addReview = async (req: Request, res: Response) => {
         });
         const addedReview = updatedCourse?.reviews[updatedCourse?.reviews.length - 1];
         res.status(201).json({ message: 'Review added', addedReview});
+        console.log(addedReview);
     } catch (error) {
         res.status(500).json({ message: 'Server error' });
     }
