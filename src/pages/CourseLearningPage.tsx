@@ -8,18 +8,18 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Tabs, TabsContent } from "@/components/ui/tabs";
 import { useParams } from "react-router-dom";
 import DefaultLayout from "../layout/DefaultLayout";
 import useFetchCourseById from "@/hooks/useFetchCourseById";
 import { useEffect, useState } from "react";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import Video from "@/components/Video/Video";
+// import {
+//   Accordion,
+//   AccordionContent,
+//   AccordionItem,
+//   AccordionTrigger,
+// } from "@/components/ui/accordion";
+// import Video from "@/components/Video/Video";
 import CourseSidebar from "@/components/CourseSidebar/CourseSidebar";
 import ReactPlayer from "react-player";
 export default function CourseOverview() {
@@ -82,7 +82,7 @@ export default function CourseOverview() {
               <div className="flex flex-wrap items-center gap-4 mb-6">
                 <div className="flex items-center">
                   <Star className="w-5 h-5 text-yellow-400 mr-1" />
-                  <span className="font-bold">{course?.rating}</span>
+                  <span className="font-bold">{course?.rating.toFixed(2)}</span>
                   {/* <span className="text-gray-500 ml-1">
                   ({course.students.toLocaleString()} students)
                 </span> */}
@@ -102,11 +102,6 @@ export default function CourseOverview() {
                 </div>
               </div>
               <Tabs defaultValue="overview" className="space-y-4">
-                <TabsList>
-                  <TabsTrigger value="overview">Overview</TabsTrigger>
-                  <TabsTrigger value="content">Course Content</TabsTrigger>
-                  <TabsTrigger value="instructor">Instructor</TabsTrigger>
-                </TabsList>
                 <TabsContent value="overview">
                   <Card>
                     <CardHeader>
@@ -151,59 +146,24 @@ export default function CourseOverview() {
                       </div>
                     </CardContent>
                   </Card>
-                </TabsContent>
-                <TabsContent value="content">
-                  <Card>
-                    <CardHeader>
-                      <CardTitle>Course Content</CardTitle>
+                  <Card className="mt-4 p-4">
+                    <CardHeader className="font-bold text-lg -ml-6">
+                      Instructor's name
                     </CardHeader>
-                    <CardContent>
-                      {course.sections && course.sections.length > 0 ? (
-                        <div className="space-y-4">
-                          {course.sections.map((section: any, index: any) => (
-                            <div
-                              key={section.sectionId}
-                              className="border border-gray-200 rounded-lg overflow-hidden dark:bg-gray-900"
-                            >
-                              <Accordion
-                                type="single"
-                                collapsible
-                                // value={openItem}
-                                // onValueChange={(value) => setOpenItem(value)}
-                              >
-                                <AccordionItem
-                                  value={`item-${section.sectionId}`}
-                                >
-                                  <AccordionTrigger className="w-full">
-                                    <div className="flex justify-between w-full items-center p-4 bg-gray-50 cursor-pointer dark:bg-gray-900">
-                                      <h3 className="font-medium text-gray-900 dark:text-white">
-                                        Section {index + 1}: {section.title}
-                                      </h3>
-                                      <span className="text-sm text-gray-500">
-                                        {section.videos.length} lectures
-                                      </span>
-                                    </div>
-                                  </AccordionTrigger>
-                                  <AccordionContent>
-                                    <Video
-                                      key={section.sectionId}
-                                      courseId={courseId}
-                                      sectionId={section.sectionId}
-                                    />
-                                  </AccordionContent>
-                                </AccordionItem>
-                              </Accordion>
-                            </div>
-                          ))}
-                        </div>
-                      ) : (
-                        <p className="text-gray-500 p-4 bg-gray-50 rounded-lg">
-                          No sections available for this course yet
+                    <div className="flex items-center space-x-4 space-y-4">
+                      <div>
+                        <h3 className="text-lg font-semibold">
+                          {course?.instructor?.firstName}{" "}
+                          {course?.instructor?.lastName}
+                        </h3>
+                        <p className="text-gray-500">
+                          Angular Expert and Course Instructor
                         </p>
-                      )}
-                    </CardContent>
+                      </div>
+                    </div>
                   </Card>
                 </TabsContent>
+
                 <TabsContent value="instructor">
                   <Card>
                     <CardHeader>
