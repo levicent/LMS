@@ -1,6 +1,7 @@
 import React, { useState, useContext } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
+import { Eye, EyeOff } from "lucide-react";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 import AuthContext from "@/context/authContext";
 
@@ -11,7 +12,7 @@ type FormValues = {
 
 const SignInPage: React.FC = () => {
   const [rememberMe, setRememberMe] = useState(false);
-
+  const [showPassword, setShowPassword] = useState(false);
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
@@ -19,6 +20,9 @@ const SignInPage: React.FC = () => {
   }
 
   const { login } = authContext;
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   const {
     handleSubmit,
@@ -64,6 +68,7 @@ const SignInPage: React.FC = () => {
                 >
                   Your email
                 </label>
+  
                 <input
                   {...register("email", {
                     required: "Email is required",
@@ -92,6 +97,7 @@ const SignInPage: React.FC = () => {
                 >
                   Password
                 </label>
+                <div className="relative">
                 <input
                   {...register("password", {
                     required: "Password is required",
@@ -105,11 +111,24 @@ const SignInPage: React.FC = () => {
                     },
                   })}
                   id="password"
-                  type="password"
+                  type={showPassword ? "text" : "password"}
                   autoComplete="current-password"
                   className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   aria-invalid={errors.password ? "true" : "false"}
                 />
+                 <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1" role="alert">
                     {errors.password.message}
