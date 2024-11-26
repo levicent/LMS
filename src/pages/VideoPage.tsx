@@ -1,13 +1,4 @@
-import {
-  ChevronLeft,
-  ChevronRight,
-  List,
-  MoreVertical,
-  Play,
-  Repeat,
-  Settings,
-  Volume2,
-} from "lucide-react";
+import { List, Play, Settings, Volume2 } from "lucide-react";
 // import Image from "next/image";
 // import Link from "next/link";
 import { Link } from "react-router-dom";
@@ -15,7 +6,6 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Progress } from "@/components/ui/progress";
 import { ScrollArea } from "@/components/ui/scroll-area";
-import { Separator } from "@/components/ui/separator";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 function VideoPage() {

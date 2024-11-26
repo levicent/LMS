@@ -2,7 +2,6 @@ import api from "@/services/api";
 import { useMutation, useQueryClient } from "react-query";
 import { toast } from "react-toastify";
 
-
 interface CartItem {
   productId: string;
   name: string;
@@ -31,11 +30,10 @@ const addToCartApi = async (cartItem: CartItem) => {
 };
 
 export const useAddToCart = () => {
- 
-  const   queryClient = useQueryClient();
+  const queryClient = useQueryClient();
   return useMutation(addToCartApi, {
     onSuccess: () => {
-     queryClient.invalidateQueries('cart');
+      queryClient.invalidateQueries("cart");
       toast.success("Course added to cart!");
     },
     onError: (error: any) => {
@@ -43,7 +41,6 @@ export const useAddToCart = () => {
         toast.error(error.response.data.message);
       } else if (error.response?.status === 401) {
         toast.error("Please log in to add items to your cart.");
-       
       } else {
         toast.error("Failed to add course to cart. Please try again.");
       }

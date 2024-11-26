@@ -2,7 +2,7 @@ import {
   Star,
   Clock,
   Calendar,
-  // PlayCircle,
+  PlayCircle,
   FileText,
   // Video,
 } from "lucide-react";
@@ -12,7 +12,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { useParams } from "react-router-dom";
 import DefaultLayout from "../layout/DefaultLayout";
 import useFetchCourseById from "@/hooks/useFetchCourseById";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import {
   Accordion,
   AccordionContent,
@@ -21,7 +21,9 @@ import {
 } from "@/components/ui/accordion";
 import Video from "@/components/Video/Video";
 import CourseSidebar from "@/components/CourseSidebar/CourseSidebar";
+import ReactPlayer from "react-player";
 export default function CourseOverview() {
+  const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const { courseId }: any = useParams();
   const { data: courseData, isLoading, error } = useFetchCourseById(courseId);
 
@@ -30,26 +32,47 @@ export default function CourseOverview() {
     console.log("Course", course);
   }, [course]);
 
+  useEffect(() => {
+    console.log("Selected Video", selectedVideo);
+  }, [selectedVideo]);
+
   if (isLoading) return <p>Loading..</p>;
   if (error) return <p>Error loading course</p>;
   if (!course) return <p>No course found</p>;
 
-  const handleVideoSelect = (sectionId: string, videoId: string) => {
-    // Handle video selection here
-    console.log("Selected video:", sectionId, videoId);
+  const handleVideoSelect = (
+    sectionId: string,
+    videoId: string,
+    url: string
+  ) => {
+    setSelectedVideo(url);
+    console.log("Selected video: sectionID", sectionId, videoId, url);
   };
 
   return (
     <DefaultLayout>
-      <div className="flex ">
-        <main className="flex-1 min-h-screen bg-gray-50 justify-start dark:bg-gray-900 p-4 sm:p-6 lg:p-8 dark:text-white pr-80">
-          <div className="max-w-5xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden">
-            {/* <div className="relative aspect-video bg-gray-600">
-            <div className="absolute inset-0 flex items-center justify-center">
-            <PlayCircle className="w-20 h-20 text-white opacity-70" />
+      <div className="flex justify-between gap-5">
+        <main className="flex min-h-screen bg-gray-50 justify-start dark:bg-gray-900 p-4 sm:p-6 lg:p-8 dark:text-white pr-80 mr-72">
+          <div className="max-w-4xl mx-auto bg-white dark:bg-gray-800 rounded-lg shadow-lg overflow-hidden justify-start">
+            <div className="relative aspect-video bg-gray-600">
+              <div className="absolute inset-0 flex items-center justify-center">
+                {selectedVideo === null ? (
+                  <PlayCircle className="w-20 h-20 text-white opacity-70" />
+                ) : (
+                  <ReactPlayer
+                    url={selectedVideo}
+                    width="100%"
+                    height="100%"
+                    controls
+                  />
+                )}
+                {/* <VideoPlayer
+                  videoTitle="Title 1"
+                  videoUrl="https://res.cloudinary.com/de51cdx8q/video/upload/v1731353469/course_videos/rpq47mwzeyizbluzhbmz.webm"
+                /> */}
+              </div>
             </div>
-            </div> */}
-            <div className="p-4 sm:p-6 max-w-3xl">
+            <div className="p-4 sm:p-6 max-w-5xl">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 {course.title}
               </h1>

@@ -5,7 +5,12 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Progress } from "@/components/ui/progress";
-import { Accordion, AccordionItem, AccordionTrigger, AccordionContent } from "@/components/ui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 
 import {
   ShoppingCart,
@@ -25,9 +30,9 @@ import { useCart } from "@/context/cartContext";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
-import { useAddReview } from "@/hooks/useAddReview";
+// import { useAddReview } from "@/hooks/useAddReview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
+import { faStar } from "@fortawesome/free-solid-svg-icons";
 
 interface CourseData {
   _id: string;
@@ -81,7 +86,6 @@ interface EnrolledCourse {
 interface LocationState {
   course: CourseData;
 }
-
 
 export default function CourseInfo() {
   const { addToCart, isCourseInCart, isAddedToCart } = useCart();
@@ -202,7 +206,7 @@ export default function CourseInfo() {
                   </p>
                 </div>
               </div>
-              
+
               <Tabs defaultValue="overview" className="space-y-4">
                 <TabsList className="bg-white dark:bg-gray-800 overflow-x-auto flex whitespace-nowrap">
                   <TabsTrigger
@@ -309,16 +313,21 @@ export default function CourseInfo() {
                         <div className="space-y-4">
                           {course.reviews.map((review) => (
                             <div
-                              key={ review._id} 
-                              className={`p-4 rounded-lg ${course.reviews.indexOf(review) % 2 === 0 ? 'bg-gray-50 dark:bg-gray-900/50' : 'bg-white dark:bg-gray-800'}`}
+                              key={review._id}
+                              className={`p-4 rounded-lg ${
+                                course.reviews.indexOf(review) % 2 === 0
+                                  ? "bg-gray-50 dark:bg-gray-900/50"
+                                  : "bg-white dark:bg-gray-800"
+                              }`}
                             >
                               <div className="flex items-center gap-3 mb-2">
-                               
                                 <Ratings value={review.rating} />
 
                                 <div>
                                   <h4 className="font-medium text-gray-900 dark:text-gray-100">
-                                    {review.user ? `${review.user.firstName}` : 'Anonymous'}
+                                    {review.user
+                                      ? `${review.user.firstName}`
+                                      : "Anonymous"}
                                   </h4>
                                 </div>
                               </div>
@@ -331,7 +340,9 @@ export default function CourseInfo() {
                       ) : (
                         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                           <p>No reviews yet</p>
-                          <p className="text-sm mt-1">Be the first to review this course!</p>
+                          <p className="text-sm mt-1">
+                            Be the first to review this course!
+                          </p>
                         </div>
                       )}
                     </CardContent>
@@ -347,13 +358,21 @@ export default function CourseInfo() {
                     </CardHeader>
                     <CardContent>
                       <Accordion type="single" collapsible className="w-full">
-                        {(course.sections && course.sections.length > 0) ? (
+                        {course.sections && course.sections.length > 0 ? (
                           course.sections.map((section, index) => (
-                            <AccordionItem key={section.sectionId || index} value={`section-${index}`}>
+                            <AccordionItem
+                              key={section.sectionId || index}
+                              value={`section-${index}`}
+                            >
                               <AccordionTrigger className="flex justify-between items-center">
-                                <h3 className="font-semibold text-lg">{section.title}</h3>
+                                <h3 className="font-semibold text-lg">
+                                  {section.title}
+                                </h3>
                                 <span className="text-sm text-gray-600 dark:text-gray-400">
-                                  {section.videos.length} {section.videos.length === 1 ? "video" : "videos"}
+                                  {section.videos.length}{" "}
+                                  {section.videos.length === 1
+                                    ? "video"
+                                    : "videos"}
                                 </span>
                               </AccordionTrigger>
                               <AccordionContent>
@@ -365,7 +384,9 @@ export default function CourseInfo() {
                                     >
                                       <div className="flex items-center space-x-4">
                                         <div className="w-6 h-6 flex items-center justify-center bg-blue-300 text-gray-900 rounded-full text-md font-semibold">
-                                          <span>{section.videos.indexOf(video) + 1}</span>
+                                          <span>
+                                            {section.videos.indexOf(video) + 1}
+                                          </span>
                                         </div>
                                         <span className="text-medium font-sans text-gray-800 dark:text-gray-100">
                                           {video.title || "Untitled Video"}
@@ -476,9 +497,9 @@ export default function CourseInfo() {
                   <div className="space-y-2">
                     <div className="flex items-center">
                       <Clock className="mr-2 h-4 w-4" />
-                      <span>{course.duration}</span>
+                      <span>{course.duration} hours</span>
                     </div>
-                    
+
                     <div className="flex items-center">
                       <BarChart className="mr-2 h-4 w-4" />
                       <span>{course.level} level</span>
@@ -487,24 +508,26 @@ export default function CourseInfo() {
                       <Globe className="mr-2 h-4 w-4" />
                       <span>{course.language}</span>
                     </div>
-                   
+
                     <div className="flex items-center">
                       <Award className="mr-2 h-4 w-4" />
                       <span>Certificate of completion</span>
                     </div>
                     <div className="flex items-center mr-2 h-4 w-4">
-                    <FontAwesomeIcon icon={faStar} style={{color: "#FFD43B",}} />
-                      <span className="m-2">
-                        {course.rating.toFixed(1)}
-                      </span>
+                      <FontAwesomeIcon
+                        icon={faStar}
+                        style={{ color: "#FFD43B" }}
+                      />
+                      <span className="m-2">{course.rating.toFixed(1)}</span>
                     </div>
-                    <div className="flex items-center ">
-                    <FontAwesomeIcon icon={faFeatherPointed} style={{color: "#908e8e",}} />
+                    {/* <div className="flex items-center ">
+                      <FontAwesomeIcon
+                        icon={faFeatherPointed}
+                        style={{ color: "#908e8e" }}
+                      />
 
-                        <span className="ml-2 " >
-                        {course.numReviews} reviews
-                        </span>
-                      </div>
+                      <span className="ml-2 ">{course.numReviews} reviews</span>
+                    </div> */}
                   </div>
                 </CardContent>
               </Card>
@@ -515,7 +538,3 @@ export default function CourseInfo() {
     </DefaultLayout>
   );
 }
-
-
-
-
