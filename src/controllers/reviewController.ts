@@ -46,12 +46,11 @@ export const addReview = async (req: Request, res: Response) => {
 
     await course.save();
 
-    const updatedCourse = await Course.findById(courseId)
-      .select("reviews")
-      .populate({
-        path: "reviews.user",
-        select: "firstName lastName",
-      });
+    const updatedCourse = await Course.findById(courseId).populate({
+      path: "reviews.user",
+      select: "firstName lastName",
+      model: "User",
+    });
 
     const addedReview =
       updatedCourse?.reviews[updatedCourse?.reviews.length - 1];
@@ -59,5 +58,54 @@ export const addReview = async (req: Request, res: Response) => {
   } catch (error) {
     console.error("Error adding review:", error);
     res.status(500).json({ message: "Server error" });
+  }
+};
+
+export const getAllReviews = async (req: Request, res: Response) => {
+  try {
+    const courseId = req.params.id;
+
+    const course = await Course.findById(courseId).populate({
+      path: "reviews.user",
+      select: "firstName lastName",
+      model: "User",
+    });
+    if (!course) {
+      return res.status(404).json({ message: "Course not found" });
+    }
+
+    res.status(200).json(course?.reviews);
+  } catch (error) {
+    console.error("Error getting reviews", error);
+    res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const deleteReviewById = async (req: Request, res: Response) => {
+  try {
+    const courseId = req.params.id;
+    const reviewId = req.params.reviewId;
+
+    const course = await Course.findByIdAndUpdate(
+      courseId,
+      {
+        $pull: {
+          reviews: { _id: reviewId },
+        },
+      },
+      { new: true }
+    );
+    if (!course) {
+      return res
+        .status(404)
+        .json({ message: "Course or Review doesnot exists" });
+    }
+    res.status(200).json({
+      message: "Review deleted successfully",
+      course,
+    });
+  } catch (error) {
+    console.error("Error deleting review", error);
+    res.status(500).json({ message: "Internal server error" });
   }
 };

@@ -5,7 +5,7 @@ import authRoutes from "./routes/authRoutes";
 import userRoutes from "./routes/userRoutes";
 import courseRoutes from "./routes/courseRoutes";
 import cartRoutes from "./routes/cartRoutes";
-// import reviewRoutes from './routes/reviewRoutes';
+import reviewRoutes from "./routes/reviewRoutes";
 import razorpayRoutes from "./routes/razorpayRoutes";
 import sectionRoutes from "./routes/sectionRoutes";
 import videoRoutes from "./routes/videoRoutes";
