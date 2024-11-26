@@ -9,7 +9,6 @@ import cartRoutes from "./routes/cartRoutes";
 import razorpayRoutes from "./routes/razorpayRoutes";
 import sectionRoutes from "./routes/sectionRoutes";
 import videoRoutes from "./routes/videoRoutes";
-// import { deleteReview } from "./controllers/reviewController";
 const app = express();
 
 const allowedOrigins = [
@@ -33,8 +32,8 @@ app.use("/api", courseRoutes);
 app.use("/api", cartRoutes);
 app.use("/api", sectionRoutes);
 app.use("/api", videoRoutes);
-// app.use('/api', reviewRoutes);
-// app.use("/api", deleteReview);
+app.use("/api", reviewRoutes);
+
 app.use("/api/payment", razorpayRoutes);
 app.use("/uploads", express.static("uploads"));
 export default app;
