@@ -1,9 +1,11 @@
 import Particles, { initParticlesEngine } from '@tsparticles/react'
 import { useEffect, useMemo, useState } from 'react'
 import { loadSlim } from '@tsparticles/slim'
+import { useTheme } from '@/context/themeContext'
 import './Particles.css'
 const ParticleBackground = props => {
   const [init, setInit] = useState(false)
+  const { theme } = useTheme()
 
   // Initialize particles engine
   useEffect(() => {
@@ -23,7 +25,7 @@ const ParticleBackground = props => {
     () => ({
       background: {
         color: {
-          value: '#181E24'
+          value: theme === 'dark' ? '#181E24' : '#FFFFFF'
         }
       },
       fpsLimit: 120,
@@ -50,10 +52,10 @@ const ParticleBackground = props => {
       },
       particles: {
         color: {
-          value: '#FFFFFF'
+          value: theme === 'dark' ? '#FFFFFF' : '#000000'
         },
         links: {
-          color: '#FFFFFF',
+          color: theme === 'dark' ? '#FFFFFF' : '#000000',
           distance: 150,
           enable: true,
           opacity: 0.3,
@@ -87,7 +89,7 @@ const ParticleBackground = props => {
       },
       detectRetina: true
     }),
-    []
+    [theme]
   )
 
   return <Particles id={props.id} options={options} />
