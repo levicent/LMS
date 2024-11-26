@@ -34,6 +34,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
 import AddReviewComponent from "@/components/Ratings/Review";
 import { ScrollArea } from "@/components/ui/scroll-area";
+import { useFetchReviews } from "@/hooks/useFetchReviews";
 
 interface CourseData {
   _id: string;
@@ -103,6 +104,10 @@ export default function CourseInfo() {
   }
 
   const { isAuthenticated } = authContext;
+
+  //Reviews
+  const courseId: string = course?._id || "";
+  const { data: reviews } = useFetchReviews(courseId);
 
   useEffect(() => {
     const state = location.state as LocationState | null;
@@ -302,22 +307,22 @@ export default function CourseInfo() {
                     <CardHeader className="border-b border-gray-200 dark:border-gray-700">
                       <CardTitle className="text-xl font-semibold flex items-center gap-2">
                         <span>Reviews</span>
-                        {course.reviews?.length > 0 && (
+                        {Array.isArray(reviews) && reviews.length > 0 && (
                           <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                            ({course.reviews.length})
+                            ({reviews.length})
                           </span>
                         )}
                       </CardTitle>
                     </CardHeader>
                     <CardContent className="pt-4">
-                      {course.reviews && course.reviews.length > 0 ? (
+                      {Array.isArray(reviews) && reviews.length > 0 ? (
                         <ScrollArea className="h-[400px] pr-4">
                           <div className="space-y-4 pr-2">
-                            {course.reviews.map((review) => (
+                            {reviews.map((review) => (
                               <div
                                 key={review._id}
                                 className={`p-4 rounded-lg ${
-                                  course.reviews.indexOf(review) % 2 === 0
+                                  reviews.indexOf(review) % 2 === 0
                                     ? "bg-gray-50 dark:bg-gray-900/50"
                                     : "bg-white dark:bg-gray-800"
                                 }`}

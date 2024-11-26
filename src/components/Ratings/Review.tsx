@@ -1,17 +1,17 @@
-import { useAddReview } from '@/hooks/useAddReview';
-import React, { useState } from 'react';
-import { Star } from 'lucide-react';
-import { toast } from 'react-toastify';
+import { useAddReview } from "@/hooks/useAddReview";
+import React, { useState } from "react";
+import { Star } from "lucide-react";
+import { toast } from "react-toastify";
 
 interface ReviewProps {
   courseId: string;
-  userId?: string; 
+  userId?: string;
 }
 
 const Review: React.FC<ReviewProps> = ({ courseId }) => {
   const [rating, setRating] = useState<number>(0);
   const [hover, setHover] = useState<number>(0);
-  const [review, setReview] = useState<string>('');
+  const [review, setReview] = useState<string>("");
   const addReviewMutation = useAddReview();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -22,18 +22,17 @@ const Review: React.FC<ReviewProps> = ({ courseId }) => {
         rating,
         review: review.trim(),
       });
-      toast.success('Review submitted successfully');
+      toast.success("Review submitted successfully");
       console.log(data);
       toast.success(data.addedReview.user.firstName);
       setRating(0);
-      setReview('');
+      setReview("");
       setHover(0);
     } catch (error) {
-      toast.error('Failed to submit review');
+      toast.error("Failed to submit review");
     }
   };
 
-  
   const isLoggedIn = true;
 
   if (!isLoggedIn) {
@@ -43,6 +42,8 @@ const Review: React.FC<ReviewProps> = ({ courseId }) => {
       </div>
     );
   }
+
+  //Reviews
 
   return (
     <div className="w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow">
@@ -59,16 +60,20 @@ const Review: React.FC<ReviewProps> = ({ courseId }) => {
                 onMouseEnter={() => setHover(star)}
                 onMouseLeave={() => setHover(rating)}
                 className={`cursor-pointer mr-1 ${
-                  star <= (hover || rating) 
-                    ? 'fill-yellow-400 text-yellow-400' 
-                    : 'text-gray-300'
+                  star <= (hover || rating)
+                    ? "fill-yellow-400 text-yellow-400"
+                    : "text-gray-300"
                 }`}
               />
             ))}
-            {rating > 0 && <span className="ml-2 text-gray-700">{rating} Star{rating > 1 && 's'}</span>}
+            {rating > 0 && (
+              <span className="ml-2 text-gray-700">
+                {rating} Star{rating > 1 && "s"}
+              </span>
+            )}
           </div>
         </div>
-       
+
         <div className="mb-4">
           <label className="block text-gray-700">Review:</label>
           <textarea
@@ -79,13 +84,13 @@ const Review: React.FC<ReviewProps> = ({ courseId }) => {
             rows={4}
           />
         </div>
-       
+
         <button
           type="submit"
           disabled={addReviewMutation.isLoading || rating === 0}
           className="w-full bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {addReviewMutation.isLoading ? 'Submitting...' : 'Submit Review'}
+          {addReviewMutation.isLoading ? "Submitting..." : "Submit Review"}
         </button>
         {addReviewMutation.isError && (
           <p className="text-red-500 mt-2">
