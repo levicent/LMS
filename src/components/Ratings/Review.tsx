@@ -1,120 +1,99 @@
 import { useAddReview } from '@/hooks/useAddReview';
-import { useGetUserId } from '@/hooks/useGetUserId';
 import React, { useState } from 'react';
-import { FaStar } from 'react-icons/fa';
-import { Loader2 } from 'lucide-react';
+import { Star } from 'lucide-react';
 import { toast } from 'react-toastify';
 
-
-interface ReviewComponentProps {
+interface ReviewProps {
   courseId: string;
+  userId?: string; 
 }
 
-export const ReviewComponent = ({ courseId }: ReviewComponentProps) => {
-  const { userId } = useGetUserId();
+const Review: React.FC<ReviewProps> = ({ courseId }) => {
   const [rating, setRating] = useState<number>(0);
   const [hover, setHover] = useState<number>(0);
-  const [review, setReview] = useState('');
+  const [review, setReview] = useState<string>('');
   const addReviewMutation = useAddReview();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    
-    if (!userId) {
-      toast.error('Please login to submit a review');
-      return;
-    }
-
-    if (!rating || !review.trim()) {
-      toast.error('Please provide both rating and review');
-      return;
-    }
-
     try {
       await addReviewMutation.mutateAsync({
         courseId,
-        userId : userId,
         rating,
-        review: review.trim()
+        review: review.trim(),
       });
       
       toast.success('Review submitted successfully');
       setRating(0);
       setReview('');
+      setHover(0);
     } catch (error) {
       toast.error('Failed to submit review');
     }
   };
 
-  if (!userId) {
+  
+  const isLoggedIn = true;
+
+  if (!isLoggedIn) {
     return (
       <div className="text-center p-4 text-gray-600">
-        Please login to submit a review
+        Please log in to submit a review
       </div>
     );
   }
 
   return (
-    <div className="w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow dark:bg-gray-800">
-      <h3 className="text-lg font-semibold mb-4">Write a Review</h3>
-      
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-medium mb-2">Rating</label>
-          <div className="flex gap-1">
+    <div className="w-full max-w-md mx-auto p-4 bg-white rounded-lg shadow">
+      <form onSubmit={handleSubmit}>
+        {/* Star Rating Input */}
+        <div className="mb-4">
+          <label className="block text-gray-700 mb-2">Rating:</label>
+          <div className="flex items-center">
             {[1, 2, 3, 4, 5].map((star) => (
-              <button
+              <Star
                 key={star}
-                type="button"
+                size={24}
                 onClick={() => setRating(star)}
                 onMouseEnter={() => setHover(star)}
-                onMouseLeave={() => setHover(0)}
-                className="focus:outline-none"
-              >
-                <FaStar
-                  className={`w-6 h-6 ${
-                    star <= (hover || rating)
-                      ? 'text-yellow-400'
-                      : 'text-gray-300'
-                  }`}
-                />
-              </button>
+                onMouseLeave={() => setHover(rating)}
+                className={`cursor-pointer mr-1 ${
+                  star <= (hover || rating) 
+                    ? 'fill-yellow-400 text-yellow-400' 
+                    : 'text-gray-300'
+                }`}
+              />
             ))}
+            {rating > 0 && <span className="ml-2 text-gray-700">{rating} Star{rating > 1 && 's'}</span>}
           </div>
         </div>
-
-        <div>
-          <label htmlFor="review" className="block text-sm font-medium mb-2">
-            Your Review
-          </label>
+       
+        <div className="mb-4">
+          <label className="block text-gray-700">Review:</label>
           <textarea
-            id="review"
             value={review}
             onChange={(e) => setReview(e.target.value)}
-            className="w-full px-3 py-2 border rounded-md text-sm resize-none focus:ring-2 focus:ring-blue-500"
-            rows={3}
-            placeholder="Share your experience..."
-            disabled={addReviewMutation.isLoading}
+            required
+            className="mt-1 block w-full border border-gray-300 rounded-md text-gray-900"
+            rows={4}
           />
         </div>
-
+       
         <button
           type="submit"
-          disabled={addReviewMutation.isLoading || !rating || !review.trim()}
-          className="w-full py-2 px-4 bg-blue-600 text-white rounded-md hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
+          disabled={addReviewMutation.isLoading || rating === 0}
+          className="w-full bg-blue-500 text-white py-2 px-4 rounded-md disabled:opacity-50 disabled:cursor-not-allowed"
         >
-          {addReviewMutation.isLoading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin" />
-              Submitting...
-            </>
-          ) : (
-            'Submit Review'
-          )}
+          {addReviewMutation.isLoading ? 'Submitting...' : 'Submit Review'}
         </button>
+        {addReviewMutation.isError && (
+          <p className="text-red-500 mt-2">
+            Error: {addReviewMutation.error?.message}
+          </p>
+        )}
       </form>
     </div>
   );
 };
 
-export default ReviewComponent;
+export default Review;
