@@ -17,13 +17,14 @@ const Review: React.FC<ReviewProps> = ({ courseId }) => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await addReviewMutation.mutateAsync({
+      const data = await addReviewMutation.mutateAsync({
         courseId,
         rating,
         review: review.trim(),
       });
-      
       toast.success('Review submitted successfully');
+      console.log(data);
+      toast.success(data.addedReview.user.firstName);
       setRating(0);
       setReview('');
       setHover(0);
