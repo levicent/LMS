@@ -15,7 +15,7 @@ import {
   Typography,
   Card,
   CardContent,
-  TablePagination,
+  // TablePagination,
 } from "@mui/material";
 import { Add, Edit, Delete } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
@@ -31,8 +31,8 @@ const UsersTable = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm")); // Check if the view is mobile-sized
 
   // Pagination state
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(6); // Set rows per page to 6
+  const [page /*setPage*/] = useState(0);
+  const [rowsPerPage /* setRowsPerPage*/] = useState(6); // Set rows per page to 6
 
   const handleEdit = (user: any) => {
     navigate(`/admin/dashboard/user/edit/${user._id}`, { state: { user } });
@@ -48,17 +48,17 @@ const UsersTable = () => {
   };
 
   // Handle page change
-  const handleChangePage = (newPage: number) => {
-    setPage(newPage);
-  };
+  // const handleChangePage = (newPage: number) => {
+  //   setPage(newPage);
+  // };
 
   // Handle rows per page change
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
+  // const handleChangeRowsPerPage = (
+  //   event: React.ChangeEvent<HTMLInputElement>
+  // ) => {
+  //   setRowsPerPage(parseInt(event.target.value, 10));
+  //   setPage(0);
+  // };
 
   if (isLoading) return <p>Loading users...</p>;
   if (error) return <p>Error fetching users.</p>;
