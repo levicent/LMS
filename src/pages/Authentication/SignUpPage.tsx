@@ -1,6 +1,7 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { useForm } from "react-hook-form";
 import { AxiosError } from "axios";
+import { Eye, EyeOff } from "lucide-react";
 import { Link, useNavigate } from "react-router-dom";
 import ParticlesComponent from "../../components/ParticleBackground/ParticleBackground";
 import AuthContext from "@/context/authContext";
@@ -29,7 +30,7 @@ const SignupPage: React.FC = () => {
     formState: { errors },
     watch,
   } = useForm<FormData>();
-
+  const [showPassword, setShowPassword] = useState(false);
   const authContext = useContext(AuthContext);
 
   if (!authContext) {
@@ -76,6 +77,9 @@ const SignupPage: React.FC = () => {
   };
 
   const password = watch("password", "");
+  const togglePasswordVisibility = () => {
+    setShowPassword(!showPassword);
+  };
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-gray-100">
@@ -200,9 +204,10 @@ const SignupPage: React.FC = () => {
             >
               Password
             </label>
+            <div className="relative">
             <input
               id="password"
-              type="password"
+              type={showPassword ? "text" : "password"}
               {...register("password", {
                 required: "Password is required.",
                 minLength: {
@@ -214,6 +219,19 @@ const SignupPage: React.FC = () => {
                 errors.password ? "border-red-500" : "border-gray-300"
               } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
             />
+            <button
+                    type="button"
+                    onClick={togglePasswordVisibility}
+                    className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
+                    aria-label={showPassword ? "Hide password" : "Show password"}
+                  >
+                    {showPassword ? (
+                      <EyeOff className="h-5 w-5" />
+                    ) : (
+                      <Eye className="h-5 w-5" />
+                    )}
+            </button>
+            </div>
             {errors.password && (
               <p className="text-red-500 text-sm mt-1">
                 {errors.password.message}
