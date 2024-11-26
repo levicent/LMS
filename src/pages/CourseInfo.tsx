@@ -30,9 +30,10 @@ import { useCart } from "@/context/cartContext";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
 import { useFetchEnrolledCourses } from "@/hooks/useEnrollCourse";
-// import { useAddReview } from "@/hooks/useAddReview";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faStar } from "@fortawesome/free-solid-svg-icons";
+import { faFeatherPointed, faStar } from "@fortawesome/free-solid-svg-icons";
+import AddReviewComponent from "@/components/Ratings/Review";
+import { ScrollArea } from "@/components/ui/scroll-area";
 
 interface CourseData {
   _id: string;
@@ -310,33 +311,33 @@ export default function CourseInfo() {
                     </CardHeader>
                     <CardContent className="pt-4">
                       {course.reviews && course.reviews.length > 0 ? (
-                        <div className="space-y-4">
-                          {course.reviews.map((review) => (
-                            <div
-                              key={review._id}
-                              className={`p-4 rounded-lg ${
-                                course.reviews.indexOf(review) % 2 === 0
-                                  ? "bg-gray-50 dark:bg-gray-900/50"
-                                  : "bg-white dark:bg-gray-800"
-                              }`}
-                            >
-                              <div className="flex items-center gap-3 mb-2">
-                                <Ratings value={review.rating} />
-
-                                <div>
-                                  <h4 className="font-medium text-gray-900 dark:text-gray-100">
-                                    {review.user
-                                      ? `${review.user.firstName}`
-                                      : "Anonymous"}
-                                  </h4>
+                        <ScrollArea className="h-[400px] pr-4">
+                          <div className="space-y-4 pr-2">
+                            {course.reviews.map((review) => (
+                              <div
+                                key={review._id}
+                                className={`p-4 rounded-lg ${
+                                  course.reviews.indexOf(review) % 2 === 0
+                                    ? "bg-gray-50 dark:bg-gray-900/50"
+                                    : "bg-white dark:bg-gray-800"
+                                }`}
+                              >
+                                <div className="flex items-center gap-3 mb-2">
+                                  <Ratings value={review.rating || 0} />
+                                  <div>
+                                    <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                                      {review.user?.firstName}{" "}
+                                      {review.user?.lastName || "Anonymous"}
+                                    </h4>
+                                  </div>
                                 </div>
+                                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                  {review.review || "No review content"}
+                                </p>
                               </div>
-                              <p className="text-gray-600 dark:text-gray-300 text-sm">
-                                {review.review}
-                              </p>
-                            </div>
-                          ))}
-                        </div>
+                            ))}
+                          </div>
+                        </ScrollArea>
                       ) : (
                         <div className="text-center py-8 text-gray-500 dark:text-gray-400">
                           <p>No reviews yet</p>
@@ -345,6 +346,16 @@ export default function CourseInfo() {
                           </p>
                         </div>
                       )}
+
+                      <div className="mt-4">
+                        {isEnrolled ? (
+                          <AddReviewComponent courseId={course._id} />
+                        ) : (
+                          <div className="text-center p-4 text-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                            <p>Course Review</p>
+                          </div>
+                        )}
+                      </div>
                     </CardContent>
                   </Card>
                 </TabsContent>
@@ -520,14 +531,14 @@ export default function CourseInfo() {
                       />
                       <span className="m-2">{course.rating.toFixed(1)}</span>
                     </div>
-                    {/* <div className="flex items-center ">
+                    <div className="flex items-center ">
                       <FontAwesomeIcon
                         icon={faFeatherPointed}
                         style={{ color: "#908e8e" }}
                       />
 
                       <span className="ml-2 ">{course.numReviews} reviews</span>
-                    </div> */}
+                    </div>
                   </div>
                 </CardContent>
               </Card>
