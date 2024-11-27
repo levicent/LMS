@@ -38,7 +38,7 @@ const SignupPage: React.FC = () => {
   }
 
   const { setIsAuthenticated } = authContext;
-
+  const passwordValue = watch("password");
   const { mutateAsync: SignupMutation } = useSignupMutation({
     onSuccess: (data) => {
       console.log("Data", data);
@@ -219,7 +219,8 @@ const SignupPage: React.FC = () => {
                 errors.password ? "border-red-500" : "border-gray-300"
               } rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500`}
             />
-            <button
+           {passwordValue && (
+                  <button
                     type="button"
                     onClick={togglePasswordVisibility}
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
@@ -230,14 +231,15 @@ const SignupPage: React.FC = () => {
                     ) : (
                       <Eye className="h-5 w-5" />
                     )}
-            </button>
-            </div>
-            {errors.password && (
-              <p className="text-red-500 text-sm mt-1">
-                {errors.password.message}
-              </p>
-            )}
-          </div>
+                  </button>
+                )}
+                </div>
+                {errors.password && (
+                  <p className="text-red-500 text-sm mt-1" role="alert">
+                    {errors.password.message}
+                  </p>
+                )}
+              </div>
 
           <div>
             <label

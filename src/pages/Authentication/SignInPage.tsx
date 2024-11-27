@@ -27,6 +27,7 @@ const SignInPage: React.FC = () => {
   const {
     handleSubmit,
     register,
+    watch,
     formState: { errors, isSubmitting },
   } = useForm<FormValues>();
 
@@ -37,6 +38,8 @@ const SignInPage: React.FC = () => {
       console.error("Login failed", error);
     }
   };
+
+  const passwordValue = watch("password");
 
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
@@ -116,7 +119,8 @@ const SignInPage: React.FC = () => {
                   className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   aria-invalid={errors.password ? "true" : "false"}
                 />
-                 <button
+                  {passwordValue && (
+                  <button
                     type="button"
                     onClick={togglePasswordVisibility}
                     className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
@@ -128,6 +132,7 @@ const SignInPage: React.FC = () => {
                       <Eye className="h-5 w-5" />
                     )}
                   </button>
+                )}
                 </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1" role="alert">
