@@ -255,88 +255,42 @@ export default function CourseInfo() {
                       </ul>
                     </CardContent>
                   </Card>
-                  <Card className="mt-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <CardHeader>
-                      <CardTitle>Course content</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <div className="space-y-2">
-                        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-                          <span>{staticData.totalLectures} lectures</span>
-                          <span>{course.duration}</span>
-                        </div>
-                        <Progress value={33} className="w-full" />
-                        <div className="flex flex-wrap gap-4">
-                          <div className="flex items-center">
-                            <PlayCircle className="mr-2 h-4 w-4" />
-                            <span>
-                              {staticData.totalLectures} video lectures
+                  <Card className="w-full mt-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
+                    <CardHeader className="border-b border-gray-200 dark:border-gray-700 px-4 sm:px-6">
+                      <CardTitle className="text-lg sm:text-xl font-semibold flex flex-col sm:flex-row items-start sm:items-center gap-2">
+                        <div className="flex items-center gap-2">
+                          <span>Reviews</span>
+                          {Array.isArray(reviews) && reviews.length > 0 && (
+                            <span className="text-xs sm:text-sm font-normal text-gray-500 dark:text-gray-400">
+                              ({reviews.length})
                             </span>
-                          </div>
-                          <div className="flex items-center">
-                            <FileText className="mr-2 h-4 w-4" />
-                            <span>{staticData.totalArticles} articles</span>
-                          </div>
-                          <div className="flex items-center">
-                            <Download className="mr-2 h-4 w-4" />
-                            <span>
-                              {staticData.totalDownloads} downloadable resources
-                            </span>
-                          </div>
+                          )}
                         </div>
-                      </div>
-                    </CardContent>
-                  </Card>
-                  <Card className="mt-4 bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-                    <CardHeader>
-                      <CardTitle>Requirements</CardTitle>
-                    </CardHeader>
-                    <CardContent>
-                      <ul className="list-disc list-inside space-y-2">
-                        {course.prerequisites ? (
-                          course.prerequisites.map((prerequisite, index) => (
-                            <li key={index}>{prerequisite}</li>
-                          ))
-                        ) : (
-                          <li>No specific prerequisites</li>
-                        )}
-                      </ul>
-                    </CardContent>
-                  </Card>
-                  <Card className="mt-4 bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700">
-                    <CardHeader className="border-b border-gray-200 dark:border-gray-700">
-                      <CardTitle className="text-xl font-semibold flex items-center gap-2">
-                        <span>Reviews</span>
-                        {Array.isArray(reviews) && reviews.length > 0 && (
-                          <span className="text-sm font-normal text-gray-500 dark:text-gray-400">
-                            ({reviews.length})
-                          </span>
-                        )}
                       </CardTitle>
                     </CardHeader>
-                    <CardContent className="pt-4">
+
+                    <CardContent className="pt-4 px-4 sm:px-6">
                       {Array.isArray(reviews) && reviews.length > 0 ? (
-                        <ScrollArea className="h-[400px] pr-4">
-                          <div className="space-y-4 pr-2">
+                        <ScrollArea className="h-[300px] sm:h-[400px] pr-2 sm:pr-4">
+                          <div className="space-y-3 sm:space-y-4 pr-1 sm:pr-2">
                             {reviews.map((review) => (
                               <div
                                 key={review._id}
-                                className={`p-4 rounded-lg ${
-                                  reviews.indexOf(review) % 2 === 0
+                                className={`p-3 sm:p-4 rounded-lg ${reviews.indexOf(review) % 2 === 0
                                     ? "bg-gray-50 dark:bg-gray-900/50"
                                     : "bg-white dark:bg-gray-800"
-                                }`}
+                                  }`}
                               >
-                                <div className="flex items-center gap-3 mb-2">
+                                <div className="flex items-center gap-2 sm:gap-3 mb-2">
                                   <Ratings value={review.rating || 0} />
                                   <div>
-                                    <h4 className="font-medium text-gray-900 dark:text-gray-100">
+                                    <h4 className="font-medium text-sm sm:text-base text-gray-900 dark:text-gray-100">
                                       {review.user?.firstName}{" "}
                                       {review.user?.lastName || "Anonymous"}
                                     </h4>
                                   </div>
                                 </div>
-                                <p className="text-gray-600 dark:text-gray-300 text-sm">
+                                <p className="text-xs sm:text-sm text-gray-600 dark:text-gray-300">
                                   {review.review || "No review content"}
                                 </p>
                               </div>
@@ -344,25 +298,26 @@ export default function CourseInfo() {
                           </div>
                         </ScrollArea>
                       ) : (
-                        <div className="text-center py-8 text-gray-500 dark:text-gray-400">
-                          <p>No reviews yet</p>
-                          <p className="text-sm mt-1">
+                        <div className="text-center py-6 sm:py-8 text-gray-500 dark:text-gray-400">
+                          <p className="text-sm sm:text-base">No reviews yet</p>
+                          <p className="text-xs sm:text-sm mt-1">
                             Be the first to review this course!
                           </p>
                         </div>
                       )}
 
-                      <div className="mt-4">
+                      <div className="mt-3 sm:mt-4">
                         {isEnrolled ? (
                           <AddReviewComponent courseId={course._id} />
                         ) : (
-                          <div className="text-center p-4 text-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg">
+                          <div className="text-center p-3 sm:p-4 text-xs sm:text-sm text-gray-600 bg-gray-50 dark:bg-gray-800 rounded-lg">
                             <p>Course Review</p>
                           </div>
                         )}
                       </div>
                     </CardContent>
                   </Card>
+
                 </TabsContent>
                 <TabsContent
                   value="curriculum"
