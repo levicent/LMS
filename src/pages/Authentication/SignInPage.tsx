@@ -48,8 +48,8 @@ const SignInPage: React.FC = () => {
       <main className="relative z-10 max-w-7xl w-full px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <section className="text-white space-y-6">
-            <h1 className="text-4xl font-boldc text-black">LMS by GWT</h1>
-            <p className="text-lg text-black">
+            <h1 className="text-4xl font-boldc text-black dark:text-white">LMS by GWT</h1>
+            <p className="text-lg text-black dark:text-white">
               Elevate your learning experience with LMS. Manage your courses,
               track your progress, and stay on top of your studies.
             </p>
