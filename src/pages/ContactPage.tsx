@@ -2,7 +2,9 @@ import React from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link } from "react-router-dom";
 import { MapPin, Phone, Mail } from "lucide-react";
+import emailjs from 'emailjs-com';
 import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
+import { toast } from "react-toastify";
 
 
 type FormValues = {
@@ -25,16 +27,32 @@ const ContactPage: React.FC = () => {
   const {
     handleSubmit,
     register,
+    reset,
     formState: { errors },
   } = useForm<FormValues>();
 
   const onSubmit: SubmitHandler<FormValues> = async (data) => {
     try {
       console.log("Form submitted:", data);
-      // Add logic here to send the form data to your backend
-      // You might want to use a service or API call here
+    
+      //Temp solution for sending email need to private api keys 
+      const serviceId = "service_zoy2ar8"; 
+      const templateId = "template_w9cotza";  
+      const userId = "US5PROKqMNZyOxfFw"; 
+      console.log(serviceId)
+      const templateParams = {
+        from_name: data.name,
+        from_email: data.email,
+        subject: data.subject,
+        message: data.message,
+      };
+
+      await emailjs.send(serviceId, templateId, templateParams, userId);
+      toast.success("Your message has been sent successfully!");
+      reset();
     } catch (error) {
-      console.error("Form submission failed", error);
+      console.error("Failed to send the message", error);
+      toast.error("Failed to send the message. Please try again later.");
     }
   };
 
@@ -47,6 +65,7 @@ const ContactPage: React.FC = () => {
   return (
     <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black">
       {/* Background Particles */}
+     
       <ParticlesComponent id="tsparticles" className="absolute inset-0 z-0" />
 
       {/* Content Wrapper */}
@@ -73,7 +92,7 @@ const ContactPage: React.FC = () => {
                 </div>
                 <div className="flex items-center">
                   <Mail className="w-5 h-5 mr-3" />
-                  <span className="text-sm">contact@lmsbygwt.com</span>
+                  <span className="text-sm">lms_contact@levicent.com</span>
                 </div>
               </div>
             </div>
