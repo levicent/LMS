@@ -14,7 +14,7 @@ export const ChatBot = ({ isOpen, onClose }: any) => {
           ${isOpen ? 'translate-y-0' : 'translate-y-full'}`}
       >
         <iframe 
-          src="https://typebot.co/customer-support-tdthp6h" 
+          src="https://typebot.co/customer-support-9j5k20i" 
           className="w-full h-full  border-none"
           title="Customer Support Chat"
         />
