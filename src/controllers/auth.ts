@@ -71,8 +71,10 @@ export const register = async (req: Request, res: Response) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
-      maxAge: 7 * 24 * 60 * 60 * 1000,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api",
+      maxAge: 7 * 24 * 60 * 60 * 1000, //7days
     });
     res.status(201).json({
       message: "User registered successfully",
@@ -122,7 +124,10 @@ export const login = async (req: Request, res: Response) => {
 
     res.cookie("refreshToken", refreshToken, {
       httpOnly: true,
-      secure: false,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000, //7days
+      path: "/api",
     });
     res.status(200).json({
       message: "User logged in successfully",
@@ -136,16 +141,25 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
-
+  if (!refreshToken) {
+    return res.status(400).json({ message: "No refresh token found" });
+  }
   try {
     const user = await User.findOneAndUpdate(
       { refreshToken },
-      { refreshToken: null }
+      { refreshToken: null },
+      { new: true }
     );
     if (!user) {
       return res.status(400).json({ message: "User not found" });
     }
-    res.clearCookie("refreshToken");
+    res.clearCookie("refreshToken", {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "strict",
+      path: "/api",
+    });
+
     res.status(200).json({ message: "User logged out successfully" });
   } catch (error) {
     console.error("Error logging out user", error);
