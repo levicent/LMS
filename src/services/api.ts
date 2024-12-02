@@ -23,13 +23,17 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
     if (
-      error.response &&
-      error.response.status === 401 &&
-      !originalRequest._retry
+      error.response?.status === 401 &&
+      !originalRequest._retry &&
+      originalRequest !== "/refresh-token"
     ) {
       originalRequest._retry = true;
       try {
-        const { data } = await api.post(`/refresh-token`);
+        const { data } = await api.post(
+          `/refresh-token`,
+          {},
+          { withCredentials: true }
+        );
         localStorage.setItem("token", data.accessToken);
         originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
 
