@@ -22,9 +22,7 @@ const Review: React.FC<ReviewProps> = ({ courseId }) => {
         rating,
         review: review.trim(),
       });
-      toast.success("Review submitted successfully");
-      console.log(data);
-      toast.success(data.addedReview.user.firstName);
+      toast.success(`Review submitted successfully, Thanks! ${data.addedReview.user.firstName}`);
       setRating(0);
       setReview("");
       setHover(0);
