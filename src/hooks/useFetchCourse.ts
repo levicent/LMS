@@ -17,6 +17,7 @@ interface CourseData {
   thumbnail: string;
   category: string;
   language: string;
+  rating: string;
 }
 
 const fetchCourses = async (): Promise<CourseData[]> => {
