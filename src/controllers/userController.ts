@@ -179,3 +179,18 @@ export const updateUserProfile = [
     }
   },
 ];
+
+export const getUserByRole = async (req: Request, res: Response) => {
+  try {
+   const role = 'teacher';
+    const users = await User.find({ role });
+    if (!users) {
+      return res.status(404).json({ message: "No users found" });
+    }
+
+    res.status(200).json({ users });
+  } catch (error) {
+    console.error("Error getting user by id: ", error);
+    res.status(500).json({ message: "TeacherFetchEror" });
+  }
+};
