@@ -1,9 +1,17 @@
-import api from "@/services/api";
+import axios from "axios";
 import { useQuery } from "react-query";
 
 const fetchReviews = async (id: string) => {
   try {
-    const response = await api.get(`/courses/${id}/reviews`);
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/courses/${id}/reviews`,
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem("token")}`,
+        },
+        withCredentials: true,
+      }
+    );
     console.log("Response", response.data);
     return response.data;
   } catch (error) {
