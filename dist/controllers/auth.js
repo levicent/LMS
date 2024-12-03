@@ -67,8 +67,10 @@ const register = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
-            maxAge: 7 * 24 * 60 * 60 * 1000,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            path: "/api",
+            maxAge: 7 * 24 * 60 * 60 * 1000, //7days
         });
         res.status(201).json({
             message: "User registered successfully",
@@ -110,7 +112,10 @@ const login = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
         yield user.save();
         res.cookie("refreshToken", refreshToken, {
             httpOnly: true,
-            secure: false,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/api",
         });
         res.status(200).json({
             message: "User logged in successfully",
@@ -126,11 +131,17 @@ exports.login = login;
 const logout = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
     try {
-        const user = yield User_1.default.findOneAndUpdate({ refreshToken }, { refreshToken: null });
+        const user = yield User_1.default.findOneAndUpdate({ refreshToken }, { refreshToken: null }, { new: true });
         if (!user) {
             return res.status(400).json({ message: "User not found" });
         }
-        res.clearCookie("refreshToken");
+        res.clearCookie("refreshToken", {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "strict",
+            maxAge: 7 * 24 * 60 * 60 * 1000,
+            path: "/api",
+        });
         res.status(200).json({ message: "User logged out successfully" });
     }
     catch (error) {

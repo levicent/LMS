@@ -126,7 +126,7 @@ export const login = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
-      maxAge: 7 * 24 * 60 * 60 * 1000, //7days
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/api",
     });
     res.status(200).json({
@@ -141,9 +141,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
-  if (!refreshToken) {
-    return res.status(400).json({ message: "No refresh token found" });
-  }
+
   try {
     const user = await User.findOneAndUpdate(
       { refreshToken },
@@ -157,6 +155,7 @@ export const logout = async (req: Request, res: Response) => {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+      maxAge: 7 * 24 * 60 * 60 * 1000,
       path: "/api",
     });
 

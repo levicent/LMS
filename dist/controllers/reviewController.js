@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getAllReviews = exports.addReview = void 0;
+exports.deleteReviewById = exports.getAllReviews = exports.addReview = void 0;
 const mongoose_1 = __importDefault(require("mongoose"));
 const Courses_1 = __importDefault(require("../models/Courses"));
 const addReview = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -69,7 +69,7 @@ const getAllReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* 
         const courseId = req.params.id;
         const course = yield Courses_1.default.findById(courseId).populate({
             path: "reviews.user",
-            select: "firstName lastName email", // select which user fields you want
+            select: "firstName lastName",
             model: "User",
         });
         if (!course) {
@@ -83,3 +83,28 @@ const getAllReviews = (req, res) => __awaiter(void 0, void 0, void 0, function* 
     }
 });
 exports.getAllReviews = getAllReviews;
+const deleteReviewById = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const courseId = req.params.id;
+        const reviewId = req.params.reviewId;
+        const course = yield Courses_1.default.findByIdAndUpdate(courseId, {
+            $pull: {
+                reviews: { _id: reviewId },
+            },
+        }, { new: true });
+        if (!course) {
+            return res
+                .status(404)
+                .json({ message: "Course or Review doesnot exists" });
+        }
+        res.status(200).json({
+            message: "Review deleted successfully",
+            course,
+        });
+    }
+    catch (error) {
+        console.error("Error deleting review", error);
+        res.status(500).json({ message: "Internal server error" });
+    }
+});
+exports.deleteReviewById = deleteReviewById;

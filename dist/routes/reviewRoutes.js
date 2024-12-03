@@ -8,5 +8,6 @@ const reviewController_1 = require("../controllers/reviewController");
 const auth_1 = __importDefault(require("../middleware/auth"));
 const router = express_1.default.Router();
 router.post("/courses/:id/reviews", auth_1.default, reviewController_1.addReview);
-router.get("/courses/:id/reviews", auth_1.default, reviewController_1.getAllReviews);
+router.get("/courses/:id/reviews", reviewController_1.getAllReviews);
+router.delete("/courses/:id/review/:reviewId", auth_1.default, reviewController_1.deleteReviewById);
 exports.default = router;
