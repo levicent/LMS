@@ -23,10 +23,9 @@ import {
   Sparkles,
 } from "lucide-react";
 import DefaultLayout from "@/layout/DefaultLayout";
-
 export default function InstructorsPage() {
+  //Temporary use only might use some validation logic here , If not anyone can get the details of instructor
   const { data: instructors, isLoading, error } = useFetchInstructors();
-
   const handleVolunteerSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     // Handle form submission logic here
@@ -58,17 +57,14 @@ export default function InstructorsPage() {
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {instructors
-          .filter((instructor) => instructor.role === role)
-          .map((instructor, index) => (
+          .map((instructor:any, index:number) => (
             <Card key={index} className="bg-white dark:bg-gray-800 shadow-lg">
               <CardContent className="p-6">
-                <img
-                  src={`/placeholder.svg?height=100&width=100&text=${instructor.firstName.charAt(
-                    0
-                  )}${instructor.lastName.charAt(0)}`}
-                  alt={`${instructor.firstName} ${instructor.lastName}`}
-                  className="w-24 h-24 rounded-full mx-auto mb-4"
-                />
+              <img
+                src={instructor.image ? instructor.image : `/placeholder.svg?height=100&width=100&text=${instructor.firstName.charAt(0)}${instructor.lastName.charAt(0)}`}
+                alt={`${instructor.firstName} ${instructor.lastName}`}
+                className="w-24 h-24 rounded-full mx-auto mb-4"
+              />
                 <h3 className="text-xl font-bold text-gray-900 dark:text-gray-100 text-center mb-2">
                   {instructor.firstName} {instructor.lastName}
                 </h3>
@@ -77,8 +73,9 @@ export default function InstructorsPage() {
                 </p>
                 {role === "current" && (
                   <Button variant="outline" className="w-full">
-                    <Mail className="mr-2 h-4 w-4" /> Contact
+                    <Mail className="mr-2 h-4 w-4" /> {instructor.email}
                   </Button>
+                  
                 )}
               </CardContent>
             </Card>
