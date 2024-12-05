@@ -146,3 +146,19 @@ export const searchCourseByQuery = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+export const findCourseByCategory =async (req:Request, res:Response) => {
+   try {
+    const { category } = req.params;
+    const courses = await Course.find({ category: new RegExp(`^${category}$`, 'i') });
+
+    if (!courses || courses.length === 0) {
+      return res.status(404).json({ message: 'No courses found for this category' });
+    }
+    res.status(200).json(courses);
+   }
+    catch(error){
+      console.error("Error finding course by category", error);
+      res.status(500).json({message:"Internal server error for category", error});
+    }
+}

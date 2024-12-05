@@ -7,6 +7,7 @@ import {
   updateCourseById,
   deleteCourseById,
   searchCourseByQuery,
+  findCourseByCategory,
 } from "../controllers/courseController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -44,5 +45,5 @@ router.get("/course/search", searchCourseByQuery);
 
 router.post("/enroll/:courseId", authMiddleware, enrollCourseById);
 router.get("/enrolled-courses", authMiddleware, getEnrolledCourses);
-
+router.get('/courses/category/:category', findCourseByCategory)
 export default router;
