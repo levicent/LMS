@@ -9,6 +9,7 @@ import { Star, Users, Clock, Award, BookOpen, Globe, Zap, MessageCircle, X } fro
 import { useFetchCourses } from "@/hooks/useFetchCourse";
 import ShimmerCard from "./ShimmerCard";
 import {ChatBot} from "./CustomerSupport";
+import CountingNumber from "@/components/Counting/Counting";
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
@@ -17,6 +18,9 @@ const HomePage: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [loading, setIsLoading] = useState(true);
   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
+
+
+  
 
   if (!authContext) {
     navigate("/login");
@@ -204,16 +208,17 @@ const HomePage: React.FC = () => {
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
                 <Globe className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                  150+
+                   <CountingNumber target={150} duration={4000} />
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
                   Countries Reached
+                  
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
                 <Zap className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                  5000+
+                    <CountingNumber target={5000} duration={1000} />
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
                   Career Transitions
