@@ -21,7 +21,7 @@ import { Add, Edit, Delete } from "@mui/icons-material";
 import { useTheme } from "@mui/material/styles";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { useDeleteUser } from "@/hooks/useDeleteUser";
-
+import AdminLayout from "@/layout/AdminLayout";
 const UsersTable = () => {
   const navigate = useNavigate();
   const { data: users, isLoading, error } = useFetchUserDetails();
@@ -69,7 +69,8 @@ const UsersTable = () => {
     : [];
 
   return (
-    <>
+   <>
+    <AdminLayout>
       <Box
         sx={{
           display: "flex",
@@ -219,6 +220,7 @@ const UsersTable = () => {
           </Box>
         </TableContainer>
       )}
+      </AdminLayout>
     </>
   );
 };
