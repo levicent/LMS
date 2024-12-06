@@ -27,7 +27,7 @@ const categories = [
   { name: "Development", href: "/courses/category/development" },
   { name: "Business", href: "/courses/category/business" },
   { name: "Finance & Accounting", href: "/category/finance-accounting" },
-  { name: "IT & Software", href: "courses/category/it-software" },
+  { name: "IT & Software", href: "/courses/category/it-software" },
   { name: "Office Productivity", href: "/courses/category/office-productivity" },
   { name: "Personal Development", href: "/courses/category/personal-development" },
   { name: "Design", href: "/courses/category/design" },
