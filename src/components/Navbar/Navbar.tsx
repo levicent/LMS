@@ -1,7 +1,7 @@
 import { useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Popover, PopoverButton, PopoverPanel } from "@headlessui/react";
-import DarkLogo from "@/assets/DARK_LOGO.png"; // Adjust the path as needed
+import DarkLogo from "@/assets/DARK_LOGO.png";
 import LightLogo from "@/assets/LIGHT_LOGO.png";
 import {
   Bars3Icon,
@@ -40,11 +40,6 @@ const categories = [
 ];
 
 const products = [
-  {
-    name: "Courses",
-    description: "Explore available courses",
-    href: "/courses",
-  },
   {
     name: "Instructors",
     description: "Learn about our instructors",
