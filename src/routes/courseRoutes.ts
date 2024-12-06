@@ -24,8 +24,6 @@ router.get(
 );
 router.get(
   "/courses/:id",
-  authMiddleware,
-  checkRole(["teacher", "student"]),
   getCourseById
 );
 router.put(
