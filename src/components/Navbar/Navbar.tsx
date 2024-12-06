@@ -24,19 +24,19 @@ import SearchBar, { MobileSearchBar } from "../SearchBar/SearchBar";
 import { useCart } from "@/context/cartContext";
 
 const categories = [
-  { name: "Development", href: "/category/development" },
-  { name: "Business", href: "/category/business" },
+  { name: "Development", href: "/courses/category/development" },
+  { name: "Business", href: "/courses/category/business" },
   { name: "Finance & Accounting", href: "/category/finance-accounting" },
-  { name: "IT & Software", href: "/category/it-software" },
-  { name: "Office Productivity", href: "/category/office-productivity" },
-  { name: "Personal Development", href: "/category/personal-development" },
-  { name: "Design", href: "/category/design" },
-  { name: "Marketing", href: "/category/marketing" },
-  { name: "Lifestyle", href: "/category/lifestyle" },
-  { name: "Photography & Video", href: "/category/photography-video" },
-  { name: "Health & Fitness", href: "/category/health-fitness" },
-  { name: "Music", href: "/category/music" },
-  { name: "Teaching & Academics", href: "/category/teaching-academics" },
+  { name: "IT & Software", href: "courses/category/it-software" },
+  { name: "Office Productivity", href: "/courses/category/office-productivity" },
+  { name: "Personal Development", href: "/courses/category/personal-development" },
+  { name: "Design", href: "/courses/category/design" },
+  { name: "Marketing", href: "/courses/category/marketing" },
+  { name: "Lifestyle", href: "/courses/category/lifestyle" },
+  { name: "Photography & Video", href: "/courses/category/photography-video" },
+  { name: "Health & Fitness", href: "/courses/category/health-fitness" },
+  { name: "Music", href: "/courses/category/music" },
+  { name: "Teaching & Academics", href: "/courses/category/teaching-academics" },
 ];
 
 const products = [
@@ -94,6 +94,7 @@ export default function Navbar() {
     setMobileMenuOpen(!mobileMenuOpen);
     document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
   };
+  
 
   return (
     <header
