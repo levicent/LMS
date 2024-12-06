@@ -50,7 +50,7 @@ const App: React.FC = () => {
                 <Route path="/signup" element={<SignupPage />} />
                 <Route path="/forgotpassword" element={<ForgotPassword />} />
                 <Route path="/profile" element={<AccountSettings />} />
-                <Route path="/course/:id" element={<CourseInfo />} />
+                <Route path="/courses/:id" element={<CourseInfo />} />
                 <Route path="/billing" element={<BillingInfo />} />
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />

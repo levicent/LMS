@@ -172,7 +172,7 @@ const HomePage: React.FC = () => {
                               </div>
                             </div>
                             <Link
-                              to={`/course/${course._id}`}
+                              to={`/courses/${course._id}`}
                               state={{ course }}
                               className="block w-full px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white text-center font-semibold rounded-lg shadow-md hover:from-blue-600 hover:to-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-opacity-75 transition duration-300 transform hover:scale-105"
                             >

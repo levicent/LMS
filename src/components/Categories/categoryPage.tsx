@@ -29,7 +29,7 @@ const CategoryPage: React.FC = () => {
     navigate(-1); 
   };
   const handleCourseClick = (courseId: string) => {
-    navigate(`/course/${courseId}`);
+    navigate(`/courses/${courseId}`);
   };
   if (isLoading) {
     return (
