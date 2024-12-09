@@ -23,7 +23,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.updateUserProfile = exports.getUserProfile = exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
+exports.getUserByRole = exports.updateUserProfile = exports.getUserProfile = exports.deleteUserById = exports.updateUserById = exports.getUserById = exports.getAllUsers = exports.createUser = void 0;
 const User_1 = __importDefault(require("../models/User"));
 const userSchema_1 = require("../schemas/userSchema");
 const multer_1 = __importDefault(require("multer"));
@@ -196,3 +196,18 @@ exports.updateUserProfile = [
         }
     }),
 ];
+const getUserByRole = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const role = 'teacher';
+        const users = yield User_1.default.find({ role });
+        if (!users) {
+            return res.status(404).json({ message: "No users found" });
+        }
+        res.status(200).json({ users });
+    }
+    catch (error) {
+        console.error("Error getting user by id: ", error);
+        res.status(500).json({ message: "TeacherFetchEror" });
+    }
+});
+exports.getUserByRole = getUserByRole;

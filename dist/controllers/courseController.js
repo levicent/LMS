@@ -12,7 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.searchCourseByQuery = exports.deleteCourseById = exports.updateCourseById = exports.getCourseById = exports.getAllCourses = exports.createCourse = void 0;
+exports.findCourseByCategory = exports.searchCourseByQuery = exports.deleteCourseById = exports.updateCourseById = exports.getCourseById = exports.getAllCourses = exports.createCourse = void 0;
 const Courses_1 = __importDefault(require("../models/Courses"));
 const courseSchema_1 = require("../schemas/courseSchema");
 const cloudinary_1 = require("cloudinary");
@@ -149,3 +149,20 @@ const searchCourseByQuery = (req, res) => __awaiter(void 0, void 0, void 0, func
     }
 });
 exports.searchCourseByQuery = searchCourseByQuery;
+const findCourseByCategory = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { category } = req.params;
+        const regex = new RegExp(category.replace(/[-\s]/g, '[-\\s]'), 'i');
+        const courses = yield Courses_1.default.find({ category: regex })
+            .populate('instructor', 'firstName lastName');
+        if (!courses || courses.length === 0) {
+            return res.status(404).json({ message: 'No courses found for this category' });
+        }
+        res.status(200).json(courses);
+    }
+    catch (error) {
+        console.error("Error finding course by category", error);
+        res.status(500).json({ message: "Internal server error for category", error });
+    }
+});
+exports.findCourseByCategory = findCourseByCategory;
