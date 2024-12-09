@@ -55,7 +55,10 @@ const App: React.FC = () => {
                 <Route path="/my-courses" element={<LearningDashboard />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/search" element={<SearchResults />} />
-                <Route path="courses/category/:category" element={<CategoryPage />} />
+                <Route
+                  path="courses/category/:category"
+                  element={<CategoryPage />}
+                />
 
                 <Route
                   path="/course/enrolled/:courseId"
@@ -63,37 +66,46 @@ const App: React.FC = () => {
                 />
                 <Route path="/course/:courseId/learn" element={<VideoPage />} />
                 <Route path="/donors" element={<DonorPage />} />
-                <Route path="/instructors" element={<InstructorsPage />} />
                 <Route path="*" element={<NoPath />} />
                 <Route
+                  path="/instructors"
+                  element={<ProtectedRoutes element={<InstructorsPage />} />}
+                />
+                <Route
                   path="/instructor/dashboard"
-                  element={<InstructorDashboard />}
+                  element={
+                    <ProtectedRoutes element={<InstructorDashboard />} />
+                  }
                 />
                 <Route
                   path="/instructor/dashboard/videoDashboard"
-                  element={<VideoUploadDashboard />}
+                  element={
+                    <ProtectedRoutes element={<VideoUploadDashboard />} />
+                  }
                 />
-                <Route path="/instructor/dashboard/stats" element={<Stats />} />
-
+                <Route
+                  path="/instructor/dashboard/stats"
+                  element={<ProtectedRoutes element={<Stats />} />}
+                />
                 <Route
                   path="/instructor/dashboard/courses"
-                  element={<CourseDashboard />}
+                  element={<ProtectedRoutes element={<CourseDashboard />} />}
                 />
                 <Route
                   path="/add-section/:courseId"
-                  element={<AddSectionForm />}
+                  element={<ProtectedRoutes element={<AddSectionForm />} />}
                 />
                 <Route
                   path="/edit-section/:courseId/sections/:sectionId"
-                  element={<AddSectionForm />}
+                  element={<ProtectedRoutes element={<AddSectionForm />} />}
                 />
                 <Route
                   path="instructor/dashboard/course/:courseId"
-                  element={<CourseView />}
+                  element={<ProtectedRoutes element={<CourseView />} />}
                 />
                 <Route
                   path="/courses/:courseId/sections/:sectionId/upload"
-                  element={<VideoUploadPage />}
+                  element={<ProtectedRoutes element={<VideoUploadPage />} />}
                 />
 
                 {/* Shopping Cart */}

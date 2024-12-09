@@ -172,7 +172,6 @@ export default function CourseInfo() {
     ],
   };
 
-
   return (
     <DefaultLayout>
       <div className="bg-gray-100 dark:bg-gray-900 min-h-screen text-gray-900 dark:text-gray-100">
@@ -328,8 +327,7 @@ export default function CourseInfo() {
                                     : "bg-white dark:bg-gray-800"
                                 }`}
                               >
-                                <div
-className="flex items-center gap-3 mb-2">
+                                <div className="flex items-center gap-3 mb-2">
                                   <Ratings value={review.rating || 0} />
                                   <div>
                                     <h4 className="font-medium text-gray-900 dark:text-gray-100">
@@ -403,7 +401,7 @@ className="flex items-center gap-3 mb-2">
                                       <div className="flex items-center space-x-4">
                                         <div className="w-6 h-6 flex items-center justify-center bg-blue-300 text-gray-900 rounded-full text-md font-semibold">
                                           <span>
-{section.videos.indexOf(video) + 1}
+                                            {section.videos.indexOf(video) + 1}
                                           </span>
                                         </div>
                                         <span className="text-medium font-sans text-gray-800 dark:text-gray-100">
@@ -486,7 +484,7 @@ className="flex items-center gap-3 mb-2">
                     <Link to={`/course/enrolled/${course._id}`}>
                       <Button className="w-full mb-4 bg-green-600 hover:bg-green-700 text-white">
                         <BookOpen className="mr-2 h-4 w-4" /> Go to My Course
-</Button>
+                      </Button>
                     </Link>
                   ) : isAddedToCart ? (
                     <Link to="/cart">

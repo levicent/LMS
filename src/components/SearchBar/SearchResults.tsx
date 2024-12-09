@@ -51,36 +51,11 @@ type Course = {
   language: string;
 };
 
-const categories = [
-  "Development",
-  "Business",
-  "Finance & Accounting",
-  "IT & Software",
-  "Office Productivity",
-  "Personal Development",
-  "Design",
-  "Marketing",
-  "Lifestyle",
-  "Photography & Video",
-  "Health & Fitness",
-  "Music",
-  "Teaching & Academics",
-];
-
 const filters = [
-  {
-    name: "Level",
-    options: ["All Levels", "Beginner", "Intermediate", "Expert"],
-  },
-  {
-    name: "Language",
-    options: ["English", "Hindi", "Spanish", "French", "German"],
-  },
-  {
-    name: "Category",
-    options: categories,
-  },
-  { name: "Price", options: ["Paid", "Free"] },
+  { name: "Level", options: ["beginner", "intermediate", "expert"] },
+  // { name: "Language", options: ["python", "react"] }, // Adjust based on your data
+  // { name: "Category", options: [" Development", "Business"] }, // Currently only "Development" is present
+  // { name: "Price", options: ["Paid", "Free"] },
 ];
 
 const ITEMS_PER_PAGE = 10;
@@ -404,7 +379,7 @@ export default function SearchResult() {
                             ? "Free"
                             : `₹${course.price}`}
                         </div>
-                        <Link to={`/course/${course._id}`} state={{ course }}>
+                        <Link to={`/courses/${course._id}`} state={{ course }}>
                           <Button className="mt-2">Enroll Now</Button>
                         </Link>
                       </CardFooter>
