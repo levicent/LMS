@@ -13,6 +13,7 @@ const app = express();
 
 const allowedOrigins = [
   "https://lms-r6ncqtcjs-levicents-projects.vercel.app",
+  "https://lms-g2vn.onrender.com",
   "http://localhost:5173",
 ];
 
