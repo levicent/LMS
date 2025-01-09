@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { AuthProvider } from "./context/authContext";
 import { ThemeProvider } from "./context/themeContext";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
@@ -37,6 +37,10 @@ import VideoUploadPage from "./pages/VideoUploadPage.tsx";
 import VideoPage from "./pages/VideoPage.tsx";
 import CategoryPage from "./components/Categories/categoryPage.tsx";
 const App: React.FC = () => {
+  useEffect(() => {
+    console.log(import.meta.env.VITE_API_URL);
+  }, []);
+
   return (
     <div className="bg-white text-black">
       <ThemeProvider>
