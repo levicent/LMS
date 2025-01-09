@@ -12,7 +12,7 @@ import videoRoutes from "./routes/videoRoutes";
 const app = express();
 
 const allowedOrigins = [
-  "https://lms-lz916b7ox-levicents-projects.vercel.app",
+  "https://lms-levicents-projects.vercel.app",
   "https://lms-g2vn.onrender.com",
   "http://localhost:5173",
 ];
