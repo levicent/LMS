@@ -15,4 +15,14 @@ function PrivateRoutes({ element }: PrivateRoutesProps) {
   return role === "admin" ? element : <Navigate to="/signin" />;
 }
 
+export function InstructorPrivateRoutes({ element }: PrivateRoutesProps) {
+  const { role } = useRole();
+
+  if (!role) {
+    return <div>Loading...</div>;
+  }
+
+  return role === "teacher" ? element : <Navigate to="/signin" />;
+}
+
 export default PrivateRoutes;

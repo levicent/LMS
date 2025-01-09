@@ -42,7 +42,7 @@ const CategoryPage: React.FC = () => {
     return (
       <DefaultLayout>
         <div
-          className={` max-w-xl  mx-auto py-8 min-h-screen flex justify-center items-center ${
+          className={` max-auto  mx-auto py-8 min-h-screen flex justify-center items-center ${
             theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
           }`}
         >

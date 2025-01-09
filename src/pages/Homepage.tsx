@@ -5,11 +5,22 @@ import Footer from "../components/Footer/Footer";
 import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
 import { useTheme } from "../context/themeContext";
 import AuthContext from "../context/authContext";
-import { Star, Users, Clock, Award, BookOpen, Globe, Zap, MessageCircle, X } from "lucide-react";
+import {
+  Star,
+  Users,
+  Clock,
+  Award,
+  BookOpen,
+  Globe,
+  Zap,
+  MessageCircle,
+  X,
+} from "lucide-react";
 import { useFetchCourses } from "@/hooks/useFetchCourse";
 import ShimmerCard from "./ShimmerCard";
-import {ChatBot} from "./CustomerSupport";
+import { ChatBot } from "./CustomerSupport";
 import CountingNumber from "@/components/Counting/Counting";
+import Loading from "@/components/Loading/Loading";
 
 const HomePage: React.FC = () => {
   const { theme } = useTheme();
@@ -18,9 +29,6 @@ const HomePage: React.FC = () => {
   const [currentCategory, setCurrentCategory] = useState("All");
   const [loading, setIsLoading] = useState(true);
   const [isChatBotOpen, setIsChatBotOpen] = useState(false);
-
-
-  
 
   if (!authContext) {
     navigate("/login");
@@ -36,16 +44,16 @@ const HomePage: React.FC = () => {
 
   const { isAuthenticated } = authContext;
 
-  const { data: courses } = useFetchCourses();
+  const { data: courses, isLoading } = useFetchCourses();
   const toggleChatBot = () => {
-    setIsChatBotOpen(prev => !prev);
+    setIsChatBotOpen((prev) => !prev);
   };
 
   return (
     <div className={theme === "dark" ? "dark" : ""}>
       <ParticlesComponent id="particles" />
       <Navbar />
-
+      {isLoading && <Loading />}
       <main className="flex-grow bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto p-6 lg:px-8 lg:py-12">
           {/* Hero Section */}
@@ -86,10 +94,11 @@ const HomePage: React.FC = () => {
                     <button
                       key={index}
                       onClick={() => setCurrentCategory(category)}
-                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${currentCategory === category
+                      className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
+                        currentCategory === category
                           ? "bg-blue-600 text-white"
                           : "bg-gray-200 text-gray-800 dark:bg-gray-700 dark:text-gray-200 hover:bg-gray-300 dark:hover:bg-gray-600"
-                        }`}
+                      }`}
                     >
                       {category}
                     </button>
@@ -149,7 +158,6 @@ const HomePage: React.FC = () => {
                             <p className="text-gray-600 dark:text-gray-300 mb-4">
                               Instructor: {course.instructor?.firstName}{" "}
                               {course.instructor?.lastName}
-                              
                             </p>
                             <div className="flex items-center justify-between mb-4">
                               <span className="text-2xl font-bold text-blue-600 dark:text-blue-400">
@@ -168,7 +176,6 @@ const HomePage: React.FC = () => {
                                 <span className="ml-1 text-gray-600 dark:text-gray-300">
                                   {course.rating}
                                 </span>
-                                
                               </div>
                             </div>
                             <Link
@@ -208,17 +215,16 @@ const HomePage: React.FC = () => {
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
                 <Globe className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                   <CountingNumber target={150} duration={4000} />
+                  <CountingNumber target={150} duration={4000} />
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
                   Countries Reached
-                  
                 </p>
               </div>
               <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow-md text-center">
                 <Zap className="w-12 h-12 text-blue-600 mx-auto mb-4" />
                 <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
-                    <CountingNumber target={5000} duration={1000} />
+                  <CountingNumber target={5000} duration={1000} />
                 </h3>
                 <p className="text-gray-600 dark:text-gray-400">
                   Career Transitions
@@ -346,7 +352,7 @@ const HomePage: React.FC = () => {
         </div>
       </main>
 
-      <Footer/>
+      <Footer />
       <button
         onClick={toggleChatBot}
         className="fixed bottom-4 right-4 bg-blue-600 hover:bg-blue-700 
@@ -356,10 +362,7 @@ const HomePage: React.FC = () => {
       >
         {isChatBotOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
-      <ChatBot 
-        isOpen={isChatBotOpen} 
-        onClose={() => setIsChatBotOpen(false)}
-      />
+      <ChatBot isOpen={isChatBotOpen} onClose={() => setIsChatBotOpen(false)} />
     </div>
   );
 };

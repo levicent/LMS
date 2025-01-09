@@ -18,6 +18,7 @@ import UsersTable from "./components/Tables/UsersTable/UsersTable.tsx";
 import LearningDashboard from "./pages/LearningDashboard";
 import ContactPage from "./pages/ContactPage";
 import PrivateRoutes from "./routes/PrivateRoutes";
+import { InstructorPrivateRoutes } from "./routes/PrivateRoutes";
 import CreateUsersTablePage from "./pages/Dashboard/Tables/CreateUsersTablePage";
 import CourseDashboard from "./pages/Dashboard/CourseDashboard";
 import VideoUploadDashboard from "./pages/Dashboard/VideoUploadDashboard";
@@ -69,43 +70,57 @@ const App: React.FC = () => {
                 <Route path="*" element={<NoPath />} />
                 <Route
                   path="/instructors"
-                  element={<ProtectedRoutes element={<InstructorsPage />} />}
+                  element={
+                    <InstructorPrivateRoutes element={<InstructorsPage />} />
+                  }
                 />
                 <Route
                   path="/instructor/dashboard"
                   element={
-                    <ProtectedRoutes element={<InstructorDashboard />} />
+                    <InstructorPrivateRoutes
+                      element={<InstructorDashboard />}
+                    />
                   }
                 />
                 <Route
                   path="/instructor/dashboard/videoDashboard"
                   element={
-                    <ProtectedRoutes element={<VideoUploadDashboard />} />
+                    <InstructorPrivateRoutes
+                      element={<VideoUploadDashboard />}
+                    />
                   }
                 />
                 <Route
                   path="/instructor/dashboard/stats"
-                  element={<ProtectedRoutes element={<Stats />} />}
+                  element={<InstructorPrivateRoutes element={<Stats />} />}
                 />
                 <Route
                   path="/instructor/dashboard/courses"
-                  element={<ProtectedRoutes element={<CourseDashboard />} />}
+                  element={
+                    <InstructorPrivateRoutes element={<CourseDashboard />} />
+                  }
                 />
                 <Route
                   path="/add-section/:courseId"
-                  element={<ProtectedRoutes element={<AddSectionForm />} />}
+                  element={
+                    <InstructorPrivateRoutes element={<AddSectionForm />} />
+                  }
                 />
                 <Route
                   path="/edit-section/:courseId/sections/:sectionId"
-                  element={<ProtectedRoutes element={<AddSectionForm />} />}
+                  element={
+                    <InstructorPrivateRoutes element={<AddSectionForm />} />
+                  }
                 />
                 <Route
                   path="instructor/dashboard/course/:courseId"
-                  element={<ProtectedRoutes element={<CourseView />} />}
+                  element={<InstructorPrivateRoutes element={<CourseView />} />}
                 />
                 <Route
                   path="/courses/:courseId/sections/:sectionId/upload"
-                  element={<ProtectedRoutes element={<VideoUploadPage />} />}
+                  element={
+                    <InstructorPrivateRoutes element={<VideoUploadPage />} />
+                  }
                 />
 
                 {/* Shopping Cart */}
