@@ -15,6 +15,7 @@ const allowedOrigins = [
   "https://gurusolas.in",
   "https://www.gurusolas.in",
   "https://lms-levicents-projects.vercel.app",
+  "https://lms-g2vn.onrender.com",
   "http://localhost:5173",
 ];
 
