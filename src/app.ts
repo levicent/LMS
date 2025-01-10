@@ -12,6 +12,7 @@ import videoRoutes from "./routes/videoRoutes";
 const app = express();
 
 const allowedOrigins = [
+  "https://gurusolas.in",
   "https://www.gurusolas.in",
   "https://lms-levicents-projects.vercel.app",
   "https://lms-g2vn.onrender.com",
