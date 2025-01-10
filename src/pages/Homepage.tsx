@@ -53,7 +53,7 @@ const HomePage: React.FC = () => {
     <div className={theme === "dark" ? "dark" : ""}>
       <ParticlesComponent id="particles" />
       <Navbar />
-{/*       {isLoading && <Loading />} */}
+      {isLoading && <Loading />}
       <main className="flex-grow bg-gray-100 dark:bg-gray-900">
         <div className="container mx-auto p-6 lg:px-8 lg:py-12">
           {/* Hero Section */}
