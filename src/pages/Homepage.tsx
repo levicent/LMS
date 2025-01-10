@@ -55,6 +55,7 @@ const HomePage: React.FC = () => {
       <Navbar />
       {isLoading ? (
         <Loading />
+        
       ) : (
         <main className="flex-grow bg-gray-100 dark:bg-gray-900">
           <div className="container mx-auto p-6 lg:px-8 lg:py-12">
