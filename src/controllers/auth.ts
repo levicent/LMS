@@ -141,6 +141,7 @@ export const login = async (req: Request, res: Response) => {
 
 export const logout = async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
+  console.log({ refreshToken });
 
   try {
     const user = await User.findOneAndUpdate(
@@ -148,9 +149,10 @@ export const logout = async (req: Request, res: Response) => {
       { refreshToken: null },
       { new: true }
     );
-    if (!user) {
-      return res.status(400).json({ message: "User not found" });
-    }
+    console.log({ user });
+    // if (!user) {
+    //   return res.status(400).json({ message: "User not found" });
+    // }
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",

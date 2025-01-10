@@ -20,6 +20,7 @@ export const refreshToken = async (req: Request, res: Response) => {
   if (!refreshToken) {
     return res.status(401).json({ message: "Refresh token is required" });
   }
+  console.log({ refreshToken } + "saas");
 
   try {
     const decoded = jwt.verify(
