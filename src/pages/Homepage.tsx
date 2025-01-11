@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
       <ParticlesComponent id="particles" />
       <Navbar />
       {isLoading ? (
-        <Loading />
+        <Loading/>
         
       ) : (
         <main className="flex-grow bg-gray-100 dark:bg-gray-900">
