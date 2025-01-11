@@ -11,6 +11,7 @@ import {
   UserIcon,
   ArrowLeftIcon,
 } from "@heroicons/react/20/solid";
+import { TypewriterEffectSmooth } from "../ui/typewriter-effect";
 
 const DefaultCourseThumbnail: React.FC<{ theme: string }> = ({ theme }) => (
   <div
@@ -39,6 +40,25 @@ const CategoryPage: React.FC = () => {
   };
 
   if (isLoading) {
+    const words = [
+      {
+        text: "Searching",
+      },
+      {
+        text: `${category}`,
+        className: "text-blue-500 dark:text-blue-500",
+      },
+      {
+        text: "Courses",
+
+      },
+     
+      {
+        text: "...",
+       
+      },
+    ];
+  
     return (
       <DefaultLayout>
         <div
@@ -49,7 +69,7 @@ const CategoryPage: React.FC = () => {
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 mx-auto mb-4"></div>
             <p className={theme === "dark" ? "text-gray-300" : "text-gray-700"}>
-              Loading {category} courses...
+              <TypewriterEffectSmooth words={words} className="text-center justify-center mt-8"/>
             </p>
           </div>
         </div>

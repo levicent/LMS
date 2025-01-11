@@ -5,6 +5,7 @@ import Footer from "../components/Footer/Footer";
 import ParticlesComponent from "../components/ParticleBackground/ParticleBackground";
 import { useTheme } from "../context/themeContext";
 import AuthContext from "../context/authContext";
+import { TypewriterEffectSmooth } from "@/components/ui/typewriter-effect";
 import {
   Star,
   Users,
@@ -49,6 +50,25 @@ const HomePage: React.FC = () => {
     setIsChatBotOpen((prev) => !prev);
   };
 
+  const words = [
+    {
+      text: "Unlock",
+    },
+    {
+      text: "your",
+    },
+    {
+      text: "potential",
+    },
+    {
+      text: "with",
+    },
+    {
+      text: "GuruSolas",
+      className: "text-blue-500 dark:text-blue-500",
+    },
+  ];
+
   return (
     <div className={theme === "dark" ? "dark" : ""}>
       <ParticlesComponent id="particles" />
@@ -61,9 +81,7 @@ const HomePage: React.FC = () => {
           <div className="container mx-auto p-6 lg:px-8 lg:py-12">
             {/* Hero Section */}
             <section className="text-center mb-16 bg-transparent">
-              <h1 className="text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-gray-100 mb-4">
-                Unlock Your Potential with LMS
-              </h1>
+              <TypewriterEffectSmooth words={words} className="text-center justify-center"/>
               <p className="mt-4 text-lg lg:text-xl text-gray-600 dark:text-gray-400 max-w-3xl mx-auto">
                 Discover a world of knowledge with our expert-led courses. From
                 coding to business, we've got you covered. Start learning today
@@ -372,3 +390,6 @@ const HomePage: React.FC = () => {
 };
 
 export default HomePage;
+
+
+
