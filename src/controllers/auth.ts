@@ -152,8 +152,7 @@ export const logout = async (req: Request, res: Response) => {
     console.log({ user });
     // if (!user) {
     //   return res.status(400).json({ message: "User not found" });
-    // }
-    
+    // } 
     res.clearCookie("refreshToken", {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
