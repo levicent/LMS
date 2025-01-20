@@ -41,6 +41,9 @@ const Settings = () => {
     }
   };
 
+
+
+
   const handleCancel = () => {
     // Reset form to initial values
     reset({
@@ -55,16 +58,20 @@ const Settings = () => {
     toast.info("Changes reverted");
   };
 
-  const { mutate } = useUpdateUser({
+  const { mutate, isLoading } = useUpdateUser({
     onSuccess: (data) => {
       console.log(data);
       toast.success("User updated successfully");
     },
     onError: (error) => {
       console.error("Error updating user:", error);
-      toast.error("Error updating user");
+      toast.error(error?.response?.data?.message);
     },
   });
+
+
+
+
   const handleDeleteClick = () => {
     // Reset the selected file and preview
     setSelectedFile(null);
@@ -83,16 +90,22 @@ const Settings = () => {
       formData.append("profilePicture", selectedFile);
     }
 
-    mutate(formData as FormData);
+    if (!isLoading) {
+      mutate(formData as FormData);
+    }
+    if (isLoading) {
+
+      toast.info('Updating please wait')
+    }
+
   };
   const { theme } = useTheme();
 
   return (
     <DefaultLayout>
       <div
-        className={`mx-auto p-6 dark:bg-gray-900 flex justify-center ${
-          theme === "dark" ? "dark" : ""
-        }`}
+        className={`mx-auto p-6 dark:bg-gray-900 flex justify-center ${theme === "dark" ? "dark" : ""
+          }`}
       >
         <div className="bg-white dark:bg-gray-900 max-w-screen-lg p-4 md:p-8 shadow-md rounded-lg w-full">
           <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -222,8 +235,9 @@ const Settings = () => {
                     <button
                       type="submit"
                       className="w-1/2 ml-2 bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-md font-semibold transition-colors duration-200 focus:outline-none"
+                      disabled={isLoading}
                     >
-                      Save Changes
+                      {isLoading ? "Please wait" : "Save Changes"}
                     </button>
                   </div>
                 </form>

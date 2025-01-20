@@ -71,7 +71,7 @@ const App: React.FC = () => {
                 <Route
                   path="/instructors"
                   element={
-                    <InstructorPrivateRoutes element={<InstructorsPage />} />
+                    <InstructorsPage />
                   }
                 />
                 <Route

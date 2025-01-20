@@ -24,9 +24,9 @@ const CountingNumber = ({ target, duration }: CountingNumberProps) => {
   }, [target, duration]);
 
   return (
-    <h3 className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
+    <p className="text-2xl font-bold text-gray-900 dark:text-gray-100 mb-2">
       {count}+
-    </h3>
+    </p>
   );
 };
 
