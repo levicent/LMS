@@ -41,6 +41,6 @@ router.delete(
 
 router.get("/profile", authMiddleware, getUserProfile);
 router.put("/profile", authMiddleware, updateUserProfile);
-router.get('/users/role/teacher', getUserByRole);
+router.get('/users/role/:role', getUserByRole);
 
 export default router;
