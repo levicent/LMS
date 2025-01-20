@@ -3,6 +3,7 @@
 import axios from "axios";
 import { useQuery } from "react-query";
 const fetchUsersByRole = async (role: string) => {
+  console.log({role})
   const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/users/role/${role}`,{
     headers: {
       Authorization: `Bearer ${localStorage.getItem("accessToken")}`,
@@ -16,4 +17,4 @@ export const useFetchInstructors = () => {
   return useQuery(['users', role], () => fetchUsersByRole(role), {
     enabled: !!role,
   });
-};
+}
