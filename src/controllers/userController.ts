@@ -127,8 +127,7 @@ export const getUserProfile = async (req: Request, res: Response) => {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
-      image: user.image,
-      password: user.password
+      image: user.image
     })
   } catch (error) {
     console.error('Error getting user profile:', error)
