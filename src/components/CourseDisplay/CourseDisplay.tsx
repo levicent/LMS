@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 // import useUpdateCourse from "@/hooks/useCourseUpdateById";
 import useDeleteCourse from "@/hooks/useCourseDeleteById";
 import { ConfirmationDialog } from "../DialogBox/RemoveDialog";
+import Loading from "../Loading/Loading";
 
 export default function CourseDisplay() {
   const { data: courses, isLoading, isError } = useFetchCourses();
@@ -46,7 +47,7 @@ export default function CourseDisplay() {
   };
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />;
   }
 
   if (isError) {
