@@ -23,6 +23,7 @@ import { useTheme } from "@mui/material/styles";
 import { useFetchUserDetails } from "@/hooks/useFetchUserDetails";
 import { useDeleteUser } from "@/hooks/useDeleteUser";
 import AdminLayout from "@/layout/AdminLayout";
+import Loading from "@/components/Loading/Loading";
 const UsersTable = () => {
   const navigate = useNavigate();
   const { data: users, isLoading, error } = useFetchUserDetails();
@@ -57,7 +58,7 @@ const UsersTable = () => {
     setPage(0);
   }
 
-  if (isLoading) return <p>Loading users...</p>;
+  if (isLoading) return <Loading />
   if (error) return <p>Error fetching users.</p>;
 
   // Slice users array for pagination
