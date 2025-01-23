@@ -2,6 +2,7 @@ import { useState, useContext, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import AuthContext from "@/context/authContext";
 import { toast } from "react-toastify";
+import Loading from "@/components/Loading/Loading";
 
 interface PrivateRoutesProps {
   element: React.ReactNode;
@@ -18,7 +19,7 @@ function ProtectedRoutes({ element }: PrivateRoutesProps) {
   }, [authContext]);
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <Loading />
   }
 
   if (!authContext?.isAuthenticated) {

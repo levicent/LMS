@@ -196,6 +196,7 @@ const UsersTable = () => {
                 onPageChange={handleChangePage}  // Fix: Use correct event handler
                 rowsPerPage={rowsPerPage}
                 onRowsPerPageChange={handleChangeRowsPerPage}
+
                 rowsPerPageOptions={[6, 12, 24]}
               />
             </Box>
@@ -211,3 +212,7 @@ export default UsersTable;
 // function setPage(newPage: number) {
 //   throw new Error("Function not implemented.");
 // }
+
+
+
+
