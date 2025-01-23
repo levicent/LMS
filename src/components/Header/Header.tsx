@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef, useContext } from "react";
+import { useFetchUserProfile } from "@/hooks/useFetchUserProfile";
 import { Link, useNavigate } from "react-router-dom";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import AuthContext from "../../context/authContext";
@@ -14,6 +15,8 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
   const themeContext = useTheme();
 
   const { theme } = themeContext;
+
+  const { data: user } = useFetchUserProfile();
 
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
@@ -110,7 +113,7 @@ const Header: React.FC<HeaderProps> = ({ sidebarOpen, setSidebarOpen }) => {
             className="flex items-center focus:outline-none"
           >
             <img
-              src="/path-to-avatar-image.jpg"
+              src={user?.image || "/image/blank-profile-picture-973460_1280.png"}
               alt="User avatar"
               className="w-8 h-8 rounded-full"
             />
