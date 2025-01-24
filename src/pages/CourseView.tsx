@@ -116,14 +116,14 @@ export default function CourseView() {
     });
   };
   const handleDeleteSection = ({ courseId, sectionId }: DeleteSection) => {
-    
+
     try {
       deleteSection(
-        
+
         { courseId, sectionId },
-        
+
         {
-          
+
           onSuccess: () => {
             toast.success("Section deleted successfully.");
             queryClient.invalidateQueries(["course", courseId]);
@@ -198,7 +198,7 @@ export default function CourseView() {
 
   return (
     <TeacherLayout>
-      <div className="min-h-screen bg-gray-100 dark:bg-gray-300 rounded-sm">
+      <div className="min-h-screen bg-gray-800 dark:bg-gray-800 rounded-sm">
         <div className="max-w-7xl mx-auto p-6 space-y-8">
           <Link
             to="/instructor/dashboard/courses"
@@ -208,7 +208,7 @@ export default function CourseView() {
             Back to Courses
           </Link>
 
-          <div className="bg-white rounded-2xl shadow-xl overflow-hidden dark:bg-gray100">
+          <div className="bg-gray-100 rounded-2xl shadow-xl overflow-hidden dark:bg-gray-800 text-white" >
             <div className="md:flex">
               <div className="md:flex-shrink-0">
                 {course.thumbnail ? (
@@ -227,50 +227,49 @@ export default function CourseView() {
                 <div className="uppercase tracking-wide text-sm text-indigo-500 font-semibold">
                   {course.category}
                 </div>
-                <h1 className="mt-2 text-3xl font-extrabold text-gray-900 leading-tight">
+                <h1 className="mt-2 text-3xl font-extrabold text-gray-900 leading-tight dark:text-white">
                   {course.title}
                 </h1>
-                <p className="mt-2 text-gray-500">{course.description}</p>
+                <p className="mt-2 text-gray-500 dark:text-white">{course.description}</p>
                 <div className="mt-4 flex items-center">
                   <div className="flex items-center">
                     {[...Array(5)].map((_, i) => (
                       <Star
                         key={i}
-                        className={`h-5 w-5 ${
-                          i < Math.round(averageRating)
-                            ? "text-yellow-400"
-                            : "text-gray-300"
-                        }`}
+                        className={`h-5 w-5 ${i < Math.round(averageRating)
+                          ? "text-yellow-400"
+                          : "text-gray-300"
+                          }`}
                         fill="currentColor"
                       />
                     ))}
                   </div>
-                  <span className="ml-2 text-gray-600">
+                  <span className="ml-2 text-gray-600 dark:text-white">
                     {averageRating.toFixed(1)} ({course.reviews.length} reviews)
                   </span>
                 </div>
               </div>
             </div>
 
-            <div className="px-8 py-6 border-t border-gray-200 bg-gray-50">
+            <div className="px-8 py-6 border-t border-gray-200 bg-gray-50 dark:bg-gray-800">
               <div className="flex flex-wrap gap-6 text-sm">
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-white">
                   <Clock className="h-5 w-5 mr-2 text-gray-400" />
                   <span>{course.duration} hours</span>
                 </div>
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-white">
                   <BarChart className="h-5 w-5 mr-2 text-gray-400" />
                   <span>{course.level}</span>
                 </div>
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-white">
                   <Globe className="h-5 w-5 mr-2 text-gray-400" />
                   <span>{course.language}</span>
                 </div>
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-white">
                   <Calendar className="h-5 w-5 mr-2 text-gray-400" />
                   <span>Last updated {formatDate(course.updatedAt)}</span>
                 </div>
-                <div className="flex items-center text-gray-600">
+                <div className="flex items-center text-gray-600 dark:text-white">
                   <Users className="h-5 w-5 mr-2 text-gray-400" />
                   <span>
                     {course.studentsEnrolled.length} students enrolled
@@ -281,10 +280,10 @@ export default function CourseView() {
 
             <div className="p-8">
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-2xl font-bold text-gray-900">
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
                   Course Content
                 </h2>
-                <span className="text-sm text-gray-500">
+                <span className="text-sm text-gray-500 dark:text-white">
                   {course.sections.length} sections •{" "}
                   {course.sections.reduce(
                     (acc, section) => acc + section.videos.length,
@@ -323,7 +322,7 @@ export default function CourseView() {
                         onValueChange={(value) => setOpenItem(value)}
                         className='dark: bg-gray-800'
                       >
-                        <AccordionItem value={`item-${section.sectionId}`}  className="dark:bg-gray-800 bg-gray-100">
+                        <AccordionItem value={`item-${section.sectionId}`} className="dark:bg-gray-800 bg-gray-100">
                           <AccordionTrigger className="w-full ">
                             <div className="flex justify-between w-full items-center p-4 bg-gray-100 cursor-pointer dark:bg-gray-800 ">
                               <h3 className="font-medium text-gray-900 dark:text-gray-100">
@@ -388,10 +387,10 @@ export default function CourseView() {
               )}
             </div>
 
-            <div className="p-8 bg-gray-50 border-t border-gray-200">
+            <div className="p-8 bg-gray-50 border-t border-gray-200 dark:bg-gray-800">
               <div className="flex items-center justify-between">
                 <div className="flex-1">
-                  <h3 className="text-lg font-bold text-gray-900">
+                  <h3 className="text-lg font-bold text-gray-900 dark:text-white">
                     Total Revenue: ₹
                     {Number(course.price) * course.studentsEnrolled.length}
                   </h3>
