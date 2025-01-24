@@ -1,5 +1,5 @@
-import express from "express";
-const router = express.Router();
+import express from 'express'
+const router = express.Router()
 import {
   createCourse,
   getAllCourses,
@@ -7,43 +7,45 @@ import {
   updateCourseById,
   deleteCourseById,
   searchCourseByQuery,
-  findCourseByCategory,
-} from "../controllers/courseController";
-import authMiddleware from "../middleware/auth";
-import checkRole from "../middleware/role";
+  getCourseByUserId,
+  findCourseByCategory
+} from '../controllers/courseController'
+import authMiddleware from '../middleware/auth'
+import checkRole from '../middleware/role'
 import {
   enrollCourseById,
-  getEnrolledCourses,
-} from "../controllers/enrolledCoursesController";
+  getEnrolledCourses
+} from '../controllers/enrolledCoursesController'
 
-router.post("/courses", authMiddleware, checkRole(["teacher"]), createCourse);
+router.post('/courses', authMiddleware, checkRole(['teacher']), createCourse)
 router.get(
-  "/courses",
+  '/courses',
 
   getAllCourses
-);
+)
+router.get('/my-courses', authMiddleware, getCourseByUserId)
 router.get(
-  "/courses/:id",
+  '/courses/:id',
   // authMiddleware,
   // checkRole(["teacher","student","admin"]),
   getCourseById
-);
+)
 router.put(
-  "/courses/:id",
+  '/courses/:id',
   authMiddleware,
-  checkRole(["teacher"]),
+  checkRole(['teacher']),
   updateCourseById
-);
+)
 router.delete(
-  "/courses/:id",
+  '/courses/:id',
   authMiddleware,
-  checkRole(["teacher"]),
+  checkRole(['teacher']),
   deleteCourseById
-);
+)
 
-router.get("/course/search", searchCourseByQuery);
+router.get('/course/search', searchCourseByQuery)
 
-router.post("/enroll/:courseId", authMiddleware, enrollCourseById);
-router.get("/enrolled-courses", authMiddleware, getEnrolledCourses);
-router.get("/courses/category/:category", findCourseByCategory);
-export default router;
+router.post('/enroll/:courseId', authMiddleware, enrollCourseById)
+router.get('/enrolled-courses', authMiddleware, getEnrolledCourses)
+router.get('/courses/category/:category', findCourseByCategory)
+export default router
