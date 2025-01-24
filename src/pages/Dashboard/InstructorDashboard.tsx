@@ -45,147 +45,147 @@ export const Stats = () => {
 
   return (
     <TeacherLayout>
-    <div className="space-y-6 bg-gray-50 p-6 rounded-lg">
-      {/* Summary Cards */}
-      <div className="grid gap-4 md:grid-cols-4">
+      <div className="space-y-6 bg-gray-50 p-6 rounded-lg">
+        {/* Summary Cards */}
+        <div className="grid gap-4 md:grid-cols-4">
+          <Card className="bg-white border-blue-100">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-600">Total Students</CardTitle>
+              <Users className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-700">{students.length}</div>
+              <p className="text-xs text-gray-500">Active learners</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-blue-100">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-600">Total Courses</CardTitle>
+              <BookOpen className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-700">{courseStats.length}</div>
+              <p className="text-xs text-gray-500">Available courses</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-blue-100">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-600">Avg. Completion</CardTitle>
+              <TrendingUp className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-700">76%</div>
+              <p className="text-xs text-gray-500">Across all courses</p>
+            </CardContent>
+          </Card>
+
+          <Card className="bg-white border-blue-100">
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-blue-600">Active Enrollments</CardTitle>
+              <GraduationCap className="h-4 w-4 text-blue-500" />
+            </CardHeader>
+            <CardContent>
+              <div className="text-2xl font-bold text-gray-700">135</div>
+              <p className="text-xs text-gray-500">Total enrollments</p>
+            </CardContent>
+          </Card>
+        </div>
+
+        {/* Course Completion Graph */}
         <Card className="bg-white border-blue-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-600">Total Students</CardTitle>
-            <Users className="h-4 w-4 text-blue-500" />
+          <CardHeader>
+            <CardTitle className="text-blue-600">Course Completion Rates</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-700">{students.length}</div>
-            <p className="text-xs text-gray-500">Active learners</p>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <BarChart data={courseStats}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis dataKey="name" tick={{ fill: '#6b7280' }} />
+                  <YAxis tick={{ fill: '#6b7280' }} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: 'white', borderColor: '#e5e7eb' }}
+                    labelStyle={{ color: '#374151' }}
+                  />
+                  <Bar dataKey="avgCompletion" fill="#3b82f6" name="Completion %" />
+                </BarChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
+        {/* Completion Trend */}
         <Card className="bg-white border-blue-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-600">Total Courses</CardTitle>
-            <BookOpen className="h-4 w-4 text-blue-500" />
+          <CardHeader>
+            <CardTitle className="text-blue-600">Completion Trend</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-700">{courseStats.length}</div>
-            <p className="text-xs text-gray-500">Available courses</p>
+            <div className="h-[300px]">
+              <ResponsiveContainer width="100%" height="100%">
+                <LineChart data={completionTrend}>
+                  <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
+                  <XAxis dataKey="month" tick={{ fill: '#6b7280' }} />
+                  <YAxis tick={{ fill: '#6b7280' }} />
+                  <Tooltip
+                    contentStyle={{ backgroundColor: 'white', borderColor: '#e5e7eb' }}
+                    labelStyle={{ color: '#374151' }}
+                  />
+                  <Line
+                    type="monotone"
+                    dataKey="completion"
+                    stroke="#3b82f6"
+                    strokeWidth={2}
+                    name="Completion %"
+                  />
+                </LineChart>
+              </ResponsiveContainer>
+            </div>
           </CardContent>
         </Card>
 
+        {/* Students Table */}
         <Card className="bg-white border-blue-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-600">Avg. Completion</CardTitle>
-            <TrendingUp className="h-4 w-4 text-blue-500" />
+          <CardHeader>
+            <CardTitle className="text-blue-600">Enrolled Students</CardTitle>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold text-gray-700">76%</div>
-            <p className="text-xs text-gray-500">Across all courses</p>
-          </CardContent>
-        </Card>
-
-        <Card className="bg-white border-blue-100">
-          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium text-blue-600">Active Enrollments</CardTitle>
-            <GraduationCap className="h-4 w-4 text-blue-500" />
-          </CardHeader>
-          <CardContent>
-            <div className="text-2xl font-bold text-gray-700">135</div>
-            <p className="text-xs text-gray-500">Total enrollments</p>
+            <Table>
+              <TableHeader>
+                <TableRow className="border-blue-100">
+                  <TableHead className="text-gray-500">Name</TableHead>
+                  <TableHead className="text-gray-500">Enrolled Courses</TableHead>
+                  <TableHead className="text-gray-500">Completion Rate</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                {students.map((student) => (
+                  <TableRow key={student.id} className="border-blue-50">
+                    <TableCell className="text-gray-600 font-medium">
+                      {student.name}
+                    </TableCell>
+                    <TableCell className="text-gray-600">
+                      {student.enrolledCourses.join(", ")}
+                    </TableCell>
+                    <TableCell className="text-gray-600">
+                      <div className="flex items-center gap-2">
+                        <div className="w-full bg-gray-100 rounded-full h-2.5">
+                          <div
+                            className="bg-blue-500 h-2.5 rounded-full"
+                            style={{ width: `${student.completion}%` }}
+                          ></div>
+                        </div>
+                        <span className="text-sm">{student.completion}%</span>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
           </CardContent>
         </Card>
       </div>
-
-      {/* Course Completion Graph */}
-      <Card className="bg-white border-blue-100">
-        <CardHeader>
-          <CardTitle className="text-blue-600">Course Completion Rates</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart data={courseStats}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="name" tick={{ fill: '#6b7280' }} />
-                <YAxis tick={{ fill: '#6b7280' }} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: 'white', borderColor: '#e5e7eb' }}
-                  labelStyle={{ color: '#374151' }}
-                />
-                <Bar dataKey="avgCompletion" fill="#3b82f6" name="Completion %" />
-              </BarChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Completion Trend */}
-      <Card className="bg-white border-blue-100">
-        <CardHeader>
-          <CardTitle className="text-blue-600">Completion Trend</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="h-[300px]">
-            <ResponsiveContainer width="100%" height="100%">
-              <LineChart data={completionTrend}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" />
-                <XAxis dataKey="month" tick={{ fill: '#6b7280' }} />
-                <YAxis tick={{ fill: '#6b7280' }} />
-                <Tooltip 
-                  contentStyle={{ backgroundColor: 'white', borderColor: '#e5e7eb' }}
-                  labelStyle={{ color: '#374151' }}
-                />
-                <Line 
-                  type="monotone" 
-                  dataKey="completion" 
-                  stroke="#3b82f6" 
-                  strokeWidth={2}
-                  name="Completion %"
-                />
-              </LineChart>
-            </ResponsiveContainer>
-          </div>
-        </CardContent>
-      </Card>
-
-      {/* Students Table */}
-      <Card className="bg-white border-blue-100">
-        <CardHeader>
-          <CardTitle className="text-blue-600">Enrolled Students</CardTitle>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow className="border-blue-100">
-                <TableHead className="text-gray-500">Name</TableHead>
-                <TableHead className="text-gray-500">Enrolled Courses</TableHead>
-                <TableHead className="text-gray-500">Completion Rate</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {students.map((student) => (
-                <TableRow key={student.id} className="border-blue-50">
-                  <TableCell className="text-gray-600 font-medium">
-                    {student.name}
-                  </TableCell>
-                  <TableCell className="text-gray-600">
-                    {student.enrolledCourses.join(", ")}
-                  </TableCell>
-                  <TableCell className="text-gray-600">
-                    <div className="flex items-center gap-2">
-                      <div className="w-full bg-gray-100 rounded-full h-2.5">
-                        <div
-                          className="bg-blue-500 h-2.5 rounded-full"
-                          style={{ width: `${student.completion}%` }}
-                        ></div>
-                      </div>
-                      <span className="text-sm">{student.completion}%</span>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-    </div>
     </TeacherLayout>
   );
 };
