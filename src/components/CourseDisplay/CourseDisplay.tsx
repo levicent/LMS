@@ -2,21 +2,24 @@
 import { Button } from "@/components/ui/button";
 // import { Input } from "@/components/ui/input"
 import { useState } from "react";
-import { useFetchCourses } from "@/hooks/useFetchCourse";
 import { useNavigate } from "react-router-dom";
 // import useUpdateCourse from "@/hooks/useCourseUpdateById";
 import useDeleteCourse from "@/hooks/useCourseDeleteById";
 import { ConfirmationDialog } from "../DialogBox/RemoveDialog";
 import Loading from "../Loading/Loading";
+import useFetchCourseByUserId from "@/hooks/useFetchCoursesByUserId";
 
 export default function CourseDisplay() {
-  const { data: courses, isLoading, isError } = useFetchCourses();
+  // const { data: courses, isLoading, isError } = useFetchCourses();
+  const { data: courses, isLoading, isError } = useFetchCourseByUserId()
   const [category, setCategory] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
   const navigate = useNavigate();
   // const updateCourseMutation = useUpdateCourse();
   const deleteCourseMutation = useDeleteCourse();
+
+
 
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>
