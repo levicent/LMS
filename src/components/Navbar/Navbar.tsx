@@ -33,7 +33,7 @@ const categories = [
   { name: "Design", href: "/courses/category/design" },
   { name: "Marketing", href: "/courses/category/marketing" },
   { name: "Lifestyle", href: "/courses/category/lifestyle" },
-  { name: "Photography & Video", href: "/courses/category/photography-video" },
+  { name: "Photography & Video", href: "/courses/category/photography" },
   { name: "Health & Fitness", href: "/courses/category/health-fitness" },
   { name: "Music", href: "/courses/category/music" },
   { name: "Teaching & Academics", href: "/courses/category/teaching-academics" },
@@ -89,13 +89,12 @@ export default function Navbar() {
     setMobileMenuOpen(!mobileMenuOpen);
     document.body.style.overflow = mobileMenuOpen ? "auto" : "hidden";
   };
-  
+
 
   return (
     <header
-      className={`z-50 sticky top-0 shadow-lg ${
-        theme === "dark" ? "bg-gray-800" : "bg-white"
-      }`}
+      className={`z-50 sticky top-0 shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
+        }`}
     >
       <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4">
         <div className="flex items-center justify-between">
@@ -103,11 +102,10 @@ export default function Navbar() {
           <div className="flex items-center lg:hidden">
             <button
               onClick={toggleMobileMenu}
-              className={`p-2 rounded-md ${
-                theme === "dark"
+              className={`p-2 rounded-md ${theme === "dark"
                   ? "text-gray-400 hover:text-white hover:bg-gray-700"
                   : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
-              }`}
+                }`}
             >
               {mobileMenuOpen ? (
                 <XMarkIcon className="h-6 w-6" />
@@ -141,30 +139,27 @@ export default function Navbar() {
               {/* Categories dropdown */}
               <Popover className="relative">
                 <PopoverButton
-                  className={`flex items-center text-sm font-medium ${
-                    theme === "dark"
+                  className={`flex items-center text-sm font-medium ${theme === "dark"
                       ? "text-gray-300 hover:text-white"
                       : "text-gray-700 hover:text-gray-800"
-                  }`}
+                    }`}
                 >
                   Categories
                   <ChevronDownIcon className="ml-1 h-5 w-5" />
                 </PopoverButton>
                 <PopoverPanel
-                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${
-                    theme === "dark" ? "bg-gray-800" : "bg-white"
-                  } ring-1 ring-black ring-opacity-5`}
+                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
+                    } ring-1 ring-black ring-opacity-5`}
                 >
                   <div className="py-1">
                     {categories.map((category) => (
                       <Link
                         key={category.name}
                         to={category.href}
-                        className={`block px-4 py-2 text-sm ${
-                          theme === "dark"
+                        className={`block px-4 py-2 text-sm ${theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         {category.name}
                       </Link>
@@ -176,36 +171,32 @@ export default function Navbar() {
               {/* Explore dropdown */}
               <Popover className="relative">
                 <PopoverButton
-                  className={`flex items-center text-sm font-medium ${
-                    theme === "dark"
+                  className={`flex items-center text-sm font-medium ${theme === "dark"
                       ? "text-gray-300 hover:text-white"
                       : "text-gray-700 hover:text-gray-800"
-                  }`}
+                    }`}
                 >
                   Explore
                   <ChevronDownIcon className="ml-1 h-5 w-5" />
                 </PopoverButton>
                 <PopoverPanel
-                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${
-                    theme === "dark" ? "bg-gray-800" : "bg-white"
-                  } ring-1 ring-black ring-opacity-5`}
+                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
+                    } ring-1 ring-black ring-opacity-5`}
                 >
                   <div className="py-1">
                     {products.map((item) => (
                       <Link
                         key={item.name}
                         to={item.href}
-                        className={`block px-4 py-2 text-sm ${
-                          theme === "dark"
+                        className={`block px-4 py-2 text-sm ${theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <p className="font-semibold">{item.name}</p>
                         <p
-                          className={`text-xs ${
-                            theme === "dark" ? "text-gray-400" : "text-gray-500"
-                          }`}
+                          className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"
+                            }`}
                         >
                           {item.description}
                         </p>
@@ -221,11 +212,10 @@ export default function Navbar() {
                   {role === "admin" && (
                     <Link
                       to="/admin/dashboard"
-                      className={`text-sm font-medium ${
-                        theme === "dark"
+                      className={`text-sm font-medium ${theme === "dark"
                           ? "text-gray-300 hover:text-white"
                           : "text-gray-700 hover:text-gray-800"
-                      }`}
+                        }`}
                     >
                       Admin Dashboard
                     </Link>
@@ -233,11 +223,10 @@ export default function Navbar() {
                   {role === "teacher" && (
                     <Link
                       to="/instructor/dashboard"
-                      className={`text-sm font-medium ${
-                        theme === "dark"
+                      className={`text-sm font-medium ${theme === "dark"
                           ? "text-gray-300 hover:text-white"
                           : "text-gray-700 hover:text-gray-800"
-                      }`}
+                        }`}
                     >
                       Instructor Dashboard
                     </Link>
@@ -246,11 +235,10 @@ export default function Navbar() {
               ) : (
                 <Link
                   to="/contact"
-                  className={`text-sm font-medium ${
-                    theme === "dark"
+                  className={`text-sm font-medium ${theme === "dark"
                       ? "text-gray-300 hover:text-white"
                       : "text-gray-700 hover:text-gray-800"
-                  }`}
+                    }`}
                 >
                   Contact
                 </Link>
@@ -262,11 +250,10 @@ export default function Navbar() {
               <SearchBar />
               {/* Wishlist icon */}
               <button
-                className={`p-1 rounded-full ${
-                  theme === "dark"
+                className={`p-1 rounded-full ${theme === "dark"
                     ? "text-gray-400 hover:text-white"
                     : "text-gray-500 hover:text-gray-600"
-                }`}
+                  }`}
               >
                 <HeartIcon className="h-6 w-6" />
               </button>
@@ -274,11 +261,10 @@ export default function Navbar() {
               {/* Cart icon */}
               <Link to="/cart">
                 <button
-                  className={`p-1 rounded-full ${
-                    theme === "dark"
+                  className={`p-1 rounded-full ${theme === "dark"
                       ? "text-gray-400 hover:text-white"
                       : "text-gray-500 hover:text-gray-600"
-                  }`}
+                    }`}
                 >
                   <ShoppingCartIcon className="h-6 w-6" />
                   <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1">
@@ -301,9 +287,8 @@ export default function Navbar() {
                     />
                   </PopoverButton>
                   <PopoverPanel
-                    className={`absolute right-0 z-10 mt-2 w-64 rounded-md shadow-lg ${
-                      theme === "dark" ? "bg-gray-800" : "bg-white"
-                    } ring-1 ring-black ring-opacity-5`}
+                    className={`absolute right-0 z-10 mt-2 w-64 rounded-md shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
+                      } ring-1 ring-black ring-opacity-5`}
                   >
                     <div className="p-4 space-y-2">
                       <Link
@@ -320,83 +305,75 @@ export default function Navbar() {
                         />
                         <div>
                           <p
-                            className={`font-semibold ${
-                              theme === "dark"
+                            className={`font-semibold ${theme === "dark"
                                 ? "text-gray-100"
                                 : "text-gray-900"
-                            }`}
+                              }`}
                           >
                             {user?.firstName} {user?.lastName}
                           </p>
                           <p
-                            className={`text-sm ${
-                              theme === "dark"
+                            className={`text-sm ${theme === "dark"
                                 ? "text-gray-300"
                                 : "text-gray-500"
-                            }`}
+                              }`}
                           >
                             {user?.email}
                           </p>
                         </div>
                       </Link>
                       <hr
-                        className={`my-2 ${
-                          theme === "dark"
+                        className={`my-2 ${theme === "dark"
                             ? "border-gray-700"
                             : "border-gray-200"
-                        }`}
+                          }`}
                       />
                       <Link
                         to="/profile"
-                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
-                          theme === "dark"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <UserCircleIcon className="h-5 w-5" />
                         <span>My Profile</span>
                       </Link>
                       <Link
                         to="/my-courses"
-                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
-                          theme === "dark"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <BookOpenIcon className="h-5 w-5" />{" "}
                         <span>My Learning</span>
                       </Link>
                       <Link
                         to="/messages"
-                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
-                          theme === "dark"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <EnvelopeIcon className="h-5 w-5" />
                         <span>Messages</span>
                       </Link>
                       <Link
                         to="/notifications"
-                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${
-                          theme === "dark"
+                        className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
                             ? "text-gray-300 hover:bg-gray-700"
                             : "text-gray-700 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <BellIcon className="h-5 w-5" />
                         <span>Notifications</span>
                       </Link>
                       <button
                         onClick={handleLogout}
-                        className={`flex items-center space-x-2 w-full py-2 text-sm rounded-m transition ${
-                          theme === "dark"
+                        className={`flex items-center space-x-2 w-full py-2 text-sm rounded-m transition ${theme === "dark"
                             ? "text-red-400 hover:bg-gray-700"
                             : "text-red-500 hover:bg-gray-100"
-                        }`}
+                          }`}
                       >
                         <FaSignOutAlt className="h-5 w-5" />
                         <span>Logout</span>
@@ -407,11 +384,10 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={handleLoginClick}
-                  className={`px-4 py-2 rounded-md text-sm font-medium ${
-                    theme === "dark"
+                  className={`px-4 py-2 rounded-md text-sm font-medium ${theme === "dark"
                       ? "bg-blue-600 text-white hover:bg-blue-700"
                       : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                  }`}
+                    }`}
                 >
                   Sign in
                 </button>
@@ -419,11 +395,10 @@ export default function Navbar() {
 
               <button
                 onClick={toggleTheme}
-                className={`p-1 rounded-full ${
-                  theme === "dark"
+                className={`p-1 rounded-full ${theme === "dark"
                     ? "text-gray-400 hover:text-white"
                     : "text-gray-500 hover:text-gray-600"
-                }`}
+                  }`}
               >
                 {theme === "light" ? (
                   <HiMoon className="h-6 w-6" />
@@ -439,11 +414,10 @@ export default function Navbar() {
             <MobileSearchBar />
             <Link to="/cart">
               <button
-                className={`p-1 rounded-full ${
-                  theme === "dark"
+                className={`p-1 rounded-full ${theme === "dark"
                     ? "text-gray-400 hover:text-white"
                     : "text-gray-500 hover:text-gray-600"
-                }`}
+                  }`}
               >
                 <ShoppingCartIcon className="h-6 w-6" />
                 <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 right-4">
@@ -464,9 +438,8 @@ export default function Navbar() {
       {/* Mobile menu */}
       {mobileMenuOpen && (
         <div
-          className={`fixed inset-0 z-50 ${
-            theme === "dark" ? "bg-gray-800" : "bg-white"
-          } overflow-y-auto`}
+          className={`fixed inset-0 z-50 ${theme === "dark" ? "bg-gray-800" : "bg-white"
+            } overflow-y-auto`}
         >
           <div className="p-4">
             <div className="flex items-center justify-between mb-6">
@@ -477,20 +450,18 @@ export default function Navbar() {
                   className="h-8 w-auto"
                 />
                 <span
-                  className={`text-xl font-bold ${
-                    theme === "dark" ? "text-white" : "text-blue-600"
-                  }`}
+                  className={`text-xl font-bold ${theme === "dark" ? "text-white" : "text-blue-600"
+                    }`}
                 >
                   LMS
                 </span>
               </Link>
               <button
                 onClick={toggleMobileMenu}
-                className={`p-2 rounded-md ${
-                  theme === "dark"
+                className={`p-2 rounded-md ${theme === "dark"
                     ? "text-gray-400 hover:text-white hover:bg-gray-700"
                     : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
-                }`}
+                  }`}
               >
                 <XMarkIcon className="h-6 w-6" />
               </button>
@@ -509,16 +480,14 @@ export default function Navbar() {
                   />
                   <div>
                     <p
-                      className={`font-semibold ${
-                        theme === "dark" ? "text-gray-100" : "text-gray-900"
-                      }`}
+                      className={`font-semibold ${theme === "dark" ? "text-gray-100" : "text-gray-900"
+                        }`}
                     >
                       Hi, {user?.firstName}
                     </p>
                     <p
-                      className={`text-sm ${
-                        theme === "dark" ? "text-gray-300" : "text-gray-500"
-                      }`}
+                      className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-500"
+                        }`}
                     >
                       Welcome back
                     </p>
@@ -532,17 +501,15 @@ export default function Navbar() {
                 {({ open }) => (
                   <>
                     <PopoverButton
-                      className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                        theme === "dark"
+                      className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                           ? "text-gray-300 hover:bg-gray-700"
                           : "text-gray-900 hover:bg-gray-50"
-                      }`}
+                        }`}
                     >
                       Categories
                       <ChevronRightIcon
-                        className={`h-5 w-5 flex-none ${
-                          open ? "rotate-90" : ""
-                        } transition`}
+                        className={`h-5 w-5 flex-none ${open ? "rotate-90" : ""
+                          } transition`}
                         aria-hidden="true"
                       />
                     </PopoverButton>
@@ -551,11 +518,10 @@ export default function Navbar() {
                         <Link
                           key={category.name}
                           to={category.href}
-                          className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${
-                            theme === "dark"
+                          className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${theme === "dark"
                               ? "text-gray-300 hover:bg-gray-700"
                               : "text-gray-900 hover:bg-gray-50"
-                          }`}
+                            }`}
                         >
                           {category.name}
                         </Link>
@@ -568,17 +534,15 @@ export default function Navbar() {
                 {({ open }) => (
                   <>
                     <PopoverButton
-                      className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                        theme === "dark"
+                      className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                           ? "text-gray-300 hover:bg-gray-700"
                           : "text-gray-900 hover:bg-gray-50"
-                      }`}
+                        }`}
                     >
                       Explore
                       <ChevronRightIcon
-                        className={`h-5 w-5 flex-none ${
-                          open ? "rotate-90" : ""
-                        } transition`}
+                        className={`h-5 w-5 flex-none ${open ? "rotate-90" : ""
+                          } transition`}
                         aria-hidden="true"
                       />
                     </PopoverButton>
@@ -587,11 +551,10 @@ export default function Navbar() {
                         <Link
                           key={item.name}
                           to={item.href}
-                          className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${
-                            theme === "dark"
+                          className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${theme === "dark"
                               ? "text-gray-300 hover:bg-gray-700"
                               : "text-gray-900 hover:bg-gray-50"
-                          }`}
+                            }`}
                         >
                           {item.name}
                         </Link>
@@ -602,21 +565,19 @@ export default function Navbar() {
               </Popover>
               <Link
                 to="/features"
-                className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                  theme === "dark"
+                className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                     ? "text-gray-300 hover:bg-gray-700"
                     : "text-gray-900 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 Features
               </Link>
               <Link
                 to="/contact"
-                className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                  theme === "dark"
+                className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                     ? "text-gray-300 hover:bg-gray-700"
                     : "text-gray-900 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 Contact
               </Link>
@@ -626,21 +587,19 @@ export default function Navbar() {
                 <>
                   <Link
                     to="/profile"
-                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                      theme === "dark"
+                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                         ? "text-gray-300 hover:bg-gray-700"
                         : "text-gray-900 hover:bg-gray-50"
-                    }`}
+                      }`}
                   >
                     Profile
                   </Link>
                   <button
                     onClick={handleLogout}
-                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                      theme === "dark"
+                    className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                         ? "text-gray-300 hover:bg-gray-700"
                         : "text-gray-900 hover:bg-gray-50"
-                    }`}
+                      }`}
                   >
                     Logout
                   </button>
@@ -648,22 +607,20 @@ export default function Navbar() {
               ) : (
                 <button
                   onClick={handleLoginClick}
-                  className={`block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 ${
-                    theme === "dark"
+                  className={`block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 ${theme === "dark"
                       ? "bg-gray-700 text-white hover:bg-gray-600"
                       : "bg-gray-50 text-gray-900 hover:bg-gray-100"
-                  }`}
+                    }`}
                 >
                   Sign in
                 </button>
               )}
               <button
                 onClick={toggleTheme}
-                className={`mt-2 flex items-center rounded-lg px-3 py-2 text-base font-semibold leading-7 ${
-                  theme === "dark"
+                className={`mt-2 flex items-center rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
                     ? "text-gray-300 hover:bg-gray-700"
                     : "text-gray-900 hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 {theme === "light" ? (
                   <>
