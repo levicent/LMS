@@ -27,7 +27,7 @@ const categories = [
   { name: "Development", href: "/courses/category/development" },
   { name: "Business", href: "/courses/category/business" },
   { name: "Finance & Accounting", href: "/category/finance-accounting" },
-  { name: "IT & Software", href: "/courses/category/it-software" },
+  { name: "IT & Software", href: "/courses/category/software" },
   { name: "Office Productivity", href: "/courses/category/office-productivity" },
   { name: "Personal Development", href: "/courses/category/personal-development" },
   { name: "Design", href: "/courses/category/design" },
@@ -103,8 +103,8 @@ export default function Navbar() {
             <button
               onClick={toggleMobileMenu}
               className={`p-2 rounded-md ${theme === "dark"
-                  ? "text-gray-400 hover:text-white hover:bg-gray-700"
-                  : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+                ? "text-gray-400 hover:text-white hover:bg-gray-700"
+                : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
                 }`}
             >
               {mobileMenuOpen ? (
@@ -140,8 +140,8 @@ export default function Navbar() {
               <Popover className="relative">
                 <PopoverButton
                   className={`flex items-center text-sm font-medium ${theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-700 hover:text-gray-800"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
                     }`}
                 >
                   Categories
@@ -157,8 +157,8 @@ export default function Navbar() {
                         key={category.name}
                         to={category.href}
                         className={`block px-4 py-2 text-sm ${theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         {category.name}
@@ -172,8 +172,8 @@ export default function Navbar() {
               <Popover className="relative">
                 <PopoverButton
                   className={`flex items-center text-sm font-medium ${theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-700 hover:text-gray-800"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
                     }`}
                 >
                   Explore
@@ -189,8 +189,8 @@ export default function Navbar() {
                         key={item.name}
                         to={item.href}
                         className={`block px-4 py-2 text-sm ${theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         <p className="font-semibold">{item.name}</p>
@@ -213,8 +213,8 @@ export default function Navbar() {
                     <Link
                       to="/admin/dashboard"
                       className={`text-sm font-medium ${theme === "dark"
-                          ? "text-gray-300 hover:text-white"
-                          : "text-gray-700 hover:text-gray-800"
+                        ? "text-gray-300 hover:text-white"
+                        : "text-gray-700 hover:text-gray-800"
                         }`}
                     >
                       Admin Dashboard
@@ -224,8 +224,8 @@ export default function Navbar() {
                     <Link
                       to="/instructor/dashboard"
                       className={`text-sm font-medium ${theme === "dark"
-                          ? "text-gray-300 hover:text-white"
-                          : "text-gray-700 hover:text-gray-800"
+                        ? "text-gray-300 hover:text-white"
+                        : "text-gray-700 hover:text-gray-800"
                         }`}
                     >
                       Instructor Dashboard
@@ -236,8 +236,8 @@ export default function Navbar() {
                 <Link
                   to="/contact"
                   className={`text-sm font-medium ${theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-700 hover:text-gray-800"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
                     }`}
                 >
                   Contact
@@ -251,8 +251,8 @@ export default function Navbar() {
               {/* Wishlist icon */}
               <button
                 className={`p-1 rounded-full ${theme === "dark"
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-500 hover:text-gray-600"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-gray-600"
                   }`}
               >
                 <HeartIcon className="h-6 w-6" />
@@ -262,8 +262,8 @@ export default function Navbar() {
               <Link to="/cart">
                 <button
                   className={`p-1 rounded-full ${theme === "dark"
-                      ? "text-gray-400 hover:text-white"
-                      : "text-gray-500 hover:text-gray-600"
+                    ? "text-gray-400 hover:text-white"
+                    : "text-gray-500 hover:text-gray-600"
                     }`}
                 >
                   <ShoppingCartIcon className="h-6 w-6" />
@@ -306,16 +306,16 @@ export default function Navbar() {
                         <div>
                           <p
                             className={`font-semibold ${theme === "dark"
-                                ? "text-gray-100"
-                                : "text-gray-900"
+                              ? "text-gray-100"
+                              : "text-gray-900"
                               }`}
                           >
                             {user?.firstName} {user?.lastName}
                           </p>
                           <p
                             className={`text-sm ${theme === "dark"
-                                ? "text-gray-300"
-                                : "text-gray-500"
+                              ? "text-gray-300"
+                              : "text-gray-500"
                               }`}
                           >
                             {user?.email}
@@ -324,15 +324,15 @@ export default function Navbar() {
                       </Link>
                       <hr
                         className={`my-2 ${theme === "dark"
-                            ? "border-gray-700"
-                            : "border-gray-200"
+                          ? "border-gray-700"
+                          : "border-gray-200"
                           }`}
                       />
                       <Link
                         to="/profile"
                         className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         <UserCircleIcon className="h-5 w-5" />
@@ -341,8 +341,8 @@ export default function Navbar() {
                       <Link
                         to="/my-courses"
                         className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         <BookOpenIcon className="h-5 w-5" />{" "}
@@ -351,8 +351,8 @@ export default function Navbar() {
                       <Link
                         to="/messages"
                         className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         <EnvelopeIcon className="h-5 w-5" />
@@ -361,8 +361,8 @@ export default function Navbar() {
                       <Link
                         to="/notifications"
                         className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
-                            ? "text-gray-300 hover:bg-gray-700"
-                            : "text-gray-700 hover:bg-gray-100"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
                           }`}
                       >
                         <BellIcon className="h-5 w-5" />
@@ -371,8 +371,8 @@ export default function Navbar() {
                       <button
                         onClick={handleLogout}
                         className={`flex items-center space-x-2 w-full py-2 text-sm rounded-m transition ${theme === "dark"
-                            ? "text-red-400 hover:bg-gray-700"
-                            : "text-red-500 hover:bg-gray-100"
+                          ? "text-red-400 hover:bg-gray-700"
+                          : "text-red-500 hover:bg-gray-100"
                           }`}
                       >
                         <FaSignOutAlt className="h-5 w-5" />
@@ -385,8 +385,8 @@ export default function Navbar() {
                 <button
                   onClick={handleLoginClick}
                   className={`px-4 py-2 rounded-md text-sm font-medium ${theme === "dark"
-                      ? "bg-blue-600 text-white hover:bg-blue-700"
-                      : "bg-blue-100 text-blue-700 hover:bg-blue-200"
+                    ? "bg-blue-600 text-white hover:bg-blue-700"
+                    : "bg-blue-100 text-blue-700 hover:bg-blue-200"
                     }`}
                 >
                   Sign in
@@ -396,8 +396,8 @@ export default function Navbar() {
               <button
                 onClick={toggleTheme}
                 className={`p-1 rounded-full ${theme === "dark"
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-500 hover:text-gray-600"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-gray-600"
                   }`}
               >
                 {theme === "light" ? (
@@ -415,8 +415,8 @@ export default function Navbar() {
             <Link to="/cart">
               <button
                 className={`p-1 rounded-full ${theme === "dark"
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-500 hover:text-gray-600"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-gray-600"
                   }`}
               >
                 <ShoppingCartIcon className="h-6 w-6" />
@@ -459,8 +459,8 @@ export default function Navbar() {
               <button
                 onClick={toggleMobileMenu}
                 className={`p-2 rounded-md ${theme === "dark"
-                    ? "text-gray-400 hover:text-white hover:bg-gray-700"
-                    : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
+                  ? "text-gray-400 hover:text-white hover:bg-gray-700"
+                  : "text-gray-500 hover:text-gray-600 hover:bg-gray-100"
                   }`}
               >
                 <XMarkIcon className="h-6 w-6" />
@@ -502,8 +502,8 @@ export default function Navbar() {
                   <>
                     <PopoverButton
                       className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                          ? "text-gray-300 hover:bg-gray-700"
-                          : "text-gray-900 hover:bg-gray-50"
+                        ? "text-gray-300 hover:bg-gray-700"
+                        : "text-gray-900 hover:bg-gray-50"
                         }`}
                     >
                       Categories
@@ -519,8 +519,8 @@ export default function Navbar() {
                           key={category.name}
                           to={category.href}
                           className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${theme === "dark"
-                              ? "text-gray-300 hover:bg-gray-700"
-                              : "text-gray-900 hover:bg-gray-50"
+                            ? "text-gray-300 hover:bg-gray-700"
+                            : "text-gray-900 hover:bg-gray-50"
                             }`}
                         >
                           {category.name}
@@ -535,8 +535,8 @@ export default function Navbar() {
                   <>
                     <PopoverButton
                       className={`flex items-center justify-between w-full rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                          ? "text-gray-300 hover:bg-gray-700"
-                          : "text-gray-900 hover:bg-gray-50"
+                        ? "text-gray-300 hover:bg-gray-700"
+                        : "text-gray-900 hover:bg-gray-50"
                         }`}
                     >
                       Explore
@@ -552,8 +552,8 @@ export default function Navbar() {
                           key={item.name}
                           to={item.href}
                           className={`block rounded-lg pl-6 pr-3 py-2 text-sm font-semibold leading-7 ${theme === "dark"
-                              ? "text-gray-300 hover:bg-gray-700"
-                              : "text-gray-900 hover:bg-gray-50"
+                            ? "text-gray-300 hover:bg-gray-700"
+                            : "text-gray-900 hover:bg-gray-50"
                             }`}
                         >
                           {item.name}
@@ -566,8 +566,8 @@ export default function Navbar() {
               <Link
                 to="/features"
                 className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                    ? "text-gray-300 hover:bg-gray-700"
-                    : "text-gray-900 hover:bg-gray-50"
+                  ? "text-gray-300 hover:bg-gray-700"
+                  : "text-gray-900 hover:bg-gray-50"
                   }`}
               >
                 Features
@@ -575,8 +575,8 @@ export default function Navbar() {
               <Link
                 to="/contact"
                 className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                    ? "text-gray-300 hover:bg-gray-700"
-                    : "text-gray-900 hover:bg-gray-50"
+                  ? "text-gray-300 hover:bg-gray-700"
+                  : "text-gray-900 hover:bg-gray-50"
                   }`}
               >
                 Contact
@@ -588,8 +588,8 @@ export default function Navbar() {
                   <Link
                     to="/profile"
                     className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                        ? "text-gray-300 hover:bg-gray-700"
-                        : "text-gray-900 hover:bg-gray-50"
+                      ? "text-gray-300 hover:bg-gray-700"
+                      : "text-gray-900 hover:bg-gray-50"
                       }`}
                   >
                     Profile
@@ -597,8 +597,8 @@ export default function Navbar() {
                   <button
                     onClick={handleLogout}
                     className={`block rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                        ? "text-gray-300 hover:bg-gray-700"
-                        : "text-gray-900 hover:bg-gray-50"
+                      ? "text-gray-300 hover:bg-gray-700"
+                      : "text-gray-900 hover:bg-gray-50"
                       }`}
                   >
                     Logout
@@ -608,8 +608,8 @@ export default function Navbar() {
                 <button
                   onClick={handleLoginClick}
                   className={`block w-full text-left rounded-lg px-3 py-2.5 text-base font-semibold leading-7 ${theme === "dark"
-                      ? "bg-gray-700 text-white hover:bg-gray-600"
-                      : "bg-gray-50 text-gray-900 hover:bg-gray-100"
+                    ? "bg-gray-700 text-white hover:bg-gray-600"
+                    : "bg-gray-50 text-gray-900 hover:bg-gray-100"
                     }`}
                 >
                   Sign in
@@ -618,8 +618,8 @@ export default function Navbar() {
               <button
                 onClick={toggleTheme}
                 className={`mt-2 flex items-center rounded-lg px-3 py-2 text-base font-semibold leading-7 ${theme === "dark"
-                    ? "text-gray-300 hover:bg-gray-700"
-                    : "text-gray-900 hover:bg-gray-50"
+                  ? "text-gray-300 hover:bg-gray-700"
+                  : "text-gray-900 hover:bg-gray-50"
                   }`}
               >
                 {theme === "light" ? (
