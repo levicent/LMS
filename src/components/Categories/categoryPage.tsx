@@ -15,14 +15,12 @@ import { TypewriterEffectSmooth } from "../ui/typewriter-effect";
 
 const DefaultCourseThumbnail: React.FC<{ theme: string }> = ({ theme }) => (
   <div
-    className={`h-48 flex items-center justify-center ${
-      theme === "dark" ? "bg-gray-700" : "bg-gray-200"
-    }`}
+    className={`h-48 flex items-center justify-center ${theme === "dark" ? "bg-gray-700" : "bg-gray-200"
+      }`}
   >
     <BookOpenIcon
-      className={`h-16 w-16 ${
-        theme === "dark" ? "text-gray-400" : "text-gray-500"
-      }`}
+      className={`h-16 w-16 ${theme === "dark" ? "text-gray-400" : "text-gray-500"
+        }`}
     />
   </div>
 );
@@ -52,24 +50,23 @@ const CategoryPage: React.FC = () => {
         text: "Courses",
 
       },
-     
+
       {
         text: "...",
-       
+
       },
     ];
-  
+
     return (
       <DefaultLayout>
         <div
-          className={` max-auto  mx-auto py-8 min-h-screen flex justify-center items-center ${
-            theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
-          }`}
+          className={` max-auto  mx-auto py-8 min-h-screen flex justify-center items-center ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
+            }`}
         >
           <div className="text-center">
             <div className="animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 mx-auto mb-4"></div>
             <p className={theme === "dark" ? "text-gray-300" : "text-gray-700"}>
-              <TypewriterEffectSmooth words={words} className="text-center justify-center mt-8"/>
+              <TypewriterEffectSmooth words={words} className="text-center justify-center mt-8" />
             </p>
           </div>
         </div>
@@ -81,33 +78,29 @@ const CategoryPage: React.FC = () => {
     return (
       <DefaultLayout>
         <div
-          className={` mx-auto py-8 min-h-screen flex justify-center items-center ${
-            theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
-          }`}
+          className={` mx-auto py-8 min-h-screen flex justify-center items-center ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
+            }`}
         >
           <div className="text-center">
             <p
-              className={`text-2xl mb-4 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-700"
-              }`}
+              className={`text-2xl mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-700"
+                }`}
             >
               No courses available in {category} category
             </p>
             <p
-              className={`mb-6 ${
-                theme === "dark" ? "text-gray-400" : "text-gray-600"
-              }`}
+              className={`mb-6 ${theme === "dark" ? "text-gray-400" : "text-gray-600"
+                }`}
             >
               Check back soon for new courses
             </p>
             <Button
               onClick={handleGoBack}
               variant={theme === "dark" ? "secondary" : "default"}
-              className={`flex items-center mx-auto ${
-                theme === "dark"
+              className={`flex items-center mx-auto ${theme === "dark"
                   ? "bg-gray-700 text-white hover:bg-gray-600"
                   : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-              }`}
+                }`}
             >
               <ArrowLeftIcon className="h-5 w-5 mr-2" />
               Go Back
@@ -121,14 +114,12 @@ const CategoryPage: React.FC = () => {
   return (
     <DefaultLayout>
       <div
-        className={` mx-auto py-8 min-h-screen ${
-          theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
-        }`}
+        className={` mx-auto py-8 min-h-screen ${theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-100"
+          }`}
       >
         <h1
-          className={`text-3xl font-bold mb-6  ml-5 ${
-            theme === "dark" ? "text-white" : "text-gray-800"
-          }`}
+          className={`text-3xl font-bold mb-6  ml-5 ${theme === "dark" ? "text-white" : "text-gray-800"
+            }`}
         >
           {category} Courses
         </h1>
@@ -136,11 +127,10 @@ const CategoryPage: React.FC = () => {
           {courses.map((course: any) => (
             <Card
               key={course._id}
-              className={`overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-2 ${
-                theme === "dark"
+              className={`overflow-hidden shadow-lg transition-all duration-300 ease-in-out transform hover:-translate-y-2 ${theme === "dark"
                   ? "bg-gray-800 border-gray-700 hover:border-blue-600"
                   : "bg-white border-gray-200 hover:border-blue-500"
-              }`}
+                }`}
             >
               {course.thumbnail ? (
                 <div
@@ -152,26 +142,23 @@ const CategoryPage: React.FC = () => {
               )}
               <CardHeader>
                 <CardTitle
-                  className={`text-xl font-semibold ${
-                    theme === "dark" ? "text-white" : "text-gray-800"
-                  }`}
+                  className={`text-xl font-semibold ${theme === "dark" ? "text-white" : "text-gray-800"
+                    }`}
                 >
                   {course.title}
                 </CardTitle>
               </CardHeader>
               <CardContent>
                 <p
-                  className={`mb-4 line-clamp-3 ${
-                    theme === "dark" ? "text-gray-300" : "text-gray-600"
-                  }`}
+                  className={`mb-4 line-clamp-3 ${theme === "dark" ? "text-gray-300" : "text-gray-600"
+                    }`}
                 >
                   {course.description}
                 </p>
                 <div className="flex justify-between items-center mb-4">
                   <div
-                    className={`flex items-center ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-500"
-                    }`}
+                    className={`flex items-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
                   >
                     <UserIcon className="h-5 w-5 mr-2" />
                     <span className="text-sm">
@@ -180,9 +167,8 @@ const CategoryPage: React.FC = () => {
                     </span>
                   </div>
                   <div
-                    className={`flex items-center ${
-                      theme === "dark" ? "text-gray-400" : "text-gray-500"
-                    }`}
+                    className={`flex items-center ${theme === "dark" ? "text-gray-400" : "text-gray-500"
+                      }`}
                   >
                     <ClockIcon className="h-5 w-5 mr-2" />
                     <span className="text-sm">{course.duration}</span>
@@ -190,21 +176,20 @@ const CategoryPage: React.FC = () => {
                 </div>
                 <div className="flex justify-between items-center">
                   <span
-                    className={`text-lg font-bold ${
-                      theme === "dark" ? "text-blue-400" : "text-blue-600"
-                    }`}
+                    className={`text-lg font-bold ${theme === "dark" ? "text-blue-400" : "text-blue-600"
+                      }`}
                   >
-                    ${course.price}
+                    ₹{course.price}
+
                   </span>
 
                   <Link to={`/courses/${course._id}`} state={{ course }}>
                     <Button
                       variant={theme === "dark" ? "secondary" : "default"}
-                      className={`flex items-center ${
-                        theme === "dark"
+                      className={`flex items-center ${theme === "dark"
                           ? "bg-gray-700 text-white hover:bg-gray-600"
                           : "bg-blue-100 text-blue-700 hover:bg-blue-200"
-                      }`}
+                        }`}
                     >
                       <BookOpenIcon className="h-5 w-5 mr-2" />
                       View Course
