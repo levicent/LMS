@@ -79,7 +79,6 @@ export default function InstructorsPage() {
                   variant="outline" 
                   className="w-full"
                   onClick={() => window.location.href = `mailto:${instructor.email}?subject=Regarding Course&body=Hello,`}
-                  
                   >
                     <Mail className="mr-2 h-4 w-4" /> {instructor.email}
                   </Button>

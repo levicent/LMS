@@ -22,6 +22,7 @@ import { useEffect, useState } from "react";
 // import Video from "@/components/Video/Video";
 import CourseSidebar from "@/components/CourseSidebar/CourseSidebar";
 import ReactPlayer from "react-player";
+import Loading from "@/components/Loading/Loading";
 export default function CourseOverview() {
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const { courseId }: any = useParams();
@@ -36,7 +37,9 @@ export default function CourseOverview() {
     console.log("Selected Video", selectedVideo);
   }, [selectedVideo]);
 
-  if (isLoading) return <p>Loading..</p>;
+  if (isLoading) return <p>
+    <Loading />
+  </p>
   if (error) return <p>Error loading course</p>;
   if (!course) return <p>No course found</p>;
 
