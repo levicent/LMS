@@ -23,6 +23,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import DefaultLayout from "@/layout/DefaultLayout";
+import Loading from "@/components/Loading/Loading";
 export default function InstructorsPage() {
   //Temporary use only might use some validation logic here , If not anyone can get the details of instructor
   const { data: instructors, isLoading, error } = useFetchInstructors();
@@ -34,7 +35,9 @@ export default function InstructorsPage() {
 
   const renderInstructors = (role: string) => {
     if (isLoading) {
-      return <p className="text-center">Loading instructors...</p>;
+      return <p className="text-center">
+        <Loading/>
+      </p>;
     }
 
     if (error) {
@@ -61,7 +64,7 @@ export default function InstructorsPage() {
             <Card key={index} className="bg-white dark:bg-gray-800 shadow-lg">
               <CardContent className="p-6">
               <img
-                src={instructor.image ? instructor.image : `/placeholder.svg?height=100&width=100&text=${instructor.firstName.charAt(0)}${instructor.lastName.charAt(0)}`}
+                src={instructor.image ? instructor.image : `https://p.turbosquid.com/ts-thumb/d7/eSQ1m8/Pe/searchstander/jpg/1644007074/300x300/sharp_fit_q85/53152d8067a67aa5a68da857650c1f6689bbb6ff/searchstander.jpg`}
                 alt={`${instructor.firstName} ${instructor.lastName}`}
                 className="w-24 h-24 rounded-full mx-auto mb-4"
               />
@@ -72,7 +75,12 @@ export default function InstructorsPage() {
                   {instructor.role}
                 </p>
                 {role === "current" && (
-                  <Button variant="outline" className="w-full">
+                  <Button 
+                  variant="outline" 
+                  className="w-full"
+                  onClick={() => window.location.href = `mailto:${instructor.email}?subject=Regarding Course&body=Hello,`}
+                  
+                  >
                     <Mail className="mr-2 h-4 w-4" /> {instructor.email}
                   </Button>
                   
