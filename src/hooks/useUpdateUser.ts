@@ -1,10 +1,11 @@
 import api from "@/services/api";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
 
 export const useUpdateUser = (options: {
   onSuccess: (data: { token: string }) => void;
   onError: (error: any) => void;
 }) => {
+   const queryClient = useQueryClient();
   return useMutation(
     async (data: {
       firstName?: string;
@@ -21,7 +22,10 @@ export const useUpdateUser = (options: {
       return response.data;
     },
     {
-      onSuccess: options.onSuccess,
+      onSuccess: (data) => {
+        queryClient.invalidateQueries("profile");
+        options.onSuccess(data);
+      },
       onError: options.onError,
     }
   );
