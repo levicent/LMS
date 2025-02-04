@@ -20,6 +20,9 @@ const fetchUserProfile = async (): Promise<User> => {
 export const useFetchUserProfile = () => {
   return useQuery<User>("profile", fetchUserProfile, {
     retry: false,
+    refetchOnWindowFocus: true,
+    refetchOnMount: true,
+    staleTime: 60000
   });
 };
 

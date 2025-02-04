@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import DefaultLayout from "../layout/DefaultLayout";
 import { useForm } from "react-hook-form";
 import { useTheme } from "../context/themeContext";
@@ -28,6 +28,16 @@ const Settings = () => {
       phone: user?.phone,
     },
   });
+  useEffect(() => {
+    if (user) {
+      reset({
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        phone: user.phone,
+      });
+    }
+  }, [user, reset]);
 
   const [selectedFile, setSelectedFile] = useState(null);
   const [previewUrl, setPreviewUrl] = useState("");
