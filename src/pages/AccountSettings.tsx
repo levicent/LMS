@@ -5,7 +5,7 @@ import { useTheme } from "../context/themeContext";
 import { useUpdateUser } from "../hooks/useUpdateUser";
 import { useFetchUserProfile } from "../hooks/useFetchUserProfile";
 import { toast } from "react-toastify";
-
+import { useDeleteProfilePicture } from "@/hooks/useDeletePicture";
 const Settings = () => {
   interface FormData {
     firstName?: string;
@@ -15,7 +15,6 @@ const Settings = () => {
   }
 
   const { data: user } = useFetchUserProfile();
-
   const {
     register,
     handleSubmit,
@@ -68,15 +67,23 @@ const Settings = () => {
       toast.error(error?.response?.data?.message);
     },
   });
+ 
 
-
-
-
+  const { mutate: deleteProfilePicture} = useDeleteProfilePicture({
+    onSuccess: (data) => {
+      console.log(data);
+      toast.success(data.message);
+    },
+    onError: (error) => {
+      console.error("Error deleting profile picture:", error);
+      toast.error(error?.response?.data?.message);
+    },
+  });
   const handleDeleteClick = () => {
     // Reset the selected file and preview
+    deleteProfilePicture();
     setSelectedFile(null);
     setPreviewUrl("");
-    toast.info("Profile picture deleted");
   };
 
   const onSubmit = (data: FormData) => {
@@ -257,7 +264,7 @@ const Settings = () => {
                       <img
                         className="w-full h-full object-cover"
                         src={
-                          previewUrl ||
+                          previewUrl ||   user?.image ||
                           "image/blank-profile-picture-973460_1280.png"
                         }
                         alt="User"
@@ -270,13 +277,15 @@ const Settings = () => {
                       >
                         Update
                       </button> */}
-                      <button
-                        type="button"
-                        className="text-sm text-red-600 hover:text-red-700 focus:outline-none ml-4"
-                        onClick={handleDeleteClick}
-                      >
-                        Delete
-                      </button>
+                      {user?.image && (
+                        <button
+                          type="button"
+                          className="text-sm text-red-600 hover:text-red-700 focus:outline-none ml-4"
+                          onClick={handleDeleteClick}
+                        >
+                          Delete
+                        </button>
+                      )}
                     </div>
                   </div>
 

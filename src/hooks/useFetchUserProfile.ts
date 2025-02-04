@@ -17,9 +17,10 @@ const fetchUserProfile = async (): Promise<User> => {
   });
   return data;
 };
-
 export const useFetchUserProfile = () => {
   return useQuery<User>("profile", fetchUserProfile, {
     retry: false,
   });
 };
+
+
