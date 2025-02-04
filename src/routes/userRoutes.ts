@@ -9,6 +9,7 @@ import {
   getUserProfile,
   updateUserProfile,
   getUserByRole,
+  deleteProfilePicture,
 } from "../controllers/userController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -38,7 +39,7 @@ router.delete(
   checkRole(["admin"]),
   deleteUserById
 );
-
+router.delete('/delete-profile-picture',authMiddleware,deleteProfilePicture);
 router.get("/profile", authMiddleware, getUserProfile);
 router.put("/profile", authMiddleware, updateUserProfile);
 router.get('/users/role/:role', getUserByRole);
