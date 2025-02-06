@@ -14,7 +14,7 @@ function SearchBar() {
     e.preventDefault();
     if (searchQuery.trim()) {
       // Redirect to the search results page with the query as a URL parameter
-      navigate(`/search?query=${searchQuery}`);
+      navigate(`/search?query=${encodeURIComponent(searchQuery.trim())}`);
     }
   };
 
@@ -42,14 +42,7 @@ function SearchBar() {
     </form>
   );
 }
-
 export default SearchBar;
-
-
-
-
-
-
 
 
 //OPTIONAL ONE MAY DELETE 

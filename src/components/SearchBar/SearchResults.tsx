@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo } from "react";
-import { useLocation, useNavigate, Link } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import {
   ChevronDown,
   ChevronLeft,
@@ -62,14 +62,13 @@ const ITEMS_PER_PAGE = 10;
 
 export default function SearchResult() {
   const location = useLocation();
-  const navigate = useNavigate();
   const queryParams = useMemo(
     () => new URLSearchParams(location.search),
     [location.search]
   );
   const initialQuery = queryParams.get("query") || "";
   const [query, setQuery] = useState(initialQuery);
-  const { correctedQuery, isCorrected } = useAutocorrect(query);
+  const { correctedQuery, isCorrected } = useAutocorrect(query);//This create Problem 
 
   const [sortBy, setSortBy] = useState<SortOption>("Most Relevant");
   const [selectedFilters, setSelectedFilters] = useState<FilterState>({
@@ -115,7 +114,7 @@ export default function SearchResult() {
     if (typedCourses) {
       const newFilteredCourses = typedCourses.filter((course) => {
         const matchesQuery =
-          course.title.toLowerCase().includes(correctedQuery.toLowerCase()) ||
+          course.title.toLowerCase().includes(query.toLowerCase()) ||
           course.description
             .toLowerCase()
             .includes(correctedQuery.toLowerCase());
@@ -156,8 +155,7 @@ export default function SearchResult() {
       setFilteredCourses(newFilteredCourses);
       setCurrentPage(1);
     }
-  }, [selectedFilters, typedCourses, correctedQuery]);
-
+  }, [selectedFilters, typedCourses ,query]);
   const sortCourses = (courses: Course[], sortBy: SortOption): Course[] => {
     switch (sortBy) {
       case "Price: Low to High":
@@ -212,12 +210,12 @@ export default function SearchResult() {
       <div className="flex-1 bg-gray-50 dark:bg-gray-900">
         <div className="container mx-auto px-4 py-8">
           <h1 className="text-2xl md:text-3xl font-bold text-gray-900 dark:text-white mb-8">
-            {filteredCourses.length} results for "{correctedQuery}"
+            {filteredCourses.length} results for "{initialQuery}"
           </h1>
           {isCorrected && (
             <p className="text-sm text-gray-600 dark:text-gray-400 mb-4">
-              Showing results for "{correctedQuery}".
-              <Button
+              Showing results for "{query}"
+              {/* <Button
                 variant="link"
                 className="p-0 h-auto text-blue-500 dark:text-blue-400"
                 onClick={() => {
@@ -225,8 +223,8 @@ export default function SearchResult() {
                   navigate(`/search?query=${encodeURIComponent(initialQuery)}`);
                 }}
               >
-                Search instead for "{initialQuery}"
-              </Button>
+               
+              </Button> */}
             </p>
           )}
           <div className="flex flex-col lg:flex-row gap-8">
