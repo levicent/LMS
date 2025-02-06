@@ -2,7 +2,7 @@ export const ChatBot = ({ isOpen, onClose }: any) => {
   if (!isOpen) return null;
   return (
     <div 
-      className={`fixed inset-0 z-50 bg-black/20 transition-opacity duration-100
+      className={`fixed inset-0 z-50 bg-black/20 transition-opacity
         ${isOpen ? 'opacity-100' : 'opacity-0'}`}
       onClick={onClose}
     >
