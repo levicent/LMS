@@ -50,7 +50,7 @@ const SignInPage: React.FC = () => {
           <section className="text-white space-y-6">
             <h1 className="text-4xl font-boldc text-black dark:text-white">Gurusolas</h1>
             <p className="text-lg text-black dark:text-white">
-              Elevate your learning experience with LMS. Manage your courses,
+              Elevate your learning experience with Gurusolas. Manage your courses,
               track your progress, and stay on top of your studies.
             </p>
           </section>
