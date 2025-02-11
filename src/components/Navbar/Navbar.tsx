@@ -73,6 +73,15 @@ export default function Navbar() {
     navigate("/signin");
   };
 
+  const handleCartClick = () => {
+    if (!isAuthenticated) {
+      navigate('/signin', { state: { from: '/cart' } });
+    }
+    else {
+      navigate("/cart");
+    }
+  }
+
   const handleLogout = () => {
     logout();
     navigate("/");
@@ -259,19 +268,20 @@ export default function Navbar() {
               </button> */}
 
               {/* Cart icon */}
-              <Link to="/cart">
-                <button
-                  className={`p-1 rounded-full ${theme === "dark"
-                    ? "text-gray-400 hover:text-white"
-                    : "text-gray-500 hover:text-gray-600"
-                    }`}
-                >
-                  <ShoppingCartIcon className="h-6 w-6" />
-                  <p className={`text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1 ${cart.length > 0 ? 'block' : 'hidden'}`}>
-                    {cart.length}
-                  </p>
-                </button>
-              </Link>
+
+              <button
+                onClick={handleCartClick}
+                className={`p-1 rounded-full ${theme === "dark"
+                  ? "text-gray-400 hover:text-white"
+                  : "text-gray-500 hover:text-gray-600"
+                  }`}
+              >
+                <ShoppingCartIcon className="h-6 w-6" />
+                <p className={`text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1 ${cart.length > 0 ? 'block' : 'hidden'}`}>
+                  {cart.length}
+                </p>
+              </button>
+
 
               {/* User avatar or login button */}
               {isAuthenticated ? (
