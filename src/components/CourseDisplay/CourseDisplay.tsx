@@ -12,20 +12,12 @@ import useFetchCourseByUserId from "@/hooks/useFetchCoursesByUserId";
 export default function CourseDisplay() {
   // const { data: courses, isLoading, isError } = useFetchCourses();
   const { data: courses, isLoading, isError } = useFetchCourseByUserId()
-  const [category, setCategory] = useState("");
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [courseToDelete, setCourseToDelete] = useState<string | null>(null);
   const navigate = useNavigate();
   // const updateCourseMutation = useUpdateCourse();
   const deleteCourseMutation = useDeleteCourse();
-
-
-
-  const handleCategoryChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
-  ) => {
-    setCategory(event.target.value);
-  };
+  
   const navigateToAddSection = (courseId: string) => {
     navigate(`/add-section/${courseId}`);
   };
@@ -59,29 +51,7 @@ export default function CourseDisplay() {
 
   return (
     <div className="min-h-screen text-white p-8 shadow-lg">
-      <div className="flex justify-between mb-8">
-        {/* <label className="block text-lg text-black mb-2">Select a Category:</label> */}
-        <select
-          value={category}
-          onChange={handleCategoryChange}
-          className="ml-auto w-full max-w-xs bg-gray-800 text-white p-3 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-        >
-          <option value="">Select a category</option>
-          <option value="Development">Development</option>
-          <option value="Business">Business</option>
-          <option value="Finance & Accounting">Finance & Accounting</option>
-          <option value="IT & Software">IT & Software</option>
-          <option value="Personal Development">Personal Development</option>
-          <option value="Design">Design</option>
-          <option value="Marketing">Marketing</option>
-          <option value="Lifestyle">Lifestyle</option>
-          <option value="Photography & Video">Photography & Video</option>
-          <option value="Health & Fitness">Health & Fitness</option>
-          <option value="Music">Music</option>
-          <option value="Teaching & Academics">Teaching & Academics</option>
-        </select>
-      </div>
-
+     
       {/* Courses Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         {Array.isArray(courses) && courses?.length > 0 ? (

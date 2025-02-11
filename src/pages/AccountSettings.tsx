@@ -6,6 +6,7 @@ import { useUpdateUser } from "../hooks/useUpdateUser";
 import { useFetchUserProfile } from "../hooks/useFetchUserProfile";
 import { toast } from "react-toastify";
 import { useDeleteProfilePicture } from "@/hooks/useDeletePicture";
+
 const Settings = () => {
   interface FormData {
     firstName?: string;
