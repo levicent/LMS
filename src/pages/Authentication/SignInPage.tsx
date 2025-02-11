@@ -48,7 +48,7 @@ const SignInPage: React.FC = () => {
       <main className="relative z-10 max-w-7xl w-full px-4 sm:px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
           <section className="text-white space-y-6">
-            <h1 className="text-4xl font-boldc text-black dark:text-white">LMS by GWT</h1>
+            <h1 className="text-4xl font-boldc text-black dark:text-white">Gurusolas</h1>
             <p className="text-lg text-black dark:text-white">
               Elevate your learning experience with LMS. Manage your courses,
               track your progress, and stay on top of your studies.
@@ -71,7 +71,7 @@ const SignInPage: React.FC = () => {
                 >
                   Your email
                 </label>
-  
+
                 <input
                   {...register("email", {
                     required: "Email is required",
@@ -101,39 +101,39 @@ const SignInPage: React.FC = () => {
                   Password
                 </label>
                 <div className="relative">
-                <input
-                  {...register("password", {
-                    required: "Password is required",
-                    minLength: {
-                      value: 6,
-                      message: "Password must have at least 6 characters",
-                    },
-                    maxLength: {
-                      value: 20,
-                      message: "Password must have at most 20 characters",
-                    },
-                  })}
-                  id="password"
-                  type={showPassword ? "text" : "password"}
-                  autoComplete="current-password"
-                  className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
-                  aria-invalid={errors.password ? "true" : "false"}
-                />
+                  <input
+                    {...register("password", {
+                      required: "Password is required",
+                      minLength: {
+                        value: 6,
+                        message: "Password must have at least 6 characters",
+                      },
+                      maxLength: {
+                        value: 20,
+                        message: "Password must have at most 20 characters",
+                      },
+                    })}
+                    id="password"
+                    type={showPassword ? "text" : "password"}
+                    autoComplete="current-password"
+                    className="mt-2 block w-full px-4 py-3 border border-gray-300 rounded-full shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                    aria-invalid={errors.password ? "true" : "false"}
+                  />
                   {passwordValue && (
-                  <button
-                    type="button"
-                    onClick={togglePasswordVisibility}
-                    className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
-                    aria-label={showPassword ? "Hide password" : "Show password"}
-                  >
-                    {showPassword ? (
-                     <Eye className="h-5 w-5" />
-                    ) : (
-                      <EyeOff className="h-5 w-5" />
-                      
-                    )}
-                  </button>
-                )}
+                    <button
+                      type="button"
+                      onClick={togglePasswordVisibility}
+                      className="absolute inset-y-0 right-0 flex items-center px-3 text-gray-500 focus:outline-none"
+                      aria-label={showPassword ? "Hide password" : "Show password"}
+                    >
+                      {showPassword ? (
+                        <Eye className="h-5 w-5" />
+                      ) : (
+                        <EyeOff className="h-5 w-5" />
+
+                      )}
+                    </button>
+                  )}
                 </div>
                 {errors.password && (
                   <p className="text-red-500 text-sm mt-1" role="alert">
