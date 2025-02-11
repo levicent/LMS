@@ -8,7 +8,7 @@ import {
   XMarkIcon,
   ChevronDownIcon,
   EnvelopeIcon,
-  HeartIcon,
+  // HeartIcon,
   UserCircleIcon,
   BellIcon,
   ShoppingCartIcon,
@@ -28,7 +28,7 @@ const categories = [
   { name: "Business", href: "/courses/category/business" },
   { name: "Finance & Accounting", href: "/category/finance" },
   { name: "IT & Software", href: "/courses/category/software" },
-  { name: "Office Productivity", href: "/courses/category/office "},
+  { name: "Office Productivity", href: "/courses/category/office " },
   { name: "Personal Development", href: "/courses/category/personal" },
   { name: "Design", href: "/courses/category/design" },
   { name: "Marketing", href: "/courses/category/marketing" },
@@ -249,14 +249,14 @@ export default function Navbar() {
               {/* Search bar */}
               <SearchBar />
               {/* Wishlist icon */}
-              <button
+              {/* <button
                 className={`p-1 rounded-full ${theme === "dark"
                   ? "text-gray-400 hover:text-white"
                   : "text-gray-500 hover:text-gray-600"
                   }`}
               >
                 <HeartIcon className="h-6 w-6" />
-              </button>
+              </button> */}
 
               {/* Cart icon */}
               <Link to="/cart">
@@ -267,7 +267,7 @@ export default function Navbar() {
                     }`}
                 >
                   <ShoppingCartIcon className="h-6 w-6" />
-                  <p className="text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1">
+                  <p className={`text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1 ${cart.length > 0 ? 'block' : 'hidden'}`}>
                     {cart.length}
                   </p>
                 </button>
