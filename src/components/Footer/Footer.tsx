@@ -22,25 +22,22 @@ export default function Footer() {
 
   return (
     <footer
-      className={`shadow-inner ${
-        theme === "dark" ? "bg-gray-800" : "bg-gray-100"
-      }`}
+      className={`shadow-inner ${theme === "dark" ? "bg-gray-800" : "bg-gray-100"
+        }`}
     >
       <div className="container mx-auto py-12 px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
           {/* Column 1: About */}
           <div>
             <h2
-              className={`text-lg font-bold mb-4 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}
+              className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
             >
               About LMS
             </h2>
             <p
-              className={`text-sm mb-4 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-600"
-              }`}
+              className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"
+                }`}
             >
               LMS is a cutting-edge learning platform connecting students with
               world-class instructors. Explore a wide range of courses and
@@ -48,11 +45,10 @@ export default function Footer() {
             </p>
             <Link
               to="/about"
-              className={`text-sm font-semibold ${
-                theme === "dark"
-                  ? "text-blue-400 hover:text-blue-300"
-                  : "text-blue-600 hover:text-blue-700"
-              }`}
+              className={`text-sm font-semibold ${theme === "dark"
+                ? "text-blue-400 hover:text-blue-300"
+                : "text-blue-600 hover:text-blue-700"
+                }`}
             >
               Learn more about us
             </Link>
@@ -61,21 +57,19 @@ export default function Footer() {
           {/* Column 2: Quick Links */}
           <div>
             <h2
-              className={`text-lg font-bold mb-4 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}
+              className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
             >
               Quick Links
             </h2>
             <ul className="space-y-2">
               <li>
                 <Link
-                  to="/courses"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  to="/courses/category/development"
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   Courses
                 </Link>
@@ -83,60 +77,55 @@ export default function Footer() {
               <li>
                 <Link
                   to="/instructors"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   Instructors
                 </Link>
               </li>
-              <li>
+              {/* <li>
                 <Link
                   to="/pricing"
-                  className={`text-sm ${
-                    theme === "dark"
+                  className={`text-sm ${theme === "dark"
                       ? "text-gray-300 hover:text-white"
                       : "text-gray-600 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   Pricing
                 </Link>
-              </li>
-              <li>
+              </li> */}
+              {/* <li>
                 <Link
                   to="/blog"
-                  className={`text-sm ${
-                    theme === "dark"
+                  className={`text-sm ${theme === "dark"
                       ? "text-gray-300 hover:text-white"
                       : "text-gray-600 hover:text-gray-900"
-                  }`}
+                    }`}
                 >
                   Blog
                 </Link>
-              </li>
+              </li> */}
             </ul>
           </div>
 
           {/* Column 3: Support */}
           <div>
             <h2
-              className={`text-lg font-bold mb-4 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}
+              className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
             >
               Support
             </h2>
             <ul className="space-y-2">
-              <li>
+              {/* <li>
                 <Link
                   to="/help"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   Help Center
                 </Link>
@@ -144,23 +133,21 @@ export default function Footer() {
               <li>
                 <Link
                   to="/faq"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   FAQ
                 </Link>
-              </li>
+              </li> */}
               <li>
                 <Link
                   to="/contact"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   Contact Us
                 </Link>
@@ -168,11 +155,10 @@ export default function Footer() {
               <li>
                 <Link
                   to="/terms"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   Terms of Service
                 </Link>
@@ -180,11 +166,10 @@ export default function Footer() {
               <li>
                 <Link
                   to="/privacy"
-                  className={`text-sm ${
-                    theme === "dark"
-                      ? "text-gray-300 hover:text-white"
-                      : "text-gray-600 hover:text-gray-900"
-                  }`}
+                  className={`text-sm ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-600 hover:text-gray-900"
+                    }`}
                 >
                   Privacy Policy
                 </Link>
@@ -195,16 +180,14 @@ export default function Footer() {
           {/* Column 4: Newsletter */}
           <div>
             <h2
-              className={`text-lg font-bold mb-4 ${
-                theme === "dark" ? "text-white" : "text-gray-900"
-              }`}
+              className={`text-lg font-bold mb-4 ${theme === "dark" ? "text-white" : "text-gray-900"
+                }`}
             >
               Stay Updated
             </h2>
             <p
-              className={`text-sm mb-4 ${
-                theme === "dark" ? "text-gray-300" : "text-gray-600"
-              }`}
+              className={`text-sm mb-4 ${theme === "dark" ? "text-gray-300" : "text-gray-600"
+                }`}
             >
               Subscribe to our newsletter for the latest updates and exclusive
               offers.
@@ -213,11 +196,10 @@ export default function Footer() {
               <Input
                 type="email"
                 placeholder="Enter your email"
-                className={`w-full ${
-                  theme === "dark"
-                    ? "bg-gray-700 text-white"
-                    : "bg-white text-gray-900"
-                }`}
+                className={`w-full ${theme === "dark"
+                  ? "bg-gray-700 text-white"
+                  : "bg-white text-gray-900"
+                  }`}
               />
               <Button type="submit" className="w-full">
                 Subscribe
@@ -277,9 +259,8 @@ export default function Footer() {
         {/* Copyright */}
         <div className="mt-8 text-center">
           <p
-            className={`text-sm ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}
+            className={`text-sm ${theme === "dark" ? "text-gray-400" : "text-gray-600"
+              }`}
           >
             © 2024 Levicent. All rights reserved.
           </p>
