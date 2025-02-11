@@ -26,17 +26,17 @@ import { useCart } from "@/context/cartContext";
 const categories = [
   { name: "Development", href: "/courses/category/development" },
   { name: "Business", href: "/courses/category/business" },
-  { name: "Finance & Accounting", href: "/category/finance-accounting" },
+  { name: "Finance & Accounting", href: "/category/finance" },
   { name: "IT & Software", href: "/courses/category/software" },
-  { name: "Office Productivity", href: "/courses/category/office-productivity" },
-  { name: "Personal Development", href: "/courses/category/personal-development" },
+  { name: "Office Productivity", href: "/courses/category/office "},
+  { name: "Personal Development", href: "/courses/category/personal" },
   { name: "Design", href: "/courses/category/design" },
   { name: "Marketing", href: "/courses/category/marketing" },
   { name: "Lifestyle", href: "/courses/category/lifestyle" },
   { name: "Photography & Video", href: "/courses/category/photography" },
-  { name: "Health & Fitness", href: "/courses/category/health-fitness" },
+  { name: "Health & Fitness", href: "/courses/category/health" },
   { name: "Music", href: "/courses/category/music" },
-  { name: "Teaching & Academics", href: "/courses/category/teaching-academics" },
+  { name: "Teaching & Academics", href: "/courses/category/teaching" },
 ];
 
 const products = [
