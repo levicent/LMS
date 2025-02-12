@@ -34,8 +34,10 @@ import InstructorsPage from "./pages/InstructorsPage.tsx";
 import AddSectionForm from "./components/Tables/CourseTable/CreateSection.tsx";
 import CourseView from "./pages/CourseView.tsx";
 import VideoUploadPage from "./pages/VideoUploadPage.tsx";
+import TermsOfService from "./pages/TermsofService.tsx";
 import VideoPage from "./pages/VideoPage.tsx";
 import CategoryPage from "./components/Categories/categoryPage.tsx";
+import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -56,6 +58,8 @@ const App: React.FC = () => {
                 <Route path="/my-courses" element={<ProtectedRoutes element={<LearningDashboard />} />} />
                 <Route path="/contact" element={<ContactPage />} />
                 <Route path="/search" element={<SearchResults />} />
+                <Route path="/terms" element={<TermsOfService />} />
+                <Route path="/policy" element={<PrivacyPolicy />} />
                 <Route
                   path="courses/category/:category"
                   element={<CategoryPage />}
