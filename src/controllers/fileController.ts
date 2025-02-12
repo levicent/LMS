@@ -2,9 +2,13 @@ import { Request, Response } from "express";
 import cloudinary from "../config/cloudinary";
 import fs from 'fs'
 import Course from "../models/Courses";
+import multer from "multer";
 
 
-export const uploadFile = async (req: Request, res: Response) => {
+const upload = multer({ dest: "uploads/" });
+
+
+export const uploadFile = [upload.single('file'), async (req: Request, res: Response) => {
     try {
         const {
             courseId,
@@ -32,12 +36,22 @@ export const uploadFile = async (req: Request, res: Response) => {
         fs.unlinkSync(req.file.path)
 
 
-        const course = await Course.findOneAndUpdate({
-            _id: courseId, "sections.sectionId": sectionId, "sections.videos.videoId": videoId
+        const course = await Course.findOneAndUpdate(
+            { _id: courseId },
+            {
+                $push: {
+                    "sections.$[sectionFilter].videos.$[videoFilter].resource": secure_url
+                },
+            },
+            {
+                arrayFilters: [
+                    { "sectionFilter.sectionId": sectionId },
+                    { "videoFilter.videoId": videoId }
+                ],
+                new: true
 
-        }, {
-            $push: { "sections.$.videos.$.resources": secure_url }
-        }, { new: true })
+            }
+        )
 
 
 
@@ -51,4 +65,4 @@ export const uploadFile = async (req: Request, res: Response) => {
         console.error('Error uploading file: ', error)
         res.status(500).json({ message: 'Internal server error' })
     }
-}
+}]

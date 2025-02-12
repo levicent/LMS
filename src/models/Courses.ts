@@ -140,7 +140,9 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
           duration: {
             type: String,
           },
-          resources: [String],
+          resource: {
+            type: String,
+          }
         },
       ],
     },
