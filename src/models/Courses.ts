@@ -3,6 +3,23 @@ import { ICourse } from "../interfaces/ICourses";
 
 interface ICourseModel extends ICourse, mongoose.Document { }
 
+
+const commentSchema = new Schema({
+  user:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  comment: {
+    type: String,
+    required: true
+  },
+  createdAt:{
+    type: Date,
+    default: Date.now
+  }
+})
+
 const reviewSchema = new Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
@@ -142,7 +159,8 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
           },
           resource: {
             type: String,
-          }
+          },
+          comments: [commentSchema],
         },
       ],
     },
@@ -156,6 +174,11 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
     default: Date.now,
   },
 });
+
+
+
+
+
 
 const Course: mongoose.Model<ICourseModel> = mongoose.model(
   "Course",
