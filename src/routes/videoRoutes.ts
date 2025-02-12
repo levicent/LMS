@@ -5,6 +5,7 @@ import {
   getVideoById,
   updateVideoById,
   deleteVideo,
+  addComment,
 } from "../controllers/videoController";
 import authMiddleware from "../middleware/auth";
 import checkRole from "../middleware/role";
@@ -45,4 +46,5 @@ router.delete(
   deleteVideo
 );
 
+router.post(`/courses/:courseId/sections/:sectionId/videos/:videoId/comments`,authMiddleware, addComment)
 export default router;

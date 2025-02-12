@@ -180,3 +180,42 @@ export const deleteVideo = async (req: Request, res: Response) => {
     res.status(500).json({ message: "Internal server error" });
   }
 };
+
+
+//comment controller start from here 
+
+export const addComment = async(req:Request,res:Response)=>{
+  try{
+    const {courseId,sectionId,videoId}=req.params;
+    const {userId,comment}=req.body;
+    const content = await Course.findOneAndUpdate({
+      _id: courseId,
+      'sections.sectionId': sectionId,
+      'sections.videos.videoId': videoId
+    },
+    {
+      $push: {
+        'sections.$[sectionFilter].videos.$[videoFilter].comments': {
+          user: userId,
+          comment,
+        },
+      },
+    },
+    {
+      arrayFilters: [
+        { 'sectionFilter.sectionId': sectionId },
+        { 'videoFilter.videoId': videoId },
+      ],
+      new: true,
+    }
+  ).populate('sections.videos.comments.user', 'name');
+  if (!content) {
+    return res.status(404).json({ message: 'Course or video not found' });
+  }
+  res.status(201).json(content);
+  }
+  catch(error){
+    console.error('Error adding comment', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+}
