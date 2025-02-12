@@ -1,17 +1,13 @@
 import { Request, Response } from "express";
 import mongoose from "mongoose";
 import Course from "../models/Courses";
+import cloudinary from "../config/cloudinary";
 import multer from "multer";
-import { v2 as cloudinary } from "cloudinary";
 import dotenv from "dotenv";
 
 dotenv.config();
 
-cloudinary.config({
-  cloud_name: process.env.CLOUD_NAME,
-  api_key: process.env.API_KEY,
-  api_secret: process.env.API_SECRET,
-});
+
 const upload = multer({ dest: "uploads/" });
 
 export const addVideoToSection = [

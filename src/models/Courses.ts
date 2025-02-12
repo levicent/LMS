@@ -1,7 +1,7 @@
 import mongoose, { Schema, Types } from "mongoose";
 import { ICourse } from "../interfaces/ICourses";
 
-interface ICourseModel extends ICourse, mongoose.Document {}
+interface ICourseModel extends ICourse, mongoose.Document { }
 
 const reviewSchema = new Schema({
   user: {
@@ -140,6 +140,9 @@ const courseSchema: mongoose.Schema<ICourseModel> = new mongoose.Schema({
           duration: {
             type: String,
           },
+          resource: {
+            type: String,
+          }
         },
       ],
     },

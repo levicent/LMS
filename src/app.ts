@@ -9,6 +9,7 @@ import reviewRoutes from "./routes/reviewRoutes";
 import razorpayRoutes from "./routes/razorpayRoutes";
 import sectionRoutes from "./routes/sectionRoutes";
 import videoRoutes from "./routes/videoRoutes";
+import fileRoutes from './routes/fileRoutes'
 const app = express();
 
 const allowedOrigins = [
@@ -36,6 +37,7 @@ app.use("/api", cartRoutes);
 app.use("/api", sectionRoutes);
 app.use("/api", videoRoutes);
 app.use("/api", reviewRoutes);
+app.use("/api", fileRoutes);
 
 app.use("/api/payment", razorpayRoutes);
 app.use("/uploads", express.static("uploads"));
