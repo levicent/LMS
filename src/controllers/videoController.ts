@@ -219,3 +219,40 @@ export const addComment = async(req:Request,res:Response)=>{
     res.status(500).json({ message: 'Internal server error' });
   }
 }
+
+// get comment controller start from here
+
+export const getAllComments = async (req: Request, res: Response) => {
+  try {
+    const { courseId, sectionId, videoId } = req.params;
+    const course = await Course.findOne({
+      _id: courseId,
+      'sections.sectionId': sectionId,
+      'sections.videos.videoId': videoId,
+    }).populate('sections.videos.comments.user', 'name');
+    if (!course) {
+      return res.status(404).json({ message: 'Course or video not found' });
+    }
+
+    const section = course.sections.find(
+      (section) => section.sectionId.toString() === sectionId
+    );
+
+    if (!section) {
+      return res.status(404).json({ message: 'Section not found' });
+    }
+
+    const video = section.videos.find(
+      (video) => video.videoId.toString() === videoId
+    );
+
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+
+    res.status(200).json(video.comments);
+  } catch (error) {
+    console.error('Error getting all comments', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};

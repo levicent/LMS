@@ -1,4 +1,4 @@
-import { Types } from "mongoose";
+import mongoose, { Types } from "mongoose";
 
 export interface IModule {
   title: string;
@@ -25,6 +25,11 @@ export interface IVideo {
   title: string;
   url: string;
   duration?: string;
+  comments: Array<{
+    _id: mongoose.Types.ObjectId;
+    user: mongoose.Types.ObjectId;
+    comment: string;
+  }>;
 }
 
 export interface ICourse {
