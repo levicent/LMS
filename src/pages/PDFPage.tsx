@@ -1,5 +1,5 @@
 import { useState } from "react";
-import axios from "axios";
+import api from "@/services/api";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import TeacherLayout from "@/layout/TeacherLayout";
@@ -47,8 +47,8 @@ function PDFPage() {
 
         try {
             // Adjust the endpoint as needed
-            const response = await axios.post(
-                `/api/upload/${courseId}/${sectionId}/${videoId}`,
+            const response = await api.post(
+                `/upload/${courseId}/${sectionId}/${videoId}`,
                 formData,
                 {
                     headers: {
