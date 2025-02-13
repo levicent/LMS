@@ -256,3 +256,73 @@ export const getAllComments = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
+
+// delete comment controller start from here
+export const deleteComment = async (req: Request, res: Response) => {
+  try {
+    const { courseId, sectionId, videoId, commentId } = req.params;
+    const { userId } = req.body;
+
+    const course = await Course.findOne({
+      _id: courseId,
+      'sections.sectionId': sectionId,
+      'sections.videos.videoId': videoId,
+      'sections.videos.comments._id': commentId,
+    });
+
+    if (!course) {
+      return res.status(404).json({ message: 'Course, section, video, or comment not found' });
+    }
+
+    const section = course.sections.find(
+      (section) => section.sectionId.toString() === sectionId
+    );
+
+    if (!section) {
+      return res.status(404).json({ message: 'Section not found' });
+    }
+
+    const video = section.videos.find(
+      (video) => video.videoId.toString() === videoId
+    );
+
+    if (!video) {
+      return res.status(404).json({ message: 'Video not found' });
+    }
+
+    const comment = video.comments.find((comment) => comment._id.toString() === commentId);
+
+    if (!comment) {
+      return res.status(404).json({ message: 'Comment not found' });
+    }
+
+    // Check if the user is the one who commented or the instructor of the course
+    if (comment.user.toString() !== userId && course.instructor.toString() !== userId) {
+      return res.status(403).json({ message: 'You do not have permission to delete this comment' });
+    }
+
+    await Course.updateOne(
+      {
+        _id: courseId,
+        'sections.sectionId': sectionId,
+        'sections.videos.videoId': videoId,
+      },
+      {
+        $pull: {
+          'sections.$[sectionFilter].videos.$[videoFilter].comments': { _id: commentId },
+        },
+      },
+      {
+        arrayFilters: [
+          { 'sectionFilter.sectionId': sectionId },
+          { 'videoFilter.videoId': videoId },
+        ],
+      }
+    );
+
+    res.status(200).json({ message: 'Comment deleted successfully' });
+  } catch (error) {
+    console.error('Error deleting comment', error);
+    res.status(500).json({ message: 'Internal server error' });
+  }
+};
