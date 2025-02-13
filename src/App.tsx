@@ -38,6 +38,7 @@ import TermsOfService from "./pages/TermsofService.tsx";
 import VideoPage from "./pages/VideoPage.tsx";
 import CategoryPage from "./components/Categories/categoryPage.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
+import PDFPage from "./pages/PDFPage.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -125,6 +126,10 @@ const App: React.FC = () => {
                   element={
                     <InstructorPrivateRoutes element={<VideoUploadPage />} />
                   }
+                />
+                <Route
+                  path="/upload-pdf/:courseId/:sectionId/:videoId"
+                  element={<InstructorPrivateRoutes element={<PDFPage />} />}
                 />
 
                 {/* Shopping Cart */}

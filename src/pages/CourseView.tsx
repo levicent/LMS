@@ -366,7 +366,7 @@ export default function CourseView() {
                             >
                               <Upload className="h-5 w-5 text-gray-500 cursor-pointer dark:text-white" />
                               <p className="text-sm text-gray-500 cursor-pointer dark:text-white">
-                                Upload
+                                Upload video
                               </p>
                             </div>
                             <Video
