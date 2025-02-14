@@ -6,6 +6,7 @@ import { Search, X } from 'lucide-react';
 
 function SearchBar() {
   const themeContext = useTheme();
+  
   const { theme } = themeContext;
   const [searchQuery, setSearchQuery] = useState(""); 
   const navigate = useNavigate(); 
