@@ -23,7 +23,10 @@ import { useEffect, useState } from "react";
 import CourseSidebar from "@/components/CourseSidebar/CourseSidebar";
 import ReactPlayer from "react-player";
 import Loading from "@/components/Loading/Loading";
+import Comment from "@/components/Comment/Comment";
 export default function CourseOverview() {
+  const [selectedSectionId, setSelectedSectionId] = useState<string | null>(null);
+  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
   const { courseId }: any = useParams();
   const { data: courseData, isLoading, error } = useFetchCourseById(courseId);
@@ -49,6 +52,8 @@ export default function CourseOverview() {
     url: string
   ) => {
     setSelectedVideo(url);
+    setSelectedSectionId(sectionId);
+    setSelectedVideoId(videoId);
     console.log("Selected video: sectionID", sectionId, videoId, url);
   };
 
@@ -192,7 +197,15 @@ export default function CourseOverview() {
                       </div>
                     </CardContent>
                   </Card>
+                  
                 </TabsContent>
+                {selectedSectionId && selectedVideoId && (
+                  <Comment
+                    courseId={courseId}
+                    sectionId={selectedSectionId}
+                    videoId={selectedVideoId}
+                  />
+                )}
               </Tabs>
             </div>
           </div>
