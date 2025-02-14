@@ -187,7 +187,8 @@ export const deleteVideo = async (req: Request, res: Response) => {
 export const addComment = async(req:Request,res:Response)=>{
   try{
     const {courseId,sectionId,videoId}=req.params;
-    const {userId,comment}=req.body;
+    const userId = req.user?.id;
+    const {comment }=req.body;
     const content = await Course.findOneAndUpdate({
       _id: courseId,
       'sections.sectionId': sectionId,
@@ -208,7 +209,7 @@ export const addComment = async(req:Request,res:Response)=>{
       ],
       new: true,
     }
-  ).populate('sections.videos.comments.user', 'name');
+  ).populate('sections.videos.comments.user',  'firstName lastName');
   if (!content) {
     return res.status(404).json({ message: 'Course or video not found' });
   }
@@ -229,7 +230,7 @@ export const getAllComments = async (req: Request, res: Response) => {
       _id: courseId,
       'sections.sectionId': sectionId,
       'sections.videos.videoId': videoId,
-    }).populate('sections.videos.comments.user', 'name');
+    }).populate('sections.videos.comments.user', 'firstName');
     if (!course) {
       return res.status(404).json({ message: 'Course or video not found' });
     }
@@ -256,12 +257,11 @@ export const getAllComments = async (req: Request, res: Response) => {
     res.status(500).json({ message: 'Internal server error' });
   }
 };
-
 // delete comment controller start from here
 export const deleteComment = async (req: Request, res: Response) => {
   try {
     const { courseId, sectionId, videoId, commentId } = req.params;
-    const { userId } = req.body;
+    const  userId  = req.user?.id;
 
     const course = await Course.findOne({
       _id: courseId,
