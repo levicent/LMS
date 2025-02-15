@@ -37,8 +37,8 @@ export default function CourseOverview() {
   }, [course]);
 
   useEffect(() => {
-    console.log("Selected Video", selectedVideo);
-  }, [selectedVideo]);
+    console.log({ course })
+  }, [course]);
 
   if (isLoading) return <p>
     <Loading />
@@ -83,7 +83,12 @@ export default function CourseOverview() {
             <div className="p-4 sm:p-6 max-w-5xl">
               <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 dark:text-white mb-2">
                 {course.title}
+                <button>Lecture slides</button>
+
               </h1>
+              <div>
+
+              </div>
               <p className="text-gray-600 dark:text-gray-300 mb-4">
                 {course?.description}
               </p>
