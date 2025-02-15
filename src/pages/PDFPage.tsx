@@ -57,9 +57,11 @@ function PDFPage() {
                 }
             );
             console.log("PDF uploaded:", response.data);
-            toast.success("PDF uploaded successfully!");
-            // Navigate to another page, e.g., back to the course page
-            navigate(`/courses/${courseId}`);
+            navigate(`/instructor/dashboard/course/${courseId}`);
+            if (response.data.success) {
+                toast.success("PDF uploaded successfully!");
+
+            }
         } catch (error) {
             console.error("Error uploading PDF:", error);
             toast.error("Failed to upload PDF.");

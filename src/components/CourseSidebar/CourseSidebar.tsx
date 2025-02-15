@@ -4,7 +4,7 @@ import { ChevronDown, ChevronUp, Play, Menu, X } from "lucide-react";
 interface Section {
   sectionId: string;
   title: string;
-  videos: { videoId: string; title: string; duration: string; url: string }[];
+  videos: { videoId: string; title: string; duration: string; url: string, resource: string }[];
 }
 
 interface CourseSidebarProps {
@@ -88,28 +88,46 @@ function CourseSidebar({ sections = [], onVideoSelect }: CourseSidebarProps) {
                 {isOpen && (
                   <div className="bg-gray-50 dark:bg-gray-900">
                     {section.videos.map((video, videoIndex) => (
-                      <button
-                        key={video.videoId}
-                        onClick={() => {
-                          onVideoSelect(
-                            section.sectionId,
-                            video.videoId,
-                            video.url
-                          );
-                          setIsMobileSidebarOpen(false);
-                        }}
-                        className="w-full text-left p-2 sm:p-3 pl-4 sm:pl-6 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-start gap-2 sm:gap-3"
-                      >
-                        <Play className="w-3 h-3 sm:w-4 sm:h-4 mt-1 text-gray-400 flex-shrink-0" />
-                        <div className="flex-1 min-w-0">
-                          <p className="text-xs sm:text-sm dark:text-white truncate">
-                            {videoIndex + 1}. {video.title}
-                          </p>
-                          <p className="text-xs text-gray-500">
-                            {video.duration}
-                          </p>
-                        </div>
-                      </button>
+                      <div className="flex gap-2" key={video.videoId}>
+
+                        <button
+                          key={video.videoId}
+                          onClick={() => {
+                            onVideoSelect(
+                              section.sectionId,
+                              video.videoId,
+                              video.url
+                            );
+                            setIsMobileSidebarOpen(false);
+                          }}
+                          className="w-1/2 text-left p-2 sm:p-3 pl-4 sm:pl-6 hover:bg-gray-100 dark:hover:bg-gray-700 flex items-start gap-2 sm:gap-3"
+                        >
+                          <Play className="w-3 h-3 sm:w-4 sm:h-4 mt-1 text-gray-400 flex-shrink-0" />
+                          <div className="flex-1 min-w-0">
+                            <p className="text-xs sm:text-sm dark:text-white truncate">
+                              {videoIndex + 1}. {video.title}
+                            </p>
+                            <p className="text-xs text-gray-500">
+                              {video.duration}
+                            </p>
+                          </div>
+                        </button>
+
+
+                        <button
+                          onClick={() => {
+                            if (video.resource) {
+                              window.open(video.resource, "_blank");
+                            } else {
+                              alert("No resource available");
+                            }
+                          }}
+                          className="p-4 text-white text-xs bg-gray-900 w-1/2 hover:bg-gray-800 rounded-r-lg border border-gray-600"
+                        >
+                          Lecture Slides
+                        </button>
+
+                      </div>
                     ))}
                   </div>
                 )}
