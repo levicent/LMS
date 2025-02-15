@@ -39,7 +39,7 @@ export const uploadFile = [upload.single('file'), async (req: Request, res: Resp
         const course = await Course.findOneAndUpdate(
             { _id: courseId },
             {
-                $push: {
+                $set: {
                     "sections.$[sectionFilter].videos.$[videoFilter].resource": secure_url
                 },
             },
