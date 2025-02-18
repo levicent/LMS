@@ -72,8 +72,6 @@ const App: React.FC = () => {
                   path="/course/enrolled/:courseId"
                   element={<CourseLearningPage />}
                 />
-
-                 
                   <Route
                   path="/demo1"
                   element={<DonorDashboard/>}
