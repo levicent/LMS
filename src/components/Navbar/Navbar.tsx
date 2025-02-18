@@ -8,7 +8,6 @@ import {
   XMarkIcon,
   ChevronDownIcon,
   EnvelopeIcon,
-  // HeartIcon,
   UserCircleIcon,
   BellIcon,
   ShoppingCartIcon,
@@ -51,6 +50,35 @@ const products = [
     href: "/donors",
   },
 ];
+
+const demo =[
+  {
+    name: "DemoV1",
+    description: "Donor",
+    href: "/demo1",
+  },
+  {
+    name: "DemoV2",
+    description: "Video Conference",
+    href: "/demo2",
+  },
+  {
+    name: "DemoV3",
+    description: "Msg Interface",
+    href: "/demo3",
+
+  },
+  {
+    name: "DemoV4",
+    description: "employee dash",
+    href: "/demo4",
+  },
+  {
+    name: "DemoV5",
+    description: "employee list",
+    href: "/demo5",
+  }
+]
 
 export default function Navbar() {
   const themeContext = useTheme();
@@ -252,24 +280,45 @@ export default function Navbar() {
                   Contact
                 </Link>
               )}
-              <Link
-                  to="/Demo1"
-                  className={`text-sm font-medium ${theme === "dark"
+
+
+<Popover className="relative">
+                <PopoverButton
+                  className={`flex items-center text-sm font-medium ${theme === "dark"
                     ? "text-gray-300 hover:text-white"
                     : "text-gray-700 hover:text-gray-800"
                     }`}
                 >
-                  DemoV1
-                </Link>
-                <Link
-                  to="/Demo2"
-                  className={`text-sm font-medium ${theme === "dark"
-                    ? "text-gray-300 hover:text-white"
-                    : "text-gray-700 hover:text-gray-800"
-                    }`}
+                  Demo
+                  <ChevronDownIcon className="ml-1 h-5 w-5" />
+                </PopoverButton>
+                <PopoverPanel
+                  className={`absolute z-10 mt-2 w-56 rounded-md shadow-lg ${theme === "dark" ? "bg-gray-800" : "bg-white"
+                    } ring-1 ring-black ring-opacity-5`}
                 >
-                  DemoV2
-                </Link>
+                  <div className="py-1">
+                    {demo.map((item) => (
+                      <Link
+                        key={item.name}
+                        to={item.href}
+                        className={`block px-4 py-2 text-sm ${theme === "dark"
+                          ? "text-gray-300 hover:bg-gray-700"
+                          : "text-gray-700 hover:bg-gray-100"
+                          }`}
+                      >
+                        <p className="font-semibold">{item.name}</p>
+                        <p
+                          className={`text-xs ${theme === "dark" ? "text-gray-400" : "text-gray-500"
+                            }`}
+                        >
+                          {item.description}
+                        </p>
+                      </Link>
+                    ))}
+                  </div>
+                </PopoverPanel>
+              </Popover>
+
             </div>
 
             <div className="flex items-center space-x-4">

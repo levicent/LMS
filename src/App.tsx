@@ -41,6 +41,9 @@ import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import PDFPage from "./pages/PDFPage.tsx";
 import DonorDashboard from "./pages/Temp.tsx";
 import { LiveStreamInterface } from "./pages/Demo.tsx";
+import MessagingInterface from "./pages/MsgInterface.tsx";
+import EmployerDashboard from "./pages/EmployeeDash.tsx";
+import EmployeeList from "./pages/EmployeeList.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -79,6 +82,18 @@ const App: React.FC = () => {
                  <Route
                   path="/demo2"
                   element={<LiveStreamInterface />}
+                />
+                  <Route
+                  path="/demo3"
+                  element={<MessagingInterface />}
+                />
+                <Route
+                  path="/demo4"
+                  element={<EmployerDashboard />}
+                />
+                 <Route
+                  path="/demo5"
+                  element={<EmployeeList />}
                 />
                 <Route path="/course/:courseId/learn" element={<VideoPage />} />
                 <Route path="/donors" element={<DonorPage />} />
