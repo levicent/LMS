@@ -252,6 +252,24 @@ export default function Navbar() {
                   Contact
                 </Link>
               )}
+              <Link
+                  to="/Demo1"
+                  className={`text-sm font-medium ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
+                    }`}
+                >
+                  Demo1
+                </Link>
+                <Link
+                  to="/Demo2"
+                  className={`text-sm font-medium ${theme === "dark"
+                    ? "text-gray-300 hover:text-white"
+                    : "text-gray-700 hover:text-gray-800"
+                    }`}
+                >
+                  Demo2
+                </Link>
             </div>
 
             <div className="flex items-center space-x-4">
@@ -276,6 +294,7 @@ export default function Navbar() {
                   : "text-gray-500 hover:text-gray-600"
                   }`}
               >
+                
                 <ShoppingCartIcon className="h-6 w-6" />
                 <p className={`text-sm font-semibold bg-red-500 text-white px-1 rounded-full absolute top-3 mx-4 mt-1 ${cart.length > 0 ? 'block' : 'hidden'}`}>
                   {cart.length}
