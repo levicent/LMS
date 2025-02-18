@@ -39,6 +39,8 @@ import VideoPage from "./pages/VideoPage.tsx";
 import CategoryPage from "./components/Categories/categoryPage.tsx";
 import PrivacyPolicy from "./pages/PrivacyPolicy.tsx";
 import PDFPage from "./pages/PDFPage.tsx";
+import DonorDashboard from "./pages/Temp.tsx";
+import { LiveStreamInterface } from "./pages/Demo.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -69,6 +71,16 @@ const App: React.FC = () => {
                 <Route
                   path="/course/enrolled/:courseId"
                   element={<CourseLearningPage />}
+                />
+
+                 
+                  <Route
+                  path="/demo1"
+                  element={<DonorDashboard/>}
+                />
+                 <Route
+                  path="/demo2"
+                  element={<LiveStreamInterface />}
                 />
                 <Route path="/course/:courseId/learn" element={<VideoPage />} />
                 <Route path="/donors" element={<DonorPage />} />
