@@ -259,7 +259,7 @@ export default function Navbar() {
                     : "text-gray-700 hover:text-gray-800"
                     }`}
                 >
-                  Demo1
+                  DemoV1
                 </Link>
                 <Link
                   to="/Demo2"
@@ -268,7 +268,7 @@ export default function Navbar() {
                     : "text-gray-700 hover:text-gray-800"
                     }`}
                 >
-                  Demo2
+                  DemoV2
                 </Link>
             </div>
 
