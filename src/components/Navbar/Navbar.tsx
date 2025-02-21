@@ -427,7 +427,7 @@ export default function Navbar() {
                         <span>My Learning</span>
                       </Link>
                       <Link
-                        to="/messages"
+                        to="/demo3"
                         className={`flex items-center space-x-2 py-2 text-sm rounded-md transition ${theme === "dark"
                           ? "text-gray-300 hover:bg-gray-700"
                           : "text-gray-700 hover:bg-gray-100"
