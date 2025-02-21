@@ -44,6 +44,7 @@ import { LiveStreamInterface } from "./pages/Demo.tsx";
 import MessagingInterface from "./pages/MsgInterface.tsx";
 import EmployerDashboard from "./pages/EmployeeDash.tsx";
 import EmployeeList from "./pages/EmployeeList.tsx";
+import NotificationPage from "./pages/Notification.tsx";
 const App: React.FC = () => {
   return (
     <div className="bg-white text-black">
@@ -75,15 +76,15 @@ const App: React.FC = () => {
                   path="/course/enrolled/:courseId"
                   element={<CourseLearningPage />}
                 />
-                  <Route
+                <Route
                   path="/demo1"
-                  element={<DonorDashboard/>}
+                  element={<DonorDashboard />}
                 />
-                 <Route
+                <Route
                   path="/demo2"
                   element={<LiveStreamInterface />}
                 />
-                  <Route
+                <Route
                   path="/demo3"
                   element={<MessagingInterface />}
                 />
@@ -91,9 +92,14 @@ const App: React.FC = () => {
                   path="/demo4"
                   element={<EmployerDashboard />}
                 />
-                 <Route
+                <Route
                   path="/demo5"
                   element={<EmployeeList />}
+                />
+
+                <Route
+                  path="/notifications"
+                  element={<NotificationPage />}
                 />
                 <Route path="/course/:courseId/learn" element={<VideoPage />} />
                 <Route path="/donors" element={<DonorPage />} />
